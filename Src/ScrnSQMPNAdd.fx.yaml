@@ -6456,7 +6456,7 @@ ScrnSQMPNAdd As screen:
                                 If(
                                     FrmSQMPNOATS.Mode=FormMode.Edit,
                                     Parent.Default
-                                    //DataCardValue1.Selected.Title
+                                    //DataCardValue1.Selected.Title GPARAISO
                                 ),
                                 If(IsMatch(Last(AttachmentCAR.Attachments).Name, "(\d{8}_\d{6}_).*"), Mid(Last(AttachmentCAR.Attachments).Name,17),Last(AttachmentCAR.Attachments).Name)
                             )
