@@ -1,0 +1,9 @@
+[
+  {
+    "AddinConnectorId": "1bef2163-aae7-48e9-a52f-178a407b6dd5",
+    "AddinId": "6d1f157d-95bf-406d-b65d-cfd3240f724e",
+    "Name": "UploadDocumentToSQMPLib",
+    "ServiceKind": "AddinWadl",
+    "Type": "ServiceInfo"
+  }
+]

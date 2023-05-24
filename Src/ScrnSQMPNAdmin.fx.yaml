@@ -1,0 +1,1781 @@
+ScrnSQMPNAdmin As screen:
+    LoadingSpinner: =LoadingSpinner.Controls
+    LoadingSpinnerColor: =RGBA(0, 120, 212, 1)
+    OnHidden: |-
+        =UpdateContext({LclShowFilter:false});UpdateContext({lclShowMenu:false})
+    OnVisible: |-
+        =Set (
+            gblGrpSupplier,
+            Filter(
+                    SQMP_NOATS_SupplierGrp,
+                    Plant = gblUserInfo.Plant       
+                ).Title
+        );
+
+    Container5 As groupContainer.horizontalAutoLayoutContainer:
+        Height: =Parent.Height-CmpntHeader_8.Height
+        LayoutMode: =LayoutMode.Auto
+        LayoutOverflowX: =LayoutOverflow.Scroll
+        Width: =Parent.Width
+        Y: =CmpntHeader_8.Y+CmpntHeader_8.Height
+        ZIndex: =1
+
+        Container6 As groupContainer.manualLayoutContainer:
+            AlignInContainer: =AlignInContainer.Start
+            Height: =Parent.Height
+            LayoutMinHeight: =100
+            LayoutMinWidth: =1700+20
+            ZIndex: =1
+
+            GalSqmpNoatsListAdmin As gallery.variableTemplateHeightGallery:
+                BorderColor: =RGBA(166, 166, 166, 1)
+                Height: =Parent.Height-HtmlText2.Height-20
+                Items: |-
+                    =If(
+                        gblUserInfo.SupplierGrp_Notifs <> 2, //SupplierGroup Notif not for Associates
+                        SortByColumns(
+                            Filter(
+                             /*   If(
+                                    gblUserInfo.SQMPRole = "Admin",
+                                    Filter(
+                                        SQMP_NOATS_LIST,
+                                        Appr_Status = "Approved"
+                                    ), */
+                                    SQMP_NOATS_LIST
+                                /*)*/,
+                                IsBlank(DpTo.SelectedDate) || IsEmpty(DpTo.SelectedDate) || IsBlank(DpFrom.SelectedDate) || IsEmpty(DpFrom.SelectedDate) || (('Date of Delivery' >= DpFrom.SelectedDate) && ('Date of Delivery' <= DpTo.SelectedDate)),
+                                IsBlank(DpCreatedTo.SelectedDate) || IsEmpty(DpCreatedTo.SelectedDate) || IsBlank(DpCreatedFrom.SelectedDate) || IsEmpty(DpCreatedFrom.SelectedDate) || ((Created >= DpCreatedFrom.SelectedDate) && (Created <= DpCreatedTo.SelectedDate)),
+                                IsBlank(CmbxTypeMat.Selected.Title) || IsBlank(CmbxTypeMat.Selected.Title) || 'Type of Material' = CmbxTypeMat.Selected.Title,
+                                IsBlank(CmbxPlant.Selected.Title) || IsEmpty(CmbxPlant.Selected.Title) || Plant = CmbxPlant.Selected.Title,
+                                IsBlank(CmbxSupplierFilter.Selected.Title) || IsEmpty(CmbxSupplierFilter.Selected.Title) || Supplier = CmbxSupplierFilter.Selected.Title,
+                                IsBlank(CmbxCARstatus.Selected.Value) || IsEmpty(CmbxCARstatus.Selected.Value) || 'CAR Status' = CmbxCARstatus.Selected.Value,
+                                IsBlank(CmbxProcurement.Selected.Title) || IsEmpty(CmbxProcurement.Selected.Title) || Procurement = Concatenate(
+                                    CmbxProcurement.Selected.Title,
+                                    " | ",
+                                    CmbxProcurement.Selected.Email
+                                ),
+                                StartsWith(
+                                    'Noats Control Number',
+                                    TxtSearchNoats.Text
+                                ),
+                            /*IsBlank(CmbxCARstatus_2.Selected.Value) || IsEmpty(CmbxCARstatus_2.Selected.Value) || If(
+                                CmbxCARstatus_2.Selected.Value = "YES",
+                                DateTimeCARUploaded <>Blank(),
+                                DateTimeCARUploaded = Blank()
+                            ),*/
+                            //Filter the Appr_Status based on the SQMPRole  ADD GPARAISO | 2023-04-19
+                            IsBlank(TxtUserRole.Text) || IsEmpty(TxtUserRole.Text) || Appr_Status = TxtUserRole.Text 
+                            ),
+                            "Appr_Status",
+                            SortOrder.Descending,
+                            "DateOfDelivery",
+                            SortOrder.Descending,
+                            "NoatsControlNumber",
+                            SortOrder.Ascending
+                        ),
+                        // BEGIN OF ADD GPARAISO | 2023-03-28 
+                        gblUserInfo.SupplierGrp_Notifs = 2, //SupplierGroup Notif for Associates
+                        SortByColumns(
+                            Filter(
+                                SQMP_NOATS_LIST,
+                                IsBlank(DpTo.SelectedDate) || IsEmpty(DpTo.SelectedDate) || IsBlank(DpFrom.SelectedDate) || IsEmpty(DpFrom.SelectedDate) || (('Date of Delivery' >= DpFrom.SelectedDate) && ('Date of Delivery' <= DpTo.SelectedDate)),
+                                IsBlank(DpCreatedTo.SelectedDate) || IsEmpty(DpCreatedTo.SelectedDate) || IsBlank(DpCreatedFrom.SelectedDate) || IsEmpty(DpCreatedFrom.SelectedDate) || ((Created >= DpCreatedFrom.SelectedDate) && (Created <= DpCreatedTo.SelectedDate)),
+                                IsBlank(CmbxTypeMat.Selected.Title) || IsBlank(CmbxTypeMat.Selected.Title) || 'Type of Material' = CmbxTypeMat.Selected.Title,
+                                IsBlank(CmbxPlant.Selected.Title) || IsEmpty(CmbxPlant.Selected.Title) || Plant = CmbxPlant.Selected.Title,
+                                IsBlank(CmbxSupplierFilter.Selected.Title) || IsEmpty(CmbxSupplierFilter.Selected.Title) || Supplier = CmbxSupplierFilter.Selected.Title,
+                                IsBlank(CmbxCARstatus.Selected.Value) || IsEmpty(CmbxCARstatus.Selected.Value) || 'CAR Status' = CmbxCARstatus.Selected.Value,
+                                StartsWith(
+                                    'Noats Control Number',
+                                    TxtSearchNoats.Text
+                                ),
+                                Appr_Status = "Approved"
+                            ),
+                            "Appr_Status",
+                            SortOrder.Descending,
+                            "DateOfDelivery",
+                            SortOrder.Descending,
+                            "NoatsControlNumber",
+                            SortOrder.Ascending
+                        )
+                    )
+                    // END OF ADD GPARAISO | 2023-03-28
+                Layout: =Layout.Vertical
+                NavigationStep: =10
+                OnSelect: =
+                ShowNavigation: =true
+                TemplateFill: =If(ThisItem.IsSelected, RGBA(171, 255, 254, 1))
+                TemplatePadding: =-1
+                TemplateSize: =40
+                Width: =Parent.Width
+                Y: |
+                    =HtmlText2.Y+HtmlText2.Height
+                ZIndex: =1
+
+                HtmlText3 As htmlViewer:
+                    AutoHeight: =true
+                    Height: =30
+                    HtmlText: |-
+                        ="<table
+                        style='table-layout: fixed; width: 100%; border: solid 1px black;border-collapse: collapse; margin:-1px 0;  padding:-1px 0'>
+                        <tr>
+                        <td style='border: solid 1px black; padding: 5px ; text-align: center ;min-width: 5%; max-width: 5%;width: 5%;'>" & Text(
+                            ThisItem.Created,
+                            "[$-en-US]mm-dd-yyyy"
+                        ) & " </td>
+                        <td style='border: solid 1px black; padding: 5px ; text-align: center ;min-width: 5%; max-width: 5%;width: 5%;'>" & Text(
+                            ThisItem.'Date of Delivery',
+                            "[$-en-US]mm-dd-yyyy"
+                        ) & " </td>
+                        <td style='border: solid 1px black; padding: 5px ;  min-width: 6%;max-width: 6%;width: 6%;'>" & ThisItem.Plant & " </td>
+                        <td style='border: solid 1px black; padding: 5px ;  min-width: 10%;max-width: 10%;width: 10%;'>
+                        " & ThisItem.Supplier & " </td>
+                        <td style='border: solid 1px black; padding: 5px ; min-width: 10%;max-width: 10%;width: 10%;'>" & ThisItem.Material & " </td>
+                        <td
+                        style='border: solid 1px black; padding: 5px ;  min-width: 7%;max-width: 7%;width: 7%;color:rgba(39, 113, 194, 1);text-decoration: underline; word-break: ; '>
+                        " & Left(
+                            ThisItem.'NOATS Upload',
+                            17
+                        ) & "</td>
+                        <td style='border: solid 1px black; padding: 5px ;  min-width: 7%;max-width: 7%;width: 7%;color:rgba(39, 113, 194, 1);text-decoration: underline; word-break: ; background-color: " & If(
+                            IsBlank(ThisItem.DateTimeCARUploaded),
+                            If(
+                                RoundDown(
+                                    DateDiff(
+                                        ThisItem.Appr_DateTime,
+                                        Now(),
+                                        TimeUnit.Days
+                                    ) / 7,
+                                    0
+                                ) * 5 + Mod(
+                                    5 + Weekday(Now()) - Weekday(ThisItem.Appr_DateTime),
+                                    5
+                                ) - CountIf(
+                                    colHolidays,
+                                    holiday_date >= ThisItem.Appr_DateTime,
+                                    holiday_date <= Now()
+                                ) <= 7,
+                                "rgba(255,255,255,0)",
+                                "rgba(255,51,51,1)"
+                            ),
+                            If(
+                                RoundDown(
+                                    DateDiff(
+                                        ThisItem.Appr_DateTime,
+                                        ThisItem.DateTimeCARUploaded,
+                                        TimeUnit.Days
+                                    ) / 7,
+                                    0
+                                ) * 5 + Mod(
+                                    5 + Weekday(ThisItem.DateTimeCARUploaded) - Weekday(ThisItem.Appr_DateTime),
+                                    5
+                                ) - CountIf(
+                                    colHolidays,
+                                    holiday_date >= ThisItem.Appr_DateTime,
+                                    holiday_date <= ThisItem.DateTimeCARUploaded
+                                ) <= 7,
+                                "rgba(0,255,68,1)",
+                                "rgba(255,240,77,1)"
+                            )
+                        ) & "; '>
+                        " & Left(
+                            ThisItem.'CAR Upload',
+                            15
+                        ) & "<br>
+                        <i>" & ThisItem.DateTimeCARUploaded & "</i></td>
+                        <td
+                        style='border: solid 1px black; padding: 5px ;  min-width: 7%;max-width: 7%;width: 7%;color:rgba(39, 113, 194, 1);text-decoration: underline; word-break: ; '>
+                        " & If(
+                            !IsBlank(ThisItem.DateTimeCARUploaded),
+                            With(
+                                {
+                                   wTimeDiff:  RoundDown(
+                                    DateDiff(
+                                        ThisItem.Appr_DateTime,
+                                        ThisItem.DateTimeCARUploaded,
+                                        TimeUnit.Days
+                                    ) / 7,
+                                    0
+                                ) * 5 + Mod(
+                                    5 + Weekday(ThisItem.DateTimeCARUploaded) - Weekday(ThisItem.Appr_DateTime),
+                                    5
+                                ) - CountIf(
+                                    colHolidays,
+                                    holiday_date >= ThisItem.Appr_DateTime,
+                                    holiday_date <= ThisItem.DateTimeCARUploaded
+                                )
+                                },
+                                If(
+                                    wTimeDiff  > 0,
+                                        wTimeDiff,
+                                        0
+                                )& " day/s "
+                            ),
+                                With(
+                                {
+                                    wTimeDiff:  RoundDown(
+                                    DateDiff(
+                                        ThisItem.Appr_DateTime,
+                                        Now(),
+                                        TimeUnit.Days
+                                    ) / 7,
+                                    0
+                                ) * 5 + Mod(
+                                    5 + Weekday(Now()) - Weekday(ThisItem.Appr_DateTime),
+                                    5
+                                ) - CountIf(
+                                    colHolidays,
+                                    holiday_date >= ThisItem.Appr_DateTime,
+                                    holiday_date <= Now()
+                                )
+                                },
+                                If(
+                                    wTimeDiff  > 0,
+                                        wTimeDiff,
+                                        0
+                                )& " day/s "
+                            ) 
+                        ) & "</td>
+                        
+                        <td style='border: solid 1px black; padding: 5px ; padding-right: 20px; min-width: 22%;max-width: 22%;width: 22%; background-color: " & If(
+                            ThisItem.'CAR Status' = "Closed-Out" && ! IsBlank(ThisItem.CARStatusReport),
+                            "rgba(0,255,68,1)",
+                            ThisItem.'CAR Status' = "Open" && !IsBlank(ThisItem.CARStatusReport),
+                            "rgba(255,240,77,1 )",
+                            "rgba(255,51,51,1 )"
+                        ) & " ;'>
+                        <b>" & Upper(ThisItem.'CAR Status') & "</b> <i>" & ThisItem.CARStatusDateTime & " </i><br> " & ThisItem.CARStatusReport & "
+                        </td>
+                        <td
+                        style='border: solid 1px black; padding: 5px ; min-width: 6%;max-width: 6%;width: 6%;'>
+                        " & ThisItem.RefPON & "
+                        </td>" & If(
+                            gblUserInfo.SQMPRole = "Uploader" || gblUserInfo.SQMPRole = "Approver",
+                            "<td style='border: solid 1px black; padding: 5px ;  min-width: 7%;max-width: 7%;width: 7%;'>
+                        " & ThisItem.Appr_Status & "</td>
+                        <td style='border: solid 1px black; padding: 5px ;  min-width: 7%;max-width: 7%;width: 7%;'>
+                        " & ThisItem.Appr_Comment & "</td>
+                        </tr>"
+                        ) & "
+                        </table>"
+                    OnSelect: |-
+                        =UpdateContext({lclShowDetails: true})
+                    PaddingBottom: =0
+                    PaddingLeft: =0
+                    PaddingRight: =0
+                    PaddingTop: =0
+                    Size: =9
+                    Tooltip: ="Open Details"
+                    Width: =Parent.Width-20
+                    ZIndex: =1
+
+                LblCARStatus As label:
+                    BorderColor: =RGBA(0, 0, 0, 0)
+                    BorderStyle: =BorderStyle.None
+                    BorderThickness: =2
+                    Color: =RGBA(51, 51, 51, 1)
+                    DisabledBorderColor: =RGBA(0, 0, 0, 0)
+                    DisabledColor: =RGBA(166, 166, 166, 1)
+                    FocusedBorderThickness: =4
+                    Font: =Font.'Segoe UI'
+                    Height: =HtmlText3.Height
+                    OnSelect: |-
+                        =If(
+                            gblUserInfo.SQMPRole = "Uploader" && ThisItem.DateTimeCARUploaded <> Blank() /*gblUserInfo.SQMPRole = "Admin" && gblUserInfo.Department="SQMP"*/,
+                            UpdateContext({lclEditStatus: true}),
+                            false
+                        )
+                    Size: =13
+                    Text: =
+                    Tooltip: =If(gblUserInfo.SQMPRole = "Admin" && gblUserInfo.Department="SQMP", "Update CAR Status")
+                    Width: =Parent.Width*0.23
+                    X: =LblCARUpLink.X+LblCARUpLink.Width-450
+                    ZIndex: =2
+
+                LblCARUpLink As label:
+                    BorderColor: =RGBA(0, 0, 0, 0)
+                    BorderStyle: =BorderStyle.None
+                    BorderThickness: =2
+                    Color: =RGBA(51, 51, 51, 1)
+                    DisabledBorderColor: =RGBA(0, 0, 0, 0)
+                    DisabledColor: =RGBA(166, 166, 166, 1)
+                    Fill: |
+                        =RGBA(0, 0, 0,0)
+                    FocusedBorderThickness: =4
+                    Font: =Font.'Segoe UI'
+                    Height: =HtmlText3.Height
+                    OnSelect: =Launch(ThisItem.CARPSPLink & "?web=1")
+                    Size: =13
+                    Text: =
+                    Tooltip: =If(! IsBlank(ThisItem.'CAR Upload'),"Open Document " & ThisItem.CARPSPLink)
+                    Width: = If(gblUserInfo.SQMPRole="Uploader" || gblUserInfo.SQMPRole="Approver",Parent.Width*0.08,Parent.Width*0.10)
+                    X: =LblNoatsUpLink.X+LblNoatsUpLink.Width
+                    ZIndex: =3
+
+                LblNoatsUpLink As label:
+                    BorderColor: =RGBA(0, 0, 0, 0)
+                    BorderStyle: =BorderStyle.None
+                    BorderThickness: =2
+                    Color: =RGBA(51, 51, 51, 1)
+                    DisabledBorderColor: =RGBA(0, 0, 0, 0)
+                    DisabledColor: =RGBA(166, 166, 166, 1)
+                    Fill: |
+                        =RGBA(0, 0, 0,0)
+                    FocusedBorderThickness: =4
+                    Font: =Font.'Segoe UI'
+                    Height: =HtmlText3.Height
+                    OnSelect: =Launch(ThisItem.NOATSSPLink & "?web=1")
+                    Size: =13
+                    Text: =
+                    Tooltip: =If(! IsBlank(ThisItem.'NOATS Upload'),"Open Document " & ThisItem.NOATSSPLink)
+                    Width: = If(gblUserInfo.SQMPRole="Uploader" || gblUserInfo.SQMPRole="Approver", Parent.Width*0.08, Parent.Width*0.10)
+                    X: |
+                        = If(gblUserInfo.SQMPRole="Uploader" || gblUserInfo.SQMPRole="Approver",Parent.Width*0.36,Parent.Width*0.37)
+                    ZIndex: =4
+
+            HtmlText2 As htmlViewer:
+                AutoHeight: =true
+                Height: =20
+                HtmlText: |-
+                    ="<table
+                    style='table-layout: fixed;width: 100%; border: solid 1px black;border-collapse: collapse; background-color: RGBA(255, 255, 255, 1);'>
+                    <tr>
+                    <td
+                    style='border: solid 1px black; padding: 5px ;font-weight: bold;  min-width: 5%; max-width: 5%;width: 5%;text-align:center;'>
+                    Created Date</td>
+                    <td
+                    style='border: solid 1px black; padding: 5px ;font-weight: bold;  min-width: 5%; max-width: 5%;width: 5%;text-align:center;'>
+                    Delivery Date</td>
+                    <td
+                    style='border: solid 1px black; padding: 5px ;font-weight: bold; min-width: 6%;max-width: 6%;width: 6%;'>
+                    Plant </td>
+                    <td
+                    style='border: solid 1px black; padding: 5px ;font-weight: bold; min-width: 10%;max-width: 10%;width: 10%;'>
+                    Supplier</td>
+                    <td
+                    style='border: solid 1px black; padding: 5px ;font-weight: bold; min-width: 10%;max-width: 10%;width: 10%;'>
+                    Material</td>
+                    <td
+                    style='border: solid 1px black; padding: 5px ;font-weight: bold; min-width: 7%;max-width: 7%;width: 7%;'>
+                    NOATS </td>
+                    <td
+                    style='border: solid 1px black; padding: 5px ;font-weight: bold; min-width: 7%;max-width: 7%;width: 7%;'>
+                    CAR </td>
+                    <td
+                    style='border: solid 1px black; padding: 5px ;font-weight: bold; min-width: 7%;max-width: 7%;width: 7%;'>
+                    AGING </td>
+                    <td
+                    style='border: solid 1px black; padding: 5px ;font-weight: bold; min-width: 23%;max-width: 23%;width: 23%;'>
+                    NOATS Status</td>
+                    <td
+                    style='border: solid 1px black; padding: 5px ;font-weight: bold; min-width: 6%;max-width: 6%;width: 6%;'>
+                    PO #</td>
+                    " & If(
+                        gblUserInfo.SQMPRole = "Uploader" || gblUserInfo.SQMPRole = "Approver",
+                        "<td
+                    style='border: solid 1px black; padding: 5px ;font-weight: bold; min-width: 7%;max-width: 7%;width: 7%;'>
+                    Status</td>
+                    <td
+                    style='border: solid 1px black; padding: 5px ;font-weight: bold;min-width: 7%;max-width: 7%;width: 7%;'>
+                    Comment</td>
+                    </tr>"
+                    ) & "
+                    </table>"
+                PaddingBottom: =0
+                PaddingLeft: =0
+                PaddingRight: =0
+                PaddingTop: =0
+                Size: =10
+                Width: =Parent.Width-20
+                Y: |
+                    =0
+                ZIndex: =2
+
+    CmpntHeader_8 As CmpntHeader:
+        HeaderText: |-
+            =If(
+                gblUserInfo.SQMPRole = "Admin" && gblUserInfo.Department = "PROCUREMENT",
+                "Procurement",
+                gblUserInfo.SQMPRole = "Admin" && gblUserInfo.Department = "SQMP",
+                "Admin",
+                gblUserInfo.SQMPRole = "Uploader",
+                "Uploader",
+                gblUserInfo.SQMPRole = "Approver",
+                "Approver",
+                "Viewer"
+            ) & " - Document List for NOATS"
+        HomeNavigation: =ScrnSQMPHome
+        Width: =Parent.Width
+        ZIndex: =14
+
+    IcnFilterSqmp As icon.FilterFlat:
+        BorderColor: =RGBA(166, 166, 166, 1)
+        DisabledBorderColor: =RGBA(0, 0, 0, 0)
+        DisabledColor: =RGBA(220, 220, 220, 1)
+        DisabledFill: =RGBA(0, 0, 0, 0)
+        FocusedBorderThickness: =4
+        Height: =30
+        HoverBorderColor: =RGBA(0, 0, 0, 0)
+        HoverColor: =ColorFade(Self.Color, 30%)
+        HoverFill: =RGBA(0, 0, 0, 0)
+        Icon: =Icon.Filter
+        OnSelect: |-
+            =UpdateContext({LclShowFilter : ! LclShowFilter })
+        PressedBorderColor: =RGBA(0, 0, 0, 0)
+        PressedColor: =ColorFade(Self.Color, 30%)
+        PressedFill: =RGBA(0, 0, 0, 0)
+        Tooltip: ="Filter"
+        Width: =52
+        X: =Parent.Width*0.84
+        ZIndex: =22
+
+    BtnAddNewDoc_2 As button:
+        BorderColor: =RGBA(255, 255, 255, 1)
+        DisabledBorderColor: =RGBA(0, 0, 0, 0)
+        DisabledColor: =RGBA(166, 166, 166, 1)
+        DisabledFill: =RGBA(244, 244, 244, 1)
+        Fill: =RGBA(0, 0, 0, 0)
+        FocusedBorderColor: =ColorFade(Self.Fill, -75%)
+        Font: =Font.Arial
+        FontWeight: =FontWeight.Semibold
+        Height: =25
+        HoverBorderColor: =RGBA(0, 0, 0, 0)
+        HoverColor: =RGBA(255, 255, 255, 1)
+        HoverFill: =ColorFade(RGBA(0, 120, 212, 1), -10%)
+        OnSelect: |
+            =Set(
+                gblSQMPNOATSList,
+                Blank()
+            );
+            ClearCollect(
+                colDeviation,
+                {
+                    Frequency: "",
+                    NonConformity: "",
+                    NonConformanceCat: "",
+                    ShowSave: true
+                }
+            );
+            NewForm(FrmSQMPNOATS);
+            Navigate(
+                ScrnSQMPNAdd,
+                ScreenTransition.Fade,{lclFormModeNew: true }
+            );
+        PaddingLeft: =10
+        PaddingRight: =10
+        PressedBorderColor: =ColorFade(RGBA(0, 120, 212, 1), -50%)
+        PressedColor: =RGBA(255, 255, 255, 1)
+        PressedFill: =ColorFade(RGBA(0, 120, 212, 1), -30%)
+        RadiusBottomLeft: =15
+        RadiusBottomRight: =15
+        RadiusTopLeft: =15
+        RadiusTopRight: =15
+        Size: =12
+        Text: ="Add Document"
+        Visible: =true///*(gblUserInfo.SQMPRole = "Admin" ||*/ gblUserInfo.SQMPRole="Uploader"/*) && gblUserInfo.Department<>"PROCUREMENT"*/
+        X: =Parent.Width *0.7
+        Y: =3
+        ZIndex: =23
+
+    GrpDetails As group:
+        Height: =5
+        Width: =5
+        X: =40
+        Y: =40
+        ZIndex: =28
+
+        HtmlDetails As htmlViewer:
+            Height: =Parent.Height*0.99
+            HtmlText: |-
+                ="<div style='margin-left:10px;width:" & Parent.Width * 0.7 & "px;background-color:white;box-shadow:0 5px 6px 5px  #ccc; border-radius:10px';>
+                <br><br><br>
+                  
+                     <table style='width: 95%; border: solid 1px black; border-collapse: collapse; margin-left: 10px ; margin-right: 10px;'>
+                        <tr>
+                            <td
+                                style='width: 20%; border: solid 1px black; border-collapse: collapse;padding: 10px; font-weight: bold; background-color: rgb(190, 190, 190);'>
+                                DATE OF DELIVERY </td>
+                            <td style='width: 30%; border: solid 1px black; border-collapse: collapse;padding: 10px;'>" & Text(
+                    GalSqmpNoatsListAdmin.Selected.'Date of Delivery',
+                    "[$-en-US]mmm. dd, yyyy"
+                ) & "</td>
+                            <td
+                                style='width: 25%; border: solid 1px black; border-collapse: collapse;padding: 10px;font-weight: bold; background-color: rgb(190, 190, 190);'>
+                                NOATS CONTROL NUMBER</td>
+                            <td style='width: 30%; border: solid 1px black; border-collapse: collapse;padding: 10px;'>" & GalSqmpNoatsListAdmin.Selected.'Noats Control Number' & "</td>
+                        </tr>
+                        <tr>
+                            <td
+                                style='width: 20%; border: solid 1px black; border-collapse: collapse;padding: 10px; font-weight: bold; background-color: rgb(190, 190, 190);'>
+                                SUPPLIER</td>
+                            <td style='width: 30%; border: solid 1px black; border-collapse: collapse;padding: 10px;'>" & GalSqmpNoatsListAdmin.Selected.Supplier & "</td>
+                            <td
+                                style='width: 25%; border: solid 1px black; border-collapse: collapse;padding: 10px;font-weight: bold; background-color: rgb(190, 190, 190);'>
+                                MATERIAL</td>
+                            <td style='width: 30%; border: solid 1px black; border-collapse: collapse;padding: 10px;'>" & GalSqmpNoatsListAdmin.Selected.Material & "</td>
+                        </tr>
+                        <tr>
+                            <td
+                                style='width: 20%; border: solid 1px black; border-collapse: collapse;padding: 10px; font-weight: bold; background-color: rgb(190, 190, 190);'>
+                                TYPE OF MATERIAL</td>
+                            <td style='width: 30%; border: solid 1px black; border-collapse: collapse;padding: 10px;'>" & GalSqmpNoatsListAdmin.Selected.'Type of Material' & "</td>
+                            <td
+                                style='width: 25%; border: solid 1px black; border-collapse: collapse;padding: 10px;font-weight: bold; background-color: rgb(190, 190, 190);'>
+                                BRAND</td>
+                            <td style='width: 30%; border: solid 1px black; border-collapse: collapse;padding: 10px;'>" & GalSqmpNoatsListAdmin.Selected.Brand & "</td>
+                        </tr>
+                        <tr>
+                            
+                            <td
+                                style='width: 25%; border: solid 1px black; border-collapse: collapse;padding: 10px;font-weight: bold; background-color: rgb(190, 190, 190);'>
+                                NON-CONFORMANCE CATEGORY</td>
+                            <td colspan=3 style='width: 30%; border: solid 1px black; border-collapse: collapse;padding: 10px;'><ol style='padding: 0 10px;margin: 0' >" & Concat(
+                    ForAll(Split(
+                        GalSqmpNoatsListAdmin.Selected.'Non Conformance Category',
+                        "|"
+                    ), {Result: ThisRecord.Value}),
+                    "<li>" & Result & " </li>"
+                ) & "</ol></td></tr><tr>
+                             <td 
+                                style='width: 20%; border: solid 1px black; border-collapse: collapse;padding: 10px; font-weight: bold; background-color: rgb(190, 190, 190);'>
+                                TYPE OF NON - CONFORMITY</td>
+                            <td colspan=3 style='width: 30%; border: solid 1px black; border-collapse: collapse;padding: 10px;'> <ol style='padding: 0 10px;margin: 0' >" & Concat(
+                    ForAll(Split(
+                        GalSqmpNoatsListAdmin.Selected.'Type of Non Conformity',
+                        "|"
+                    ), {Result: ThisRecord.Value}),
+                    "<li>" & Result & " </li>"
+                ) & "</ol></td>
+                        </tr>
+                         <tr> <td 
+                                style='width: 25%; border: solid 1px black; border-collapse: collapse;padding: 10px;font-weight: bold; background-color: rgb(190, 190, 190);'>
+                                FREQUENCY</td>
+                            <td colspan=3 style='width: 30%; border: solid 1px black; border-collapse: collapse;padding: 10px;'><ol style='padding: 0 10px;margin: 0' >" & Concat(
+                    ForAll(Split(
+                        GalSqmpNoatsListAdmin.Selected.Frequency,
+                        "|"
+                    ), {Result: ThisRecord.Value}),
+                    "<li>" & Result & " </li>"
+                ) & "</ol></td></tr> <tr>
+                           <td
+                                style='width: 20%; border: solid 1px black; border-collapse: collapse;padding: 10px; font-weight: bold; background-color: rgb(190, 190, 190);'>
+                                OBSERVATION</td>
+                            <td style='width: 30%; border: solid 1px black; border-collapse: collapse;padding: 10px;'>" & GalSqmpNoatsListAdmin.Selected.NatureOfObservation & "</td>
+                            <td
+                                style='width: 25%; border: solid 1px black; border-collapse: collapse;padding: 10px;font-weight: bold; background-color: rgb(190, 190, 190);'>
+                                RISK CATEGORY</td>
+                            <td style='width: 30%; border: solid 1px black; border-collapse: collapse;padding: 10px; background-color: " & If(
+                    (GalSqmpNoatsListAdmin.Selected.'Risk Category'.Value = "Critical" || GalSqmpNoatsListAdmin.Selected.'Risk Category'.Value = "Major") && Value(
+                        First(
+                            ForAll(Split(
+                                GalSqmpNoatsListAdmin.Selected.Frequency,
+                                "|"
+                            ), {Result: ThisRecord.Value})
+                        ).Result
+                    ) = 1,
+                    "rgb(255,51,51)",
+                    (GalSqmpNoatsListAdmin.Selected.'Risk Category'.Value = "Critical" || GalSqmpNoatsListAdmin.Selected.'Risk Category'.Value = "Major") && Value(
+                        First(
+                            ForAll(Split(
+                                GalSqmpNoatsListAdmin.Selected.Frequency,
+                                "|"
+                            ), {Result: ThisRecord.Value})
+                        ).Result
+                    ) < 1,
+                    "rgb(250, 135, 52)",
+                    GalSqmpNoatsListAdmin.Selected.'Risk Category'.Value = "Minor" && Value(
+                        First(
+                            ForAll(Split(
+                                GalSqmpNoatsListAdmin.Selected.Frequency,
+                                "|"
+                            ), {Result: ThisRecord.Value})
+                        ).Result
+                    ) < 1,
+                    "rgb(255,240,77)",
+                    "rgb(255,255,255)"
+                ) & " '>" & GalSqmpNoatsListAdmin.Selected.'Risk Category'.Value & "</td>
+                        </tr> <tr> <td
+                                style='width: 25%; border: solid 1px black; border-collapse: collapse;padding: 10px;font-weight: bold; background-color: rgb(190, 190, 190);'>
+                                DISPOSITION</td>
+                            <td style='width: 30%; border: solid 1px black; border-collapse: collapse;padding: 10px;'><ul style='padding: 0 10px;margin: 0' >" & Concat(
+                    GalSqmpNoatsListAdmin.Selected.Disposition,
+                    "<li>" & ThisRecord.Value & "</li>"
+                ) & "</ul></td>
+                            <td
+                                style='width: 20%; border: solid 1px black; border-collapse: collapse;padding: 10px; font-weight: bold; background-color: rgb(190, 190, 190);'>
+                                SEVERITY OF INSPECTION</td>
+                            <td style='width: 30%; border: solid 1px black; border-collapse: collapse;padding: 10px;'>" & GalSqmpNoatsListAdmin.Selected.'Severity of Inspection'.Value & "</td>
+                           
+                        </tr>
+                       
+                        <tr>
+                            <td
+                                style='width: 20%; border: solid 1px black; border-collapse: collapse;padding: 10px; font-weight: bold; background-color: rgb(190, 190, 190);'>
+                                NOATS UPLOAD</td>
+                            <td style='width: 30%; border: solid 1px black; border-collapse: collapse;padding: 10px;'>" & GalSqmpNoatsListAdmin.Selected.'NOATS Upload' & "</td>
+                            <td
+                                style='width: 25%; border: solid 1px black; border-collapse: collapse;padding: 10px;font-weight: bold; background-color: rgb(190, 190, 190);'>
+                                CAR UPLOAD</td>
+                            <td style='width: 30%; border: solid 1px black; border-collapse: collapse;padding: 10px; background-color: " & If(
+                    IsBlank(GalSqmpNoatsListAdmin.Selected.DateTimeCARUploaded),
+                    If(
+                        DateDiff(
+                            GalSqmpNoatsListAdmin.Selected.Created,
+                            Now()
+                        ) <= 7,
+                        "rgb(255,255,255)",
+                        "rgb(255, 51,51)"
+                    ),
+                    If(
+                        DateDiff(
+                            GalSqmpNoatsListAdmin.Selected.Created,
+                            GalSqmpNoatsListAdmin.Selected.DateTimeCARUploaded
+                        ) <= 7,
+                        "rgb(0,255,68)",
+                        "rgb(255,240,77)"
+                    )
+                ) & "'>" & GalSqmpNoatsListAdmin.Selected.'CAR Upload' & " <br><i>" & GalSqmpNoatsListAdmin.Selected.DateTimeCARUploaded & "</i> </td>
+                        </tr>
+                        <tr>
+                            <td 
+                                style='width: 20%; border: solid 1px black; border-collapse: collapse;padding: 10px; font-weight: bold; background-color: rgb(190, 190, 190);'>
+                                CAR STATUS</td>
+                            <td colspan='3' style='width: 30%; border: solid 1px black; border-collapse: collapse;padding: 10px;background-color:" & If(
+                    GalSqmpNoatsListAdmin.Selected.'CAR Status' = "Closed-Out" && ! IsBlank(GalSqmpNoatsListAdmin.Selected.CARStatusReport),
+                    "rgb(0,255, 68)",
+                    GalSqmpNoatsListAdmin.Selected.'CAR Status' = "Open" && !IsBlank(GalSqmpNoatsListAdmin.Selected.CARStatusReport),
+                    "rgb(255,240,77)",
+                    " rgb(255,51,51 )"
+                ) & "'> <b> " & GalSqmpNoatsListAdmin.Selected.'CAR Status' & "</b> &nbsp;&nbsp; <i> " & GalSqmpNoatsListAdmin.Selected.CARStatusDateTime & "</i> <br>" & GalSqmpNoatsListAdmin.Selected.CARStatusReport & "
+                            </td>
+                            
+                        </tr>
+                  
+                    </table>
+                
+                <br><br>
+                </div>"
+            Size: =10
+            Visible: =lclShowDetails
+            Width: =Parent.Width*0.7
+            X: =409
+            Y: =7
+            ZIndex: =41
+
+        IcnHideDetails As icon.ChevronRight:
+            BorderColor: =RGBA(166, 166, 166, 1)
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(220, 220, 220, 1)
+            DisabledFill: =RGBA(0, 0, 0, 0)
+            FocusedBorderThickness: =4
+            Height: =30
+            HoverBorderColor: =RGBA(0, 0, 0, 0)
+            HoverColor: =ColorFade(RGBA(0, 120, 212, 1), -30%)
+            HoverFill: =RGBA(0, 0, 0, 0)
+            Icon: =Icon.CancelBadge
+            OnSelect: |-
+                =UpdateContext({lclShowDetails:false})
+            PressedBorderColor: =RGBA(0, 0, 0, 0)
+            PressedColor: =ColorFade(RGBA(0, 120, 212, 1), -30%)
+            PressedFill: =RGBA(0, 0, 0, 0)
+            Tooltip: ="Close"
+            Visible: =lclShowDetails
+            Width: =30
+            X: =HtmlDetails.X + 50
+            Y: =26
+            ZIndex: =42
+
+        IcnEditSqmp As icon.ChevronRight:
+            BorderColor: =RGBA(166, 166, 166, 1)
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(220, 220, 220, 1)
+            DisabledFill: =RGBA(0, 0, 0, 0)
+            FocusedBorderThickness: =4
+            Height: =30
+            HoverBorderColor: =RGBA(0, 0, 0, 0)
+            HoverColor: =ColorFade(RGBA(0, 120, 212, 1), -30%)
+            HoverFill: =RGBA(0, 0, 0, 0)
+            Icon: =Icon.Edit
+            OnSelect: |-
+                =Set(
+                    gblSQMPNOATSList,
+                    GalSqmpNoatsListAdmin.Selected
+                );
+                UpdateContext({lclShowDetails: false});
+                EditForm(FrmSQMPNOATS);
+                Navigate(
+                    ScrnSQMPNAdd,
+                    ScreenTransition.Fade,
+                    {lclFormModeNew: false}
+                )
+            PressedBorderColor: =RGBA(0, 0, 0, 0)
+            PressedColor: =ColorFade(RGBA(0, 120, 212, 1), -30%)
+            PressedFill: =RGBA(0, 0, 0, 0)
+            Tooltip: ="Edit"
+            Visible: =lclShowDetails /*&& gblUserInfo.Department = "PROCUREMENT" && GalSqmpNoatsListAdmin.Selected.'CAR Status' = "Open"*/ 
+            Width: =30
+            X: =IcnHideDetails.X+IcnHideDetails.Width +20
+            Y: =26
+            ZIndex: =43
+
+    GrpEditStatus As group:
+        Height: =5
+        Width: =5
+        X: =40
+        Y: =40
+        ZIndex: =31
+
+        Rectangle4_1 As rectangle:
+            BorderColor: =RGBA(0, 0, 0, 0)
+            BorderStyle: =BorderStyle.None
+            BorderThickness: =2
+            DisabledFill: =RGBA(200, 200, 200, 0.5)
+            DisplayMode: =DisplayMode.Disabled
+            Fill: =RGBA(255, 255, 255, 1)
+            FocusedBorderThickness: =4
+            Height: =Parent.Height
+            HoverFill: =RGBA(105, 121, 126,1)
+            PressedFill: =RGBA(0, 120, 212, 1)
+            Visible: =lclEditStatus
+            Width: =Parent.Width
+            ZIndex: =26
+
+        HtmlEditStatusBox As htmlViewer:
+            Height: =422
+            HtmlText: |-
+                ="<div style='margin-left:10px;width:469px;height:399px;background-color:white;box-shadow:0 5px 6px 5px  #ccc; border-radius:10px';></div>"
+            Visible: =lclEditStatus
+            Width: =508
+            X: =(Parent.Width *0.5) - (Self.Width*0.5)
+            Y: =(Parent.Height *0.5) - (Self.Height*0.5)
+            ZIndex: =27
+
+        LblStatus As label:
+            BorderColor: =RGBA(0, 0, 0, 0)
+            BorderStyle: =BorderStyle.None
+            BorderThickness: =2
+            Color: =RGBA(51, 51, 51, 1)
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            FocusedBorderThickness: =4
+            Font: =Font.'Segoe UI'
+            FontWeight: =FontWeight.Bold
+            Height: =26
+            Size: =13
+            Text: ="Status"
+            Visible: =lclEditStatus
+            Width: =88
+            X: =HtmlEditStatusBox.X+ 40
+            Y: =HtmlEditStatusBox.Y+ 50
+            ZIndex: =28
+
+        LblReport As label:
+            BorderColor: =RGBA(0, 0, 0, 0)
+            BorderStyle: =BorderStyle.None
+            BorderThickness: =2
+            Color: =RGBA(51, 51, 51, 1)
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            FocusedBorderThickness: =4
+            Font: =Font.'Segoe UI'
+            FontWeight: =FontWeight.Bold
+            Height: =38
+            Size: =13
+            Text: ="Report"
+            Visible: =lclEditStatus
+            Width: =88
+            X: =HtmlEditStatusBox.X+ 40
+            Y: =LblStatus.Y+LblStatus.Height+ 20
+            ZIndex: =29
+
+        DdStatus As dropdown:
+            BorderColor: =RGBA(166, 166, 166, 1)
+            BorderThickness: =1
+            ChevronBackground: =RGBA(255, 255, 255, 1)
+            ChevronDisabledBackground: =RGBA(244, 244, 244, 1)
+            ChevronDisabledFill: =RGBA(166, 166, 166, 1)
+            ChevronFill: =RGBA(33, 33, 33, 1)
+            ChevronHoverBackground: =Self.SelectionFill
+            ChevronHoverFill: =RGBA(177,177,177,1)
+            Color: =RGBA(51, 51, 51, 1)
+            Default: =GalSqmpNoatsListAdmin.Selected.'CAR Status'
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            DisabledFill: =RGBA(244, 244, 244, 1)
+            FocusedBorderColor: =RGBA(138, 237, 255,.7)
+            Font: =Font.Arial
+            Height: =26
+            HoverBorderColor: =ColorFade(RGBA(0, 120, 212, 1), -30%)
+            HoverColor: =RGBA(51, 51, 51, 1)
+            HoverFill: =Self.SelectionFill
+            Items: =[" ","Open","Closed-Out" ]
+            PaddingBottom: =5
+            PaddingLeft: =12
+            PaddingRight: =5
+            PaddingTop: =5
+            PressedBorderColor: =RGBA(138, 237, 255,1)
+            PressedColor: =RGBA(255, 255, 255, 1)
+            PressedFill: =Self.SelectionFill
+            SelectionFill: =RGBA(68, 188, 252,1)
+            Size: =12
+            Visible: =lclEditStatus
+            X: =LblStatus.X+LblStatus.Width
+            Y: =HtmlEditStatusBox.Y+ 50
+            ZIndex: =30
+
+        TxtReport As text:
+            BorderColor: =RGBA(166, 166, 166, 1)
+            Color: =RGBA(51, 51, 51, 1)
+            Default: =GalSqmpNoatsListAdmin.Selected.CARStatusReport
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            DisabledFill: =RGBA(244, 244, 244, 1)
+            FocusedBorderColor: =RGBA(138, 237, 255,1)
+            FocusedBorderThickness: |
+                =2
+            Font: =Font.Arial
+            Height: =192
+            HintText: ="Report"
+            HoverBorderColor: =ColorFade(RGBA(0, 120, 212, 1), -30%)
+            HoverColor: =RGBA(51, 51, 51, 1)
+            HoverFill: =RGBA(255, 255, 255, 1)
+            Mode: =TextMode.MultiLine
+            PressedBorderColor: =RGBA(138, 237, 255,1)
+            PressedColor: =RGBA(51, 51, 51, 1)
+            PressedFill: =RGBA(255, 255, 255, 1)
+            Size: =12
+            Visible: =lclEditStatus
+            Width: =328
+            X: =LblReport.X+LblReport.Width
+            Y: =LblStatus.Y+LblStatus.Height+ 20
+            ZIndex: =31
+
+        BtnOk As button:
+            BorderColor: =RGBA(0, 0, 0, 0)
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            DisabledFill: =RGBA(244, 244, 244, 1)
+            DisplayMode: =If(GalSqmpNoatsListAdmin.Selected.'CAR Status' = "Closed-Out" || (DdStatus.Selected.Value = "Closed-Out" && IsBlank(TxtReport.Text)), DisplayMode.Disabled,DisplayMode.Edit)
+            Fill: =RGBA(54, 176, 75, 1)
+            FocusedBorderColor: =ColorFade(Self.Fill, 75%)
+            Font: =Font.'Segoe UI'
+            FontWeight: =FontWeight.Semibold
+            HoverBorderColor: =Self.Fill
+            HoverColor: =RGBA(255, 255, 255, 1)
+            HoverFill: =ColorFade(Self.Fill, -10%)
+            OnSelect: |-
+                =If(
+                    DdStatus.Selected.Value <> GalSqmpNoatsListAdmin.Selected.'CAR Status' || TxtReport.Text <> GalSqmpNoatsListAdmin.Selected.CARStatusReport,
+                    Patch(
+                        SQMP_NOATS_LIST,
+                        GalSqmpNoatsListAdmin.Selected,
+                        {
+                            'CAR Status': DdStatus.Selected.Value,
+                            CARStatusReport: TxtReport.Text,
+                            CARStatusDateTime: Now()
+                        }
+                    );
+                    Notify(
+                        "Update status done...",
+                        NotificationType.Success,
+                        2000
+                    )
+                );
+                UpdateContext({lclEditStatus: false})
+            PressedBorderColor: =ColorFade(Self.Fill, 50%)
+            PressedColor: =RGBA(255, 255, 255, 1)
+            PressedFill: =ColorFade(Self.Fill, -30%)
+            RadiusBottomLeft: =15
+            RadiusBottomRight: =15
+            RadiusTopLeft: =15
+            RadiusTopRight: =15
+            Size: =15
+            Text: ="OK"
+            Visible: =lclEditStatus
+            Width: =148
+            X: =TxtReport.X
+            Y: =TxtReport.Y+TxtReport.Height+30
+            ZIndex: =32
+
+        BtnCancel As button:
+            BorderColor: =RGBA(0, 0, 0, 0)
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            DisabledFill: =RGBA(244, 244, 244, 1)
+            Fill: =RGBA(227, 0, 0, 0.99)
+            FocusedBorderColor: =ColorFade(Self.Fill, 75%)
+            Font: =Font.'Segoe UI'
+            FontWeight: =FontWeight.Semibold
+            HoverBorderColor: =Self.Fill
+            HoverColor: =RGBA(255, 255, 255, 1)
+            HoverFill: =ColorFade(Self.Fill, -10%)
+            OnSelect: |-
+                =UpdateContext({lclEditStatus:false})
+            PressedBorderColor: =ColorFade(Self.Fill, 50%)
+            PressedColor: =RGBA(255, 255, 255, 1)
+            PressedFill: =ColorFade(Self.Fill, -30%)
+            RadiusBottomLeft: =15
+            RadiusBottomRight: =15
+            RadiusTopLeft: =15
+            RadiusTopRight: =15
+            Size: =15
+            Text: ="Cancel"
+            Visible: =lclEditStatus
+            Width: =148
+            X: =BtnOk.X+BtnOk.Width+30
+            Y: =TxtReport.Y+TxtReport.Height+30
+            ZIndex: =33
+
+        LblInfo As label:
+            Align: =Align.Center
+            BorderColor: =RGBA(0, 0, 0, 0)
+            BorderStyle: =BorderStyle.None
+            BorderThickness: =2
+            Color: =RGBA(51, 51, 51, 1)
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            FocusedBorderThickness: =4
+            Font: =Font.'Segoe UI'
+            FontWeight: =FontWeight.Bold
+            Height: =38
+            Size: =13
+            Text: |-
+                ="Update Status NOATS No. : " & GalSqmpNoatsListAdmin.Selected.'Noats Control Number'
+            Visible: =lclEditStatus
+            Width: =416
+            X: =HtmlEditStatusBox.X + 40
+            Y: =HtmlEditStatusBox.Y+ 10
+            ZIndex: =34
+
+    BtnExportExcelSQMP As button:
+        BorderColor: =RGBA(255, 255, 255, 1)
+        DisabledBorderColor: =RGBA(0, 0, 0, 0)
+        DisabledColor: =RGBA(166, 166, 166, 1)
+        DisabledFill: =RGBA(244, 244, 244, 1)
+        Fill: =RGBA(0, 0, 0, 0)
+        FocusedBorderColor: =ColorFade(Self.Fill, -75%)
+        Font: =Font.Arial
+        FontWeight: =FontWeight.Semibold
+        Height: =25
+        HoverBorderColor: =RGBA(0, 0, 0, 0)
+        HoverColor: =RGBA(255, 255, 255, 1)
+        HoverFill: =ColorFade(RGBA(0, 120, 212, 1), -10%)
+        OnSelect: |-
+            =If(
+                IsBlank(DpCreatedFrom.SelectedDate) || IsBlank(DpCreatedTo.SelectedDate),
+                Notify(
+                    "Please Enter Created Date From and To",
+                    NotificationType.Information
+                ),
+                If(
+                    gblUserInfo.SQMPRole = "Admin" && gblUserInfo.Department = "PROCUREMENT",
+                    UpdateContext({lclplant: "1"}),
+                    gblUserInfo.SQMPRole = "Admin",
+                    UpdateContext({lclplant: "0"}),
+                    UpdateContext({lclplant: gblUserInfo.Plant})
+                );
+                SQMPNOATSEXPORTTOEXCEL.Run(
+                    lclplant,
+                    Text(
+                        DpCreatedFrom.SelectedDate,
+                        "yyyy-mm-dd"
+                    ),
+                    Text(
+                        DpCreatedTo.SelectedDate,
+                        "yyyy-mm-dd"
+                    ),
+                    gblUserEmail
+                );
+                Notify(
+                    "Excel generated please wait for the email. Thank you !",
+                    NotificationType.Success
+                )
+            )
+        PaddingLeft: =10
+        PaddingRight: =10
+        PressedBorderColor: =ColorFade(RGBA(0, 120, 212, 1), -50%)
+        PressedColor: =RGBA(255, 255, 255, 1)
+        PressedFill: =ColorFade(RGBA(0, 120, 212, 1), -30%)
+        RadiusBottomLeft: =15
+        RadiusBottomRight: =15
+        RadiusTopLeft: =15
+        RadiusTopRight: =15
+        Size: =12
+        Text: ="Export to Excel"
+        X: |
+            =Parent.Width *0.57
+        Y: =3
+        ZIndex: =35
+
+    TxtUserRole As text:
+        BorderColor: =RGBA(166, 166, 166, 1)
+        Clear: =true
+        Color: =RGBA(51, 51, 51, 1)
+        Default: |-
+            =//Use for the Appr_Status based on the SQMPRole  ADD GPARAISO | 2023-04-19
+            If(gblUserInfo.SQMPRole = "Admin",
+                "Approved"
+            )
+        DelayOutput: =true
+        DisabledBorderColor: =RGBA(0, 0, 0, 0)
+        DisabledColor: =RGBA(166, 166, 166, 1)
+        DisabledFill: =RGBA(244, 244, 244, 1)
+        FocusedBorderThickness: =2
+        Font: =Font.Arial
+        Height: =26
+        HintText: ="Search NOATS Control Number"
+        HoverBorderColor: =ColorFade(RGBA(0, 120, 212, 1), -30%)
+        HoverColor: =RGBA(51, 51, 51, 1)
+        HoverFill: =RGBA(255, 255, 255, 1)
+        PressedBorderColor: =RGBA(0, 120, 212, 1)
+        PressedColor: =RGBA(51, 51, 51, 1)
+        PressedFill: =RGBA(255, 255, 255, 1)
+        RadiusBottomLeft: =2
+        RadiusBottomRight: =2
+        RadiusTopLeft: =2
+        RadiusTopRight: =2
+        Size: =10
+        Visible: =false
+        Width: =HtmlFilter.Width/1.9
+        X: =1035
+        Y: =612
+        ZIndex: =44
+
+    GrpSQMPFilter As group:
+        Height: =5
+        Width: =5
+        X: =40
+        Y: =40
+        ZIndex: =45
+
+        HtmlFilter As htmlViewer:
+            AutoHeight: =true
+            Height: =Parent.Height-(CmpntHeader_8.Height-CmpntHeader_8.Y)
+            HtmlText: |-
+                ="<div style='margin-left:10px;width:" & Parent.Width/1.5 & "px;height:" & Parent.Height - CmpntHeader_8.Height & "px;background-color:white;box-shadow:0 5px 6px 5px  #ccc; border-radius:10px';> </div>"
+            PaddingRight: =0
+            Visible: =LclShowFilter
+            Width: =Parent.Width/2.6
+            X: =Parent.Width-Self.Width
+            Y: =CmpntHeader_8.Y+CmpntHeader_8.Height
+            ZIndex: =2
+
+        LblSearch As label:
+            BorderColor: =RGBA(0, 0, 0, 0)
+            BorderStyle: =BorderStyle.None
+            BorderThickness: =2
+            Color: =RGBA(51, 51, 51, 1)
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            FocusedBorderThickness: =4
+            Font: =Font.Arial
+            FontWeight: =FontWeight.Bold
+            Height: =26
+            Size: =12
+            Text: ="Search "
+            Visible: =LclShowFilter
+            X: =HtmlFilter.X +50
+            Y: =LblFilterSqmp.Y+LblFilterSqmp.Height+20
+            ZIndex: =3
+
+        TxtSearchNoats As text:
+            BorderColor: =RGBA(166, 166, 166, 1)
+            Clear: =true
+            Color: =RGBA(51, 51, 51, 1)
+            Default: =""
+            DelayOutput: =true
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            DisabledFill: =RGBA(244, 244, 244, 1)
+            FocusedBorderThickness: =2
+            Font: =Font.Arial
+            Height: =26
+            HintText: ="Search NOATS Control Number"
+            HoverBorderColor: =ColorFade(RGBA(0, 120, 212, 1), -30%)
+            HoverColor: =RGBA(51, 51, 51, 1)
+            HoverFill: =RGBA(255, 255, 255, 1)
+            PressedBorderColor: =RGBA(0, 120, 212, 1)
+            PressedColor: =RGBA(51, 51, 51, 1)
+            PressedFill: =RGBA(255, 255, 255, 1)
+            RadiusBottomLeft: =2
+            RadiusBottomRight: =2
+            RadiusTopLeft: =2
+            RadiusTopRight: =2
+            Size: =10
+            Visible: =LclShowFilter
+            Width: =HtmlFilter.Width/1.9
+            X: =LblSearch.X+LblSearch.Width
+            Y: =LblSearch.Y
+            ZIndex: =4
+
+        LblFrom As label:
+            BorderColor: =RGBA(0, 0, 0, 0)
+            BorderStyle: =BorderStyle.None
+            BorderThickness: =2
+            Color: =RGBA(51, 51, 51, 1)
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            FocusedBorderThickness: =4
+            Font: =Font.Arial
+            FontWeight: =FontWeight.Bold
+            Height: =26
+            Size: =12
+            Text: ="Delivery Date"
+            Visible: =LclShowFilter
+            X: =HtmlFilter.X +50
+            Y: |
+                =LblSearch.Y+ LblSearch.Height +20
+            ZIndex: =5
+
+        DpFrom As datepicker:
+            BorderColor: =TxtSearchNoats.BorderColor
+            BorderStyle: =TxtSearchNoats.BorderStyle
+            BorderThickness: =TxtSearchNoats.BorderThickness
+            CalendarHeaderFill: =ColorFade(RGBA(0, 120, 212, 1), -30%)
+            Color: =TxtSearchNoats.Color
+            DefaultDate: =Date(Year(Today()), Month(Today()), 1)
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            DisabledFill: =RGBA(244, 244, 244, 1)
+            FocusedBorderThickness: =TxtSearchNoats.FocusedBorderThickness
+            Font: =TxtSearchNoats.Font
+            FontWeight: =TxtSearchNoats.FontWeight
+            Height: =26
+            HoverBorderColor: =TxtSearchNoats.HoverBorderColor
+            HoverDateFill: =RGBA(200, 200, 200, 1)
+            HoverFill: =TxtSearchNoats.HoverFill
+            IconBackground: =RGBA(0, 120, 212, 1)
+            InputTextPlaceholder: ="From"
+            IsEditable: =true
+            PaddingLeft: =5
+            PaddingTop: =5
+            PressedBorderColor: =TxtSearchNoats.PressedBorderColor
+            PressedFill: =TxtSearchNoats.PressedFill
+            SelectedDateFill: =RGBA(0, 120, 212, 1)
+            Size: =TxtSearchNoats.Size
+            Visible: =LclShowFilter
+            Width: =HtmlFilter.Width/4
+            X: =LblSearch.X+LblSearch.Width
+            Y: =LblFrom.Y
+            ZIndex: =6
+
+        CmbxPlant As combobox:
+            BorderColor: =TxtSearchNoats.BorderColor
+            BorderStyle: =TxtSearchNoats.BorderStyle
+            BorderThickness: =TxtSearchNoats.BorderThickness
+            ChevronBackground: =RGBA(255, 255, 255, 1)
+            ChevronDisabledBackground: =RGBA(244, 244, 244, 1)
+            ChevronDisabledFill: =RGBA(166, 166, 166, 1)
+            ChevronFill: =RGBA(33, 33, 33, 1)
+            ChevronHoverBackground: =RGBA(212, 212, 212, 1)
+            ChevronHoverFill: =RGBA(33, 33, 33, 1)
+            Color: =TxtSearchNoats.Color
+            DefaultSelectedItems: |-
+                =If(
+                    Self.DisplayMode = DisplayMode.View,
+                    Filter(
+                        gblDdPlants,
+                        Title = gblUserInfo.Plant
+                    ),
+                    gblUserInfo.SQMPRole = "Viewer" && Left(
+                        gblUserInfo.Plant,
+                        4
+                    ) = "QARM",
+                    First(
+                        Filter(
+                            gblDdPlants,
+                            Group = gblUserInfo.Plant
+                        )
+                    )
+                )
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            DisabledFill: =RGBA(244, 244, 244, 1)
+            DisplayFields: =["Title"]
+            DisplayMode: =If(gblUserInfo.SQMPRole = "Admin" || (gblUserInfo.SQMPRole= "Viewer" && Left(gblUserInfo.Plant, 4)="QARM") , DisplayMode.Edit, DisplayMode.View) 
+            FocusedBorderThickness: =TxtSearchNoats.FocusedBorderThickness
+            Font: =TxtSearchNoats.Font
+            FontWeight: =TxtSearchNoats.FontWeight
+            Height: =26
+            HoverBorderColor: =TxtSearchNoats.HoverBorderColor
+            HoverColor: =RGBA(51, 51, 51, 1)
+            HoverFill: =Self.SelectionFill
+            InputTextPlaceholder: ="Find items"
+            Items: =If(gblUserInfo.SQMPRole="Viewer" && Left(gblUserInfo.Plant, 4)="QARM" , Filter(gblDdPlants, Group = gblUserInfo.Plant),gblDdPlants)
+            PressedBorderColor: =TxtSearchNoats.PressedBorderColor
+            PressedColor: =RGBA(255, 255, 255, 1)
+            PressedFill: =Self.SelectionFill
+            SearchFields: =["Title"]
+            SearchItems: =Search(If(gblUserInfo.SQMPRole="Viewer" && Left(gblUserInfo.Plant, 4)="QARM" , Filter(gblDdPlants, Group = gblUserInfo.Plant),gblDdPlants),CmbxPlant.SearchText,"Title")
+            SelectionFill: =RGBA(68, 188, 252,1)
+            SelectionTagFill: =RGBA(255,255,255,1)
+            SelectMultiple: =false
+            Size: =TxtSearchNoats.Size
+            Visible: =LclShowFilter
+            Width: =HtmlFilter.Width/1.9
+            X: =LblPlant.X+LblPlant.Width
+            Y: =LblPlant.Y
+            ZIndex: =7
+
+        DpTo As datepicker:
+            BorderColor: =TxtSearchNoats.BorderColor
+            BorderStyle: =TxtSearchNoats.BorderStyle
+            BorderThickness: =TxtSearchNoats.BorderThickness
+            CalendarHeaderFill: =ColorFade(RGBA(0, 120, 212, 1), -30%)
+            Color: =TxtSearchNoats.Color
+            DefaultDate: =Date(Year(Today()), Month(Today())+1, 0)
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            DisabledFill: =RGBA(244, 244, 244, 1)
+            FocusedBorderThickness: =TxtSearchNoats.FocusedBorderThickness
+            Font: =TxtSearchNoats.Font
+            FontWeight: =TxtSearchNoats.FontWeight
+            Height: =26
+            HoverBorderColor: =TxtSearchNoats.HoverBorderColor
+            HoverDateFill: =RGBA(200, 200, 200, 1)
+            HoverFill: =TxtSearchNoats.HoverFill
+            IconBackground: =RGBA(0, 120, 212, 1)
+            InputTextPlaceholder: ="To"
+            IsEditable: =true
+            PaddingLeft: =5
+            PaddingTop: =5
+            PressedBorderColor: =TxtSearchNoats.PressedBorderColor
+            PressedFill: =TxtSearchNoats.PressedFill
+            SelectedDateFill: =RGBA(0, 120, 212, 1)
+            Size: =TxtSearchNoats.Size
+            Visible: =LclShowFilter
+            Width: =HtmlFilter.Width/4
+            X: =DpFrom.X+DpFrom.Width + 14
+            Y: =LblFrom.Y
+            ZIndex: =8
+
+        LblTo As label:
+            BorderColor: =RGBA(0, 0, 0, 0)
+            BorderStyle: =BorderStyle.None
+            BorderThickness: =2
+            Color: =RGBA(51, 51, 51, 1)
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            FocusedBorderThickness: =4
+            Font: =Font.Arial
+            FontWeight: =FontWeight.Bold
+            Height: =26
+            Size: =12
+            Text: ="Created Date"
+            Visible: =LclShowFilter
+            X: =HtmlFilter.X +50
+            Y: =LblFrom.Y + LblFrom.Height + 20
+            ZIndex: =9
+
+        LblPlant As label:
+            BorderColor: =RGBA(0, 0, 0, 0)
+            BorderStyle: =BorderStyle.None
+            BorderThickness: =2
+            Color: =RGBA(51, 51, 51, 1)
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            FocusedBorderThickness: =4
+            Font: =Font.Arial
+            FontWeight: =FontWeight.Bold
+            Height: =26
+            Size: =12
+            Text: ="Plant"
+            Visible: =LclShowFilter
+            X: =HtmlFilter.X +50
+            Y: =LblProcurement.Y+LblProcurement.Height+20
+            ZIndex: =10
+
+        CmbxTypeMat As combobox:
+            BorderColor: =TxtSearchNoats.BorderColor
+            BorderStyle: =TxtSearchNoats.BorderStyle
+            BorderThickness: =TxtSearchNoats.BorderThickness
+            ChevronBackground: =RGBA(255, 255, 255, 1)
+            ChevronDisabledBackground: =RGBA(244, 244, 244, 1)
+            ChevronDisabledFill: =RGBA(166, 166, 166, 1)
+            ChevronFill: =RGBA(33, 33, 33, 1)
+            ChevronHoverBackground: =RGBA(212, 212, 212, 1)
+            ChevronHoverFill: =RGBA(33, 33, 33, 1)
+            Color: =TxtSearchNoats.Color
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            DisabledFill: =RGBA(244, 244, 244, 1)
+            DisplayFields: =["Title"]
+            FocusedBorderThickness: =TxtSearchNoats.FocusedBorderThickness
+            Font: =TxtSearchNoats.Font
+            FontWeight: =TxtSearchNoats.FontWeight
+            Height: =26
+            HoverBorderColor: =TxtSearchNoats.HoverBorderColor
+            HoverColor: =RGBA(51, 51, 51, 1)
+            HoverFill: =Self.SelectionFill
+            Items: =gblDdTypeofMaterial
+            PressedBorderColor: =TxtSearchNoats.PressedBorderColor
+            PressedColor: =RGBA(255, 255, 255, 1)
+            PressedFill: =Self.SelectionFill
+            SearchFields: =["Title"]
+            SearchItems: =Search(gblDdTypeofMaterial,CmbxTypeMat.SearchText,"Title")
+            SelectionFill: =RGBA(68, 188, 252,1)
+            SelectionTagFill: =RGBA(255,255,255,1)
+            SelectMultiple: =false
+            Size: =TxtSearchNoats.Size
+            Visible: =LclShowFilter
+            Width: =HtmlFilter.Width/1.9
+            X: =LblSearch.X+LblSearch.Width
+            Y: =LblTypeofMaterial.Y
+            ZIndex: =11
+
+        LblTypeofMaterial As label:
+            BorderColor: =RGBA(0, 0, 0, 0)
+            BorderStyle: =BorderStyle.None
+            BorderThickness: =2
+            Color: =RGBA(51, 51, 51, 1)
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            FocusedBorderThickness: =4
+            Font: =Font.Arial
+            FontWeight: =FontWeight.Bold
+            Height: =26
+            Size: =12
+            Text: ="Type of Material"
+            Visible: =LclShowFilter
+            X: =HtmlFilter.X +50
+            Y: =LblTo.Y+LblTo.Height+20
+            ZIndex: =12
+
+        LblFilterSqmp As label:
+            BorderColor: =RGBA(0, 0, 0, 0)
+            BorderStyle: =BorderStyle.None
+            BorderThickness: =2
+            Color: =RGBA(51, 51, 51, 1)
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            FocusedBorderThickness: =4
+            Font: =Font.Arial
+            FontWeight: =FontWeight.Bold
+            Height: =31
+            Size: =20
+            Text: ="Filter "
+            Visible: =LclShowFilter
+            Width: =225
+            X: =HtmlFilter.X +50
+            Y: =HtmlFilter.Y + 20
+            ZIndex: =13
+
+        BtnOk_SqmpAdmin As button:
+            BorderColor: =RGBA(54, 176, 75, 1)
+            Color: =RGBA(54, 176, 75, 1)
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            DisabledFill: =RGBA(244, 244, 244, 1)
+            Fill: =RGBA(255, 255, 255, 1)
+            FocusedBorderColor: =ColorFade(Self.BorderColor, -5%)
+            Font: =Font.'Segoe UI'
+            FontWeight: =FontWeight.Semibold
+            Height: =30
+            HoverBorderColor: =ColorFade(Self.BorderColor, -10%)
+            HoverColor: =RGBA(255, 255, 255, 1)
+            HoverFill: =ColorFade(Self.BorderColor, -10%)
+            OnSelect: |-
+                =UpdateContext({LclShowFilter : ! LclShowFilter })
+            PaddingBottom: =10
+            PaddingTop: =10
+            PressedBorderColor: =ColorFade(Self.BorderColor, -50%)
+            PressedColor: =RGBA(255, 255, 255, 1)
+            PressedFill: =ColorFade(Self.BorderColor, -10%)
+            RadiusBottomLeft: =40
+            RadiusBottomRight: =40
+            RadiusTopLeft: =40
+            RadiusTopRight: =40
+            Size: =12
+            Text: ="OK"
+            Visible: =LclShowFilter
+            Width: =150
+            X: =HtmlFilter.X + (HtmlFilter.Width * 0.5 - Self.Width*0.5)
+            Y: =LblCarStatus_2.Y+LblCarStatus_2.Height+10
+            ZIndex: =15
+
+        CmbxSupplierFilter As combobox:
+            BorderColor: =TxtSearchNoats.BorderColor
+            BorderStyle: =TxtSearchNoats.BorderStyle
+            BorderThickness: =TxtSearchNoats.BorderThickness
+            ChevronBackground: =RGBA(255, 255, 255, 1)
+            ChevronDisabledBackground: =RGBA(244, 244, 244, 1)
+            ChevronDisabledFill: =RGBA(166, 166, 166, 1)
+            ChevronFill: =RGBA(33, 33, 33, 1)
+            ChevronHoverBackground: =RGBA(212, 212, 212, 1)
+            ChevronHoverFill: =RGBA(33, 33, 33, 1)
+            Color: =TxtSearchNoats.Color
+            DefaultSelectedItems: |-
+                =If(Self.DisplayMode = DisplayMode.View, Table({Title: gblUserInfo.Plant}))
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            DisabledFill: =RGBA(244, 244, 244, 1)
+            DisplayFields: =["Title"]
+            FocusedBorderThickness: =TxtSearchNoats.FocusedBorderThickness
+            Font: =TxtSearchNoats.Font
+            FontWeight: =TxtSearchNoats.FontWeight
+            Height: =26
+            HoverBorderColor: =TxtSearchNoats.HoverBorderColor
+            HoverColor: =RGBA(51, 51, 51, 1)
+            HoverFill: =Self.SelectionFill
+            Items: |-
+                =// MOD GPARAISO (May 11,2023)
+                Filter(
+                    gblDdSupplier,
+                    SupplierGrp in gblGrpSupplier Or is_intercompany = 1
+                )
+            PressedBorderColor: =TxtSearchNoats.PressedBorderColor
+            PressedColor: =RGBA(255, 255, 255, 1)
+            PressedFill: =Self.SelectionFill
+            SearchFields: =["Title"]
+            SearchItems: |-
+                =Search(// MOD GPARAISO (May 11,2023)
+                Filter(
+                    gblDdSupplier,
+                    SupplierGrp in gblGrpSupplier Or is_intercompany = 1
+                ),CmbxSupplierFilter.SearchText,"Title")
+            SelectionFill: =RGBA(68, 188, 252,1)
+            SelectionTagFill: =RGBA(255,255,255,1)
+            SelectMultiple: =false
+            Size: =TxtSearchNoats.Size
+            Visible: =LclShowFilter
+            Width: =HtmlFilter.Width/1.9
+            X: =LblSearch.X+LblSearch.Width
+            Y: =LblSupplier.Y
+            ZIndex: =16
+
+        LblSupplier As label:
+            BorderColor: =RGBA(0, 0, 0, 0)
+            BorderStyle: =BorderStyle.None
+            BorderThickness: =2
+            Color: =RGBA(51, 51, 51, 1)
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            FocusedBorderThickness: =4
+            Font: =Font.Arial
+            FontWeight: =FontWeight.Bold
+            Height: =26
+            Size: =12
+            Text: ="Supplier"
+            Visible: =LclShowFilter
+            X: =HtmlFilter.X +50
+            Y: =LblTypeofMaterial.Y+LblTypeofMaterial.Height+20
+            ZIndex: =17
+
+        CmbxCARstatus As combobox:
+            BorderColor: =TxtSearchNoats.BorderColor
+            BorderStyle: =TxtSearchNoats.BorderStyle
+            BorderThickness: =TxtSearchNoats.BorderThickness
+            ChevronBackground: =RGBA(255, 255, 255, 1)
+            ChevronDisabledBackground: =RGBA(244, 244, 244, 1)
+            ChevronDisabledFill: =RGBA(166, 166, 166, 1)
+            ChevronFill: =RGBA(33, 33, 33, 1)
+            ChevronHoverBackground: =RGBA(212, 212, 212, 1)
+            ChevronHoverFill: =RGBA(33, 33, 33, 1)
+            Color: =TxtSearchNoats.Color
+            DefaultSelectedItems: |-
+                =If(Self.DisplayMode = DisplayMode.View, Table({Title: gblUserInfo.Plant}))
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            DisabledFill: =RGBA(244, 244, 244, 1)
+            DisplayFields: =["Value"]
+            DisplayMode: = DisplayMode.Edit
+            FocusedBorderThickness: =TxtSearchNoats.FocusedBorderThickness
+            Font: =TxtSearchNoats.Font
+            FontWeight: =TxtSearchNoats.FontWeight
+            Height: =26
+            HoverBorderColor: =TxtSearchNoats.HoverBorderColor
+            HoverColor: =RGBA(51, 51, 51, 1)
+            HoverFill: =Self.SelectionFill
+            IsSearchable: =false
+            Items: =["Open", "Closed-Out"]
+            PressedBorderColor: =TxtSearchNoats.PressedBorderColor
+            PressedColor: =RGBA(255, 255, 255, 1)
+            PressedFill: =Self.SelectionFill
+            SearchFields: =["Value"]
+            SearchItems: =[]
+            SelectionFill: =RGBA(68, 188, 252,1)
+            SelectionTagFill: =RGBA(255,255,255,1)
+            SelectMultiple: =false
+            Size: =TxtSearchNoats.Size
+            Visible: =LclShowFilter
+            Width: =HtmlFilter.Width/1.9
+            X: =LblSearch.X+LblSearch.Width
+            Y: =LblCarStatus.Y
+            ZIndex: =18
+
+        LblCarStatus As label:
+            BorderColor: =RGBA(0, 0, 0, 0)
+            BorderStyle: =BorderStyle.None
+            BorderThickness: =2
+            Color: =RGBA(51, 51, 51, 1)
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            FocusedBorderThickness: =4
+            Font: =Font.Arial
+            FontWeight: =FontWeight.Bold
+            Height: =26
+            Size: =12
+            Text: ="CAR Status"
+            Visible: =LclShowFilter
+            X: =HtmlFilter.X +50
+            Y: =LblSupplier.Y+LblSupplier.Height+20
+            ZIndex: =19
+
+        CmbxProcurement As combobox:
+            BorderColor: =TxtSearchNoats.BorderColor
+            BorderStyle: =TxtSearchNoats.BorderStyle
+            BorderThickness: =TxtSearchNoats.BorderThickness
+            ChevronBackground: =RGBA(255, 255, 255, 1)
+            ChevronDisabledBackground: =RGBA(244, 244, 244, 1)
+            ChevronDisabledFill: =RGBA(166, 166, 166, 1)
+            ChevronFill: =RGBA(33, 33, 33, 1)
+            ChevronHoverBackground: =RGBA(212, 212, 212, 1)
+            ChevronHoverFill: =RGBA(33, 33, 33, 1)
+            Color: =TxtSearchNoats.Color
+            DefaultSelectedItems: =If(Self.DisplayMode=DisplayMode.View,Filter(Users,Title=gblUserInfo.Title))
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            DisabledFill: =RGBA(244, 244, 244, 1)
+            DisplayFields: =["Title"]
+            DisplayMode: |
+                =If(gblUserInfo.SQMPRole="Admin"&&gblUserInfo.Department="PROCUREMENT",DisplayMode.View,DisplayMode.Edit)
+                //DisplayMode.Edit
+            FocusedBorderThickness: =TxtSearchNoats.FocusedBorderThickness
+            Font: =TxtSearchNoats.Font
+            FontWeight: =FontWeight.Lighter
+            Height: =26
+            HoverBorderColor: =TxtSearchNoats.HoverBorderColor
+            HoverColor: =RGBA(51, 51, 51, 1)
+            HoverFill: =Self.SelectionFill
+            Items: =SortByColumns(Filter(Users, Department="PROCUREMENT"),"Title")
+            PressedBorderColor: =TxtSearchNoats.PressedBorderColor
+            PressedColor: =RGBA(255, 255, 255, 1)
+            PressedFill: =Self.SelectionFill
+            SearchFields: =["Title"]
+            SearchItems: =Search(SortByColumns(Filter(Users, Department="PROCUREMENT"),"Title"),CmbxProcurement.SearchText,"Title")
+            SelectionFill: =RGBA(68, 188, 252,1)
+            SelectionTagFill: =RGBA(255,255,255,1)
+            SelectMultiple: =false
+            Size: =TxtSearchNoats.Size
+            Visible: =LclShowFilter
+            Width: =HtmlFilter.Width/1.9
+            X: =LblSearch.X+LblSearch.Width
+            Y: =LblProcurement.Y
+            ZIndex: =20
+
+        LblProcurement As label:
+            BorderColor: =RGBA(0, 0, 0, 0)
+            BorderStyle: =BorderStyle.None
+            BorderThickness: =2
+            Color: =RGBA(51, 51, 51, 1)
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            FocusedBorderThickness: =4
+            Font: =Font.Arial
+            FontWeight: =FontWeight.Bold
+            Height: =26
+            Size: =12
+            Text: ="Procurement/PPIC"
+            Visible: =LclShowFilter
+            Width: =157
+            X: =HtmlFilter.X +40
+            Y: =LblCarStatus.Y+LblCarStatus.Height+20
+            ZIndex: =21
+
+        DpCreatedFrom As datepicker:
+            BorderColor: =TxtSearchNoats.BorderColor
+            BorderStyle: =TxtSearchNoats.BorderStyle
+            BorderThickness: =TxtSearchNoats.BorderThickness
+            CalendarHeaderFill: =ColorFade(RGBA(0, 120, 212, 1), -30%)
+            Color: =TxtSearchNoats.Color
+            DefaultDate: =
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            DisabledFill: =RGBA(244, 244, 244, 1)
+            FocusedBorderThickness: =TxtSearchNoats.FocusedBorderThickness
+            Font: =TxtSearchNoats.Font
+            FontWeight: =TxtSearchNoats.FontWeight
+            Height: =26
+            HoverBorderColor: =TxtSearchNoats.HoverBorderColor
+            HoverDateFill: =RGBA(200, 200, 200, 1)
+            HoverFill: =TxtSearchNoats.HoverFill
+            IconBackground: =RGBA(0, 120, 212, 1)
+            InputTextPlaceholder: ="From"
+            IsEditable: =true
+            PaddingLeft: =5
+            PaddingTop: =5
+            PressedBorderColor: =TxtSearchNoats.PressedBorderColor
+            PressedFill: =TxtSearchNoats.PressedFill
+            SelectedDateFill: =RGBA(0, 120, 212, 1)
+            Size: =TxtSearchNoats.Size
+            Visible: =LclShowFilter
+            Width: =HtmlFilter.Width/4
+            X: =LblSearch.X+LblSearch.Width
+            Y: =LblTo.Y
+            ZIndex: =24
+
+        DpCreatedTo As datepicker:
+            BorderColor: =TxtSearchNoats.BorderColor
+            BorderStyle: =TxtSearchNoats.BorderStyle
+            BorderThickness: =TxtSearchNoats.BorderThickness
+            CalendarHeaderFill: =ColorFade(RGBA(0, 120, 212, 1), -30%)
+            Color: =TxtSearchNoats.Color
+            DefaultDate: =
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            DisabledFill: =RGBA(244, 244, 244, 1)
+            FocusedBorderThickness: =TxtSearchNoats.FocusedBorderThickness
+            Font: =TxtSearchNoats.Font
+            FontWeight: =TxtSearchNoats.FontWeight
+            Height: =26
+            HoverBorderColor: =TxtSearchNoats.HoverBorderColor
+            HoverDateFill: =RGBA(200, 200, 200, 1)
+            HoverFill: =TxtSearchNoats.HoverFill
+            IconBackground: =RGBA(0, 120, 212, 1)
+            InputTextPlaceholder: ="To"
+            IsEditable: =true
+            PaddingLeft: =5
+            PaddingTop: =5
+            PressedBorderColor: =TxtSearchNoats.PressedBorderColor
+            PressedFill: =TxtSearchNoats.PressedFill
+            SelectedDateFill: =RGBA(0, 120, 212, 1)
+            Size: =TxtSearchNoats.Size
+            Visible: =LclShowFilter
+            Width: =HtmlFilter.Width/4
+            X: =DpCreatedFrom.X+DpCreatedFrom.Width + 14
+            Y: =LblTo.Y
+            ZIndex: =25
+
+        CmbxCARstatus_2 As combobox:
+            BorderColor: =TxtSearchNoats.BorderColor
+            BorderStyle: =TxtSearchNoats.BorderStyle
+            BorderThickness: =TxtSearchNoats.BorderThickness
+            ChevronBackground: =RGBA(255, 255, 255, 1)
+            ChevronDisabledBackground: =RGBA(244, 244, 244, 1)
+            ChevronDisabledFill: =RGBA(166, 166, 166, 1)
+            ChevronFill: =RGBA(33, 33, 33, 1)
+            ChevronHoverBackground: =RGBA(212, 212, 212, 1)
+            ChevronHoverFill: =RGBA(33, 33, 33, 1)
+            Color: =TxtSearchNoats.Color
+            DefaultSelectedItems: |-
+                =If(Self.DisplayMode = DisplayMode.View, Table({Title: gblUserInfo.Plant}))
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            DisabledFill: =RGBA(244, 244, 244, 1)
+            DisplayFields: =["Value"]
+            DisplayMode: = DisplayMode.Edit
+            FocusedBorderThickness: =TxtSearchNoats.FocusedBorderThickness
+            Font: =TxtSearchNoats.Font
+            FontWeight: =TxtSearchNoats.FontWeight
+            Height: =26
+            HoverBorderColor: =TxtSearchNoats.HoverBorderColor
+            HoverColor: =RGBA(51, 51, 51, 1)
+            HoverFill: =Self.SelectionFill
+            IsSearchable: =false
+            Items: =["YES", "NO"]
+            PressedBorderColor: =TxtSearchNoats.PressedBorderColor
+            PressedColor: =RGBA(255, 255, 255, 1)
+            PressedFill: =Self.SelectionFill
+            SearchFields: =["Value"]
+            SearchItems: =[]
+            SelectionFill: =RGBA(68, 188, 252,1)
+            SelectionTagFill: =RGBA(255,255,255,1)
+            SelectMultiple: =false
+            Size: =TxtSearchNoats.Size
+            Visible: =false//LclShowFilter
+            Width: =HtmlFilter.Width/1.9
+            X: =LblCarStatus_2.X+LblCarStatus_2.Width
+            Y: =LblCarStatus_2.Y
+            ZIndex: =36
+
+        LblCarStatus_2 As label:
+            BorderColor: =RGBA(0, 0, 0, 0)
+            BorderStyle: =BorderStyle.None
+            BorderThickness: =2
+            Color: =RGBA(51, 51, 51, 1)
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            FocusedBorderThickness: =4
+            Font: =Font.Arial
+            FontWeight: =FontWeight.Bold
+            Height: =26
+            Size: =12
+            Text: ="CAR Uploaded"
+            Visible: =false//LclShowFilter
+            X: =HtmlFilter.X +50
+            Y: =LblPlant.Y+LblPlant.Height+20
+            ZIndex: =37
+
+    GrpSQMPMenu As group:
+        Height: =5
+        Width: =5
+        X: =40
+        Y: =40
+        ZIndex: =45
+
+        icnmenu As icon.FilterFlat:
+            BorderColor: =RGBA(166, 166, 166, 1)
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(220, 220, 220, 1)
+            DisabledFill: =RGBA(0, 0, 0, 0)
+            FocusedBorderThickness: =4
+            Height: =30
+            HoverBorderColor: =RGBA(0, 0, 0, 0)
+            HoverColor: =ColorFade(Self.Color, 30%)
+            HoverFill: =RGBA(0, 0, 0, 0)
+            Icon: =Icon.Hamburger
+            OnSelect: |-
+                =UpdateContext({lclShowMenu: !lclShowMenu})
+            PressedBorderColor: =RGBA(0, 0, 0, 0)
+            PressedColor: =ColorFade(Self.Color, 30%)
+            PressedFill: =RGBA(0, 0, 0, 0)
+            Tooltip: ="Menu"
+            Visible: =gblUserInfo.SQMPRole = "Admin" || gblUserInfo.SQMPRole="Uploader" || gblUserInfo.SQMPRole="Approver"
+            Width: =52
+            X: =Parent.Width- Self.Width
+            ZIndex: =38
+
+        HtmlMenu As htmlViewer:
+            AutoHeight: =true
+            Height: =BtnNavSupplierMaint.Y + BtnNavSupplierMaint.Height
+            HtmlText: |-
+                ="<div style='margin-left:10px;width:" & Parent.Width / 5 & "px;height:" & BtnNavSupplierMaint.Y + BtnNavSupplierMaint.Height & "px;background-color:white;box-shadow: 0 1px 5px 3px #ccc; border-radius:5px';> </div>"
+            PaddingRight: =0
+            Visible: =lclShowMenu
+            Width: =Parent.Width/5
+            X: =Parent.Width-Self.Width
+            Y: =CmpntHeader_8.Y+CmpntHeader_8.Height
+            ZIndex: =39
+
+        BtnNavSupplierMaint As button:
+            BorderColor: =RGBA(255, 255, 255, 1)
+            Color: =RGBA(1, 1, 1, 1)
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            DisabledFill: =RGBA(244, 244, 244, 1)
+            Fill: =RGBA(0, 0, 0, 0)
+            FocusedBorderColor: =ColorFade(Self.Fill, -75%)
+            FocusedBorderThickness: =0
+            Font: =Font.Arial
+            FontWeight: =FontWeight.Semibold
+            Height: =25
+            HoverBorderColor: =RGBA(0, 0, 0, 0)
+            HoverColor: =RGBA(255, 255, 255, 1)
+            HoverFill: =ColorFade(RGBA(0, 1, 1, 1), -10%)
+            OnSelect: =Navigate(ScrnSQMPSupplier,ScreenTransition.Fade); NewForm(FrmSupplier)
+            PaddingLeft: =10
+            PaddingRight: =10
+            PressedBorderColor: =ColorFade(RGBA(0, 120, 212, 1), -50%)
+            PressedColor: =RGBA(255, 255, 255, 1)
+            PressedFill: =ColorFade(RGBA(0, 1, 1, 1), -30%)
+            RadiusBottomLeft: =0
+            RadiusBottomRight: =0
+            RadiusTopLeft: =0
+            RadiusTopRight: =0
+            Size: =12
+            Text: ="Supplier Maintainance"
+            Visible: =lclShowMenu
+            Width: =HtmlMenu.Width - 20 
+            X: =HtmlMenu.X + 18
+            Y: =HtmlMenu.Y + 10
+            ZIndex: =40
+

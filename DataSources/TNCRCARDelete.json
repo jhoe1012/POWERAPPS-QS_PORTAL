@@ -1,0 +1,9 @@
+[
+  {
+    "AddinConnectorId": "40cda318-c699-44a7-ad07-1f3d036847c3",
+    "AddinId": "6d1f157d-95bf-406d-b65d-cfd3240f724e",
+    "Name": "TNCRCARDelete",
+    "ServiceKind": "AddinWadl",
+    "Type": "ServiceInfo"
+  }
+]

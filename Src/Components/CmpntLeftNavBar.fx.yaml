@@ -1,0 +1,117 @@
+CmpntLeftNavBar As CanvasComponent:
+    Fill: =RGBA(233, 233,233, 1)
+    Height: =Max(App.Height, App.MinScreenHeight)
+    MenuWidth: =If(gblOpenLeftMenu, Max(App.Width, App.MinScreenWidth) / 5, 40)
+    NavItems: |-
+        =Table(
+            {
+                Title: "Home",
+                Screen: App.ActiveScreen,
+                Icon: Icon.Home
+            },{
+                Title: "Add New Document",
+                Screen: App.ActiveScreen,
+                Icon: Icon.DetailList
+            }
+        )
+    Width: =CmpntLeftNavBar.MenuWidth
+    X: =0
+    Y: =0
+    ZIndex: =1
+
+    IcnMenu As icon.Hamburger:
+        DisabledBorderColor: =RGBA(0, 0, 0, 0)
+        DisabledColor: =RGBA(220, 220, 220, 1)
+        DisabledFill: =RGBA(0, 0, 0, 0)
+        FocusedBorderThickness: =4
+        Height: =30
+        HoverBorderColor: =RGBA(0, 0, 0, 0)
+        HoverColor: =ColorFade(RGBA(105, 121, 126, 1), -30%)
+        HoverFill: =RGBA(0, 0, 0, 0)
+        Icon: =Icon.Hamburger
+        OnSelect: |
+            =Set(gblOpenLeftMenu,!gblOpenLeftMenu);
+        PaddingLeft: =5
+        PressedBorderColor: =RGBA(0, 0, 0, 0)
+        PressedColor: =ColorFade(RGBA(105, 121, 126, 1), -30%)
+        PressedFill: =RGBA(0, 0, 0, 0)
+        Width: =40
+        ZIndex: =1
+
+    GalNavigation As gallery.galleryVertical:
+        BorderColor: =RGBA(166, 166, 166, 1)
+        Fill: =RGBA(255, 255, 255, 1)
+        Height: =Parent.Height-IcnMenu.Height
+        Items: =CmpntLeftNavBar.NavItems
+        Layout: =Layout.Vertical
+        ShowScrollbar: =false
+        TemplateFill: =
+        TemplatePadding: =0
+        TemplateSize: =59
+        Width: =273
+        Y: |
+            =IcnMenu.Y+IcnMenu.Height
+        ZIndex: =2
+
+        LblTitle As label:
+            BorderColor: =RGBA(0, 0, 0, 0)
+            BorderStyle: =BorderStyle.None
+            BorderThickness: =2
+            Color: =RGBA(51, 51, 51, 1)
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            FocusedBorderThickness: =4
+            Font: =Font.'Segoe UI'
+            Height: =GalNavigation.TemplateHeight
+            OnSelect: =Select(IcnNav)
+            PaddingLeft: =10
+            Size: =13
+            Text: =ThisItem.Title
+            Width: =232
+            X: =40
+            ZIndex: =1
+
+        IcnNav As icon.Home:
+            BorderColor: =RGBA(166, 166, 166, 1)
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(220, 220, 220, 1)
+            DisabledFill: =RGBA(0, 0, 0, 0)
+            FocusedBorderThickness: =4
+            Height: =59
+            HoverBorderColor: =RGBA(0, 0, 0, 0)
+            HoverColor: =ColorFade(RGBA(105, 121, 126, 1), -30%)
+            HoverFill: =RGBA(0, 0, 0, 0)
+            Icon: =ThisItem.Icon
+            OnSelect: =Set(gblOpenLeftMenu, false);Navigate(ThisItem.Screen,ScreenTransition.Fade)
+            PaddingLeft: =5
+            PaddingRight: =5
+            PressedBorderColor: =RGBA(0, 0, 0, 0)
+            PressedColor: =ColorFade(RGBA(105, 121, 126, 1), -30%)
+            PressedFill: =RGBA(0, 0, 0, 0)
+            Width: =40
+            X: |
+                =0
+            Y: |
+                =0
+            ZIndex: =2
+
+        Icon6 As icon.Add:
+            BorderColor: =RGBA(166, 166, 166, 1)
+            Color: =RGBA(105, 121, 126, 1)
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(220, 220, 220, 1)
+            DisabledFill: =RGBA(0, 0, 0, 0)
+            FocusedBorderThickness: =4
+            Height: =59
+            HoverBorderColor: =RGBA(0, 0, 0, 0)
+            HoverColor: =ColorFade(RGBA(105, 121, 126, 1), -30%)
+            HoverFill: =RGBA(0, 0, 0, 0)
+            Icon: =
+            OnSelect: =Select(IcnNav)
+            PressedBorderColor: =RGBA(0, 0, 0, 0)
+            PressedColor: =ColorFade(RGBA(105, 121, 126, 1), -30%)
+            PressedFill: =RGBA(0, 0, 0, 0)
+            Width: =232
+            X: =40
+            ZIndex: =3
+

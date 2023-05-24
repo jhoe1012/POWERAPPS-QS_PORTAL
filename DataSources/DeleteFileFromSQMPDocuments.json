@@ -1,0 +1,9 @@
+[
+  {
+    "AddinConnectorId": "61b15880-3d1c-4103-ae51-12dd5342bf47",
+    "AddinId": "6d1f157d-95bf-406d-b65d-cfd3240f724e",
+    "Name": "DeleteFileFromSQMPDocuments",
+    "ServiceKind": "AddinWadl",
+    "Type": "ServiceInfo"
+  }
+]

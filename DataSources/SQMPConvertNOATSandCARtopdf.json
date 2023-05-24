@@ -1,0 +1,9 @@
+[
+  {
+    "AddinConnectorId": "0be7a0cf-7015-47ed-937a-55fafd7e0485",
+    "AddinId": "6d1f157d-95bf-406d-b65d-cfd3240f724e",
+    "Name": "SQMPConvertNOATSandCARtopdf",
+    "ServiceKind": "AddinWadl",
+    "Type": "ServiceInfo"
+  }
+]

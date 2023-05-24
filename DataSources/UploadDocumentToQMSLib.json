@@ -1,0 +1,9 @@
+[
+  {
+    "AddinConnectorId": "cc3224e5-3fad-4b23-9644-34d58c701c43",
+    "AddinId": "6d1f157d-95bf-406d-b65d-cfd3240f724e",
+    "Name": "UploadDocumentToQMSLib",
+    "ServiceKind": "AddinWadl",
+    "Type": "ServiceInfo"
+  }
+]

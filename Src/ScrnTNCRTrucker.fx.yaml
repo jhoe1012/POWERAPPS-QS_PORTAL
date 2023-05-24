@@ -1,0 +1,639 @@
+ScrnTNCRTrucker As screen:
+    LoadingSpinnerColor: =RGBA(0, 120, 212, 1)
+    OnHidden: |
+        =Set(
+            gblDdTrucker,
+            ShowColumns(
+                TNCR_Truckers,
+                "Title",
+                "Area",
+                "Trucker_email"
+            )
+        );
+    OnVisible: |
+        =UpdateContext({lclTrucker: Blank()});
+
+    CmpntHeader_20 As CmpntHeader:
+        HeaderText: ="Trucker List"
+        HomeNavigation: =ScrnTNCRAdmin
+        Width: =Parent.Width
+
+    GalTrucker As gallery.variableTemplateHeightGallery:
+        BorderColor: =RGBA(166, 166, 166, 1)
+        Height: =Parent.Height -(HtmlText4_2.Y+HtmlText4_2.Height)
+        Items: |-
+            =Filter(
+                TNCR_Truckers,
+                IsBlank(TxtTrucker.Text) || StartsWith(
+                    Title,
+                    TxtTrucker.Text
+                )
+            )
+        Layout: =Layout.Vertical
+        TemplateFill: =If(ThisItem.IsSelected, RGBA(171, 255, 254, 1))
+        TemplatePadding: =-3
+        TemplateSize: =35
+        Width: |+
+            =Parent.Width * 0.7
+            
+        X: =HtmlText4_2.X
+        Y: =237
+        ZIndex: =2
+
+        HtmlText4_3 As htmlViewer:
+            AutoHeight: =true
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =35
+            HtmlText: |-
+                ="<table
+                style='table-layout: fixed;width: 100%; border: solid 1px black;border-collapse: collapse; background-color: RGBA(255, 255, 255, 0);'>
+                <tr>
+                <td
+                style='border: solid 1px black; padding: 5px ;  min-width: 33.5%; max-width: 33.5%;width: 33.5%;text-align:justify;'>
+                " & ThisItem.Title & "</td>
+                <td
+                style='border: solid 1px black; padding: 5px ;  min-width: 33%; max-width: 33%;width: 33%;text-align:justify;'>
+                " & ThisItem.Area & "</td>
+                <td
+                style='border: solid 1px black; padding: 5px ;  min-width: 33%; max-width: 33%;width: 33%;text-align:justify;'>
+                " & ThisItem.Trucker_email & "</td>
+                </table>"
+            OnSelect: |-
+                =UpdateContext({lclTrucker: GalTrucker.Selected}); EditForm(FrmTrucker)
+            PaddingBottom: =0
+            PaddingLeft: =3
+            PaddingRight: =0
+            PaddingTop: =0
+            Width: =Parent.Width
+            ZIndex: =1
+
+    FrmTrucker As form:
+        AcceptsFocus: =false
+        BorderColor: =RGBA(166, 166, 166, 1)
+        DataSource: =TNCR_Truckers
+        DefaultMode: =FormMode.New
+        Height: =149
+        Item: =lclTrucker
+        NumberOfColumns: =1
+        OnSuccess: |
+            =If(
+                IsBlank(lclSupplier),
+                Notify(
+                    Proper("supplier details added sucessfully !"),
+                    NotificationType.Success
+                ),
+                Notify(
+                    Proper("supplier details updated sucessfully !"),
+                    NotificationType.Success
+                )
+            );
+            Set(
+                gblDdSupplier,
+                ShowColumns(
+                    PSQA_SUPPLIERS,
+                    "Title",
+                    "SupplierGrp",
+                    "BuyerEmail",
+                    "SupplierEmail",
+                    "is_intercompany"
+                )
+            );
+            UpdateContext({lclSupplier: Blank()});
+            NewForm(FrmTrucker);
+        Width: =Parent.Width
+        Y: =CmpntHeader_20.Y + CmpntHeader_20.Height
+        ZIndex: =3
+
+        DataCard23 As typedDataCard.blankCard:
+            BorderColor: =RGBA(166, 166, 166, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =30
+            Width: =1366
+            X: =0
+            Y: =3
+            ZIndex: =1
+
+            BtnSaveTrucker As button:
+                BorderColor: =RGBA(0, 0, 0, 0)
+                DisabledBorderColor: =RGBA(0, 0, 0, 0)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                DisabledFill: =RGBA(244, 244, 244, 1)
+                Fill: =RGBA(13, 110, 253, 1)
+                FocusedBorderColor: =ColorFade(Self.Fill, 50%)
+                Font: =Font.'Segoe UI'
+                FontWeight: =FontWeight.Bold
+                Height: =30
+                HoverBorderColor: =Self.Fill
+                HoverColor: =RGBA(255, 255, 255, 1)
+                HoverFill: =ColorFade(Self.Fill, -10%)
+                OnSelect: |-
+                    =Office365Outlook.SendEmailV2(
+                            Concat(
+                                Filter(
+                                    Users,
+                                    isSQMPNotifyPerson = 1
+                                ),
+                                Email,
+                                ";"
+                            ),
+                            "NEW TRUCKER",
+                            "Good Day! <br> <b>" & gblUserName & "</b> has added a <b>NEW TRUCKER </b><br><br> <b>Trucker:</b>  " & DataCardValue83.Text & "<br> <b>Trucker Email:</b>  " & DataCardValue85.Text & "<br><b>Area:</b>  " & CmbxArea.Selected.Value& "<br><br>",
+                            {
+                                Importance: "High"
+                            }
+                        );
+                    SubmitForm(FrmTrucker);
+                PaddingBottom: =0
+                PaddingLeft: =0
+                PaddingRight: =0
+                PaddingTop: =0
+                PressedBorderColor: =ColorFade(Self.Fill, 50%)
+                PressedColor: =RGBA(255, 255, 255, 1)
+                PressedFill: =ColorFade(Self.Fill, 0%)
+                RadiusBottomLeft: =5
+                RadiusBottomRight: =5
+                RadiusTopLeft: =5
+                RadiusTopRight: =5
+                Size: |
+                    =11
+                Text: =If(FrmTrucker.Mode = FormMode.New, "Add", "Update")
+                Width: =120
+                X: =(Parent.Width * 0.5 ) - (Self.Width)
+                ZIndex: =1
+
+            BtnCancelTrucker As button:
+                BorderColor: =RGBA(0, 0, 0, 0)
+                DisabledBorderColor: =RGBA(0, 0, 0, 0)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                DisabledFill: =RGBA(244, 244, 244, 1)
+                Fill: =RGBA(220, 53, 69, 1)
+                FocusedBorderColor: =ColorFade(Self.Fill, 50%)
+                Font: =Font.'Segoe UI'
+                FontWeight: =FontWeight.Semibold
+                Height: =30
+                HoverBorderColor: =Self.Fill
+                HoverColor: =RGBA(255, 255, 255, 1)
+                HoverFill: =ColorFade(Self.Fill, -10%)
+                OnSelect: |-
+                    =ResetForm(FrmTrucker);
+                    NewForm(FrmTrucker)
+                PaddingBottom: =0
+                PaddingLeft: =0
+                PaddingRight: =0
+                PaddingTop: =0
+                PressedBorderColor: =ColorFade(Self.Fill, 50%)
+                PressedColor: =RGBA(255, 255, 255, 1)
+                PressedFill: =ColorFade(Self.Fill, 0%)
+                RadiusBottomLeft: =5
+                RadiusBottomRight: =5
+                RadiusTopLeft: =5
+                RadiusTopRight: =5
+                Size: |
+                    =11
+                Text: ="Cancel"
+                Visible: =BtnSaveTrucker.Visible
+                Width: =120
+                X: =BtnSaveTrucker.X+BtnSaveTrucker.Width + 20
+                Y: |
+                    =0
+                ZIndex: =2
+
+        Title_DataCard3 As typedDataCard.textualEditCard:
+            BorderColor: =RGBA(166, 166, 166, 1)
+            BorderStyle: =BorderStyle.Solid
+            DataField: ="Title"
+            Default: =ThisItem.Title
+            DisplayMode: =Parent.DisplayMode
+            DisplayName: =DataSourceInfo([@TNCR_Truckers],DataSourceInfo.DisplayName,"Title")
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =50
+            MaxLength: =DataSourceInfo([@TNCR_Truckers], DataSourceInfo.MaxLength, "Title")
+            Required: =true
+            Update: =DataCardValue83.Text
+            Width: =Parent.Width/3
+            X: =0
+            Y: =0
+            ZIndex: =4
+
+            DataCardKey18 As label:
+                AutoHeight: =true
+                BorderColor: =RGBA(0, 0, 0, 0)
+                BorderStyle: =BorderStyle.None
+                BorderThickness: =2
+                Color: =RGBA(51, 51, 51, 1)
+                DisabledBorderColor: =RGBA(0, 0, 0, 0)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                FocusedBorderThickness: =4
+                Font: =Font.'Segoe UI'
+                FontWeight: =FontWeight.Semibold
+                Height: =34
+                PaddingLeft: =0
+                Size: =13
+                Text: ="Trucker"
+                Width: =91
+                Wrap: =false
+                X: =30
+                Y: =10 + (DataCardValue83.Height / 2) - (Self.Height / 2)
+                ZIndex: =1
+
+            DataCardValue83 As text:
+                BorderColor: =If(IsBlank(Parent.Error), Parent.BorderColor, Color.Red)
+                BorderThickness: =gblPInput.BorderThickness
+                Color: =gblPInput.Color
+                Default: =Parent.Default
+                DelayOutput: =true
+                DisabledBorderColor: =RGBA(0, 0, 0, 0)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                DisabledFill: =RGBA(244, 244, 244, 1)
+                DisplayMode: =Parent.DisplayMode
+                FocusedBorderThickness: =gblPInput.FocusedBorderThickness
+                Font: =Font.'Segoe UI'
+                Height: =gblPInput.Height
+                HoverBorderColor: =gblPInput.HoverBorderColor
+                HoverColor: =RGBA(51, 51, 51, 1)
+                HoverFill: =RGBA(255, 255, 255, 1)
+                MaxLength: =Parent.MaxLength
+                PaddingLeft: =5
+                PressedBorderColor: =gblPInput.PressedBorderColor
+                PressedColor: =RGBA(51, 51, 51, 1)
+                PressedFill: =RGBA(255, 255, 255, 1)
+                RadiusBottomLeft: =0
+                RadiusBottomRight: =0
+                RadiusTopLeft: =0
+                RadiusTopRight: =0
+                Size: =13
+                Tooltip: =Parent.DisplayName
+                Width: =(Parent.Width - 60) * 0.6
+                X: =DataCardKey18.X + DataCardKey18.Width
+                Y: =10
+                ZIndex: =2
+
+            ErrorMessage17 As label:
+                AutoHeight: =true
+                BorderColor: =RGBA(0, 0, 0, 0)
+                BorderStyle: =BorderStyle.None
+                BorderThickness: =2
+                Color: =RGBA(168, 0, 0, 1)
+                DisabledBorderColor: =RGBA(0, 0, 0, 0)
+                DisabledColor: =RGBA(168, 0, 0, 1)
+                FocusedBorderThickness: =4
+                Font: =Font.'Segoe UI'
+                FontWeight: =FontWeight.Semibold
+                Height: =10
+                Live: =Live.Assertive
+                PaddingBottom: =0
+                PaddingLeft: =0
+                PaddingRight: =0
+                PaddingTop: =0
+                Size: =13
+                Text: =Parent.Error
+                Visible: =Parent.DisplayMode=DisplayMode.Edit
+                Width: =Parent.Width - 60
+                X: =30
+                Y: =DataCardValue83.Y + DataCardValue83.Height
+                ZIndex: =3
+
+            StarVisible18 As label:
+                Align: =Align.Center
+                BorderColor: =RGBA(0, 0, 0, 0)
+                BorderStyle: =BorderStyle.None
+                BorderThickness: =2
+                Color: =RGBA(51, 51, 51, 1)
+                DisabledBorderColor: =RGBA(0, 0, 0, 0)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                FocusedBorderThickness: =4
+                Font: =Font.'Segoe UI'
+                FontWeight: =FontWeight.Semibold
+                Height: =DataCardKey18.Height
+                PaddingLeft: =0
+                Size: =13
+                Text: ="*"
+                Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                Width: =30
+                Wrap: =false
+                Y: =DataCardKey18.Y
+                ZIndex: =4
+
+        Trucker_email_DataCard1 As typedDataCard.textualEditCard:
+            BorderColor: =RGBA(166, 166, 166, 1)
+            BorderStyle: =BorderStyle.Solid
+            DataField: ="Trucker_email"
+            Default: =ThisItem.Trucker_email
+            DisplayMode: =Parent.DisplayMode
+            DisplayName: =DataSourceInfo([@TNCR_Truckers],DataSourceInfo.DisplayName,"Trucker_email")
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =70
+            MaxLength: =DataSourceInfo([@TNCR_Truckers], DataSourceInfo.MaxLength, "Trucker_email")
+            Required: =false
+            Update: =DataCardValue85.Text
+            Width: =Parent.Width/3
+            X: =1
+            Y: =0
+            ZIndex: =4
+
+            DataCardKey23 As label:
+                AutoHeight: =true
+                BorderColor: =RGBA(0, 0, 0, 0)
+                BorderStyle: =BorderStyle.None
+                BorderThickness: =2
+                Color: =RGBA(51, 51, 51, 1)
+                DisabledBorderColor: =RGBA(0, 0, 0, 0)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                FocusedBorderThickness: =4
+                Font: =Font.'Segoe UI'
+                FontWeight: =FontWeight.Semibold
+                Height: =34
+                PaddingLeft: =0
+                Size: =13
+                Text: ="Trucker Email"
+                Width: =130
+                Wrap: =false
+                X: =30
+                Y: =10 + (DataCardValue85.Height / 2) - (Self.Height / 2)
+                ZIndex: =1
+
+            DataCardValue85 As text:
+                BorderColor: =If(IsBlank(Parent.Error), Parent.BorderColor, Color.Red)
+                BorderThickness: =gblPInput.BorderThickness
+                Color: =gblPInput.Color
+                Default: =Parent.Default
+                DelayOutput: =true
+                DisabledBorderColor: =RGBA(0, 0, 0, 0)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                DisabledFill: =RGBA(244, 244, 244, 1)
+                DisplayMode: =Parent.DisplayMode
+                FocusedBorderThickness: =gblPInput.FocusedBorderThickness
+                Font: =Font.'Segoe UI'
+                Height: =gblPInput.Height
+                HoverBorderColor: =gblPInput.HoverBorderColor
+                HoverColor: =RGBA(51, 51, 51, 1)
+                HoverFill: =RGBA(255, 255, 255, 1)
+                MaxLength: =Parent.MaxLength
+                PaddingLeft: =5
+                PressedBorderColor: =gblPInput.PressedBorderColor
+                PressedColor: =RGBA(51, 51, 51, 1)
+                PressedFill: =RGBA(255, 255, 255, 1)
+                RadiusBottomLeft: =0
+                RadiusBottomRight: =0
+                RadiusTopLeft: =0
+                RadiusTopRight: =0
+                Size: =13
+                Tooltip: =Parent.DisplayName
+                Width: =(Parent.Width - 60) * 0.6
+                X: =DataCardKey23.X + DataCardKey23.Width
+                Y: =10
+                ZIndex: =2
+
+            ErrorMessage22 As label:
+                AutoHeight: =true
+                BorderColor: =RGBA(0, 0, 0, 0)
+                BorderStyle: =BorderStyle.None
+                BorderThickness: =2
+                Color: =RGBA(168, 0, 0, 1)
+                DisabledBorderColor: =RGBA(0, 0, 0, 0)
+                DisabledColor: =RGBA(168, 0, 0, 1)
+                FocusedBorderThickness: =4
+                Font: =Font.'Segoe UI'
+                FontWeight: =FontWeight.Semibold
+                Height: =10
+                Live: =Live.Assertive
+                PaddingBottom: =0
+                PaddingLeft: =0
+                PaddingRight: =0
+                PaddingTop: =0
+                Size: =13
+                Text: =Parent.Error
+                Visible: =Parent.DisplayMode=DisplayMode.Edit
+                Width: =Parent.Width - 60
+                X: =30
+                Y: =DataCardValue85.Y + DataCardValue85.Height
+                ZIndex: =3
+
+            StarVisible23 As label:
+                Align: =Align.Center
+                BorderColor: =RGBA(0, 0, 0, 0)
+                BorderStyle: =BorderStyle.None
+                BorderThickness: =2
+                Color: =RGBA(51, 51, 51, 1)
+                DisabledBorderColor: =RGBA(0, 0, 0, 0)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                FocusedBorderThickness: =4
+                Font: =Font.'Segoe UI'
+                FontWeight: =FontWeight.Semibold
+                Height: =DataCardKey23.Height
+                PaddingLeft: =0
+                Size: =13
+                Text: ="*"
+                Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                Width: =30
+                Wrap: =false
+                Y: =DataCardKey23.Y
+                ZIndex: =4
+
+        Area_DataCard1 As typedDataCard.textualEditCard:
+            BorderColor: =RGBA(166, 166, 166, 1)
+            BorderStyle: =BorderStyle.Solid
+            DataField: ="Area"
+            Default: =ThisItem.Area
+            DisplayMode: =Parent.DisplayMode
+            DisplayName: =DataSourceInfo([@TNCR_Truckers],DataSourceInfo.DisplayName,"Area")
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =50
+            MaxLength: =DataSourceInfo([@TNCR_Truckers], DataSourceInfo.MaxLength, "Area")
+            Required: =false
+            Update: =CmbxArea.Selected.Value
+            Width: =Parent.Width/3
+            X: =2
+            Y: =0
+            ZIndex: =4
+
+            DataCardKey22 As label:
+                AutoHeight: =true
+                BorderColor: =RGBA(0, 0, 0, 0)
+                BorderStyle: =BorderStyle.None
+                BorderThickness: =2
+                Color: =RGBA(51, 51, 51, 1)
+                DisabledBorderColor: =RGBA(0, 0, 0, 0)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                FocusedBorderThickness: =4
+                Font: =Font.'Segoe UI'
+                FontWeight: =FontWeight.Semibold
+                Height: =34
+                PaddingLeft: =0
+                Size: =13
+                Text: =Parent.DisplayName
+                Width: =70
+                Wrap: =false
+                X: =68
+                Y: =10 + (CmbxArea.Height / 2) - (Self.Height / 2)
+                ZIndex: =1
+
+            ErrorMessage20 As label:
+                AutoHeight: =true
+                BorderColor: =RGBA(0, 0, 0, 0)
+                BorderStyle: =BorderStyle.None
+                BorderThickness: =2
+                Color: =RGBA(168, 0, 0, 1)
+                DisabledBorderColor: =RGBA(0, 0, 0, 0)
+                DisabledColor: =RGBA(168, 0, 0, 1)
+                FocusedBorderThickness: =4
+                Font: =Font.'Segoe UI'
+                FontWeight: =FontWeight.Semibold
+                Height: =10
+                Live: =Live.Assertive
+                PaddingBottom: =0
+                PaddingLeft: =0
+                PaddingRight: =0
+                PaddingTop: =0
+                Size: =13
+                Text: =Parent.Error
+                Visible: =Parent.DisplayMode=DisplayMode.Edit
+                Width: =Parent.Width - 60
+                X: =30
+                Y: =CmbxArea.Y + CmbxArea.Height
+                ZIndex: =3
+
+            StarVisible22 As label:
+                Align: =Align.Center
+                BorderColor: =RGBA(0, 0, 0, 0)
+                BorderStyle: =BorderStyle.None
+                BorderThickness: =2
+                Color: =RGBA(51, 51, 51, 1)
+                DisabledBorderColor: =RGBA(0, 0, 0, 0)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                FocusedBorderThickness: =4
+                Font: =Font.'Segoe UI'
+                FontWeight: =FontWeight.Semibold
+                Height: =DataCardKey22.Height
+                PaddingLeft: =0
+                Size: =13
+                Text: ="*"
+                Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                Width: =30
+                Wrap: =false
+                Y: =DataCardKey22.Y
+                ZIndex: =4
+
+            CmbxArea As combobox:
+                BorderColor: =RGBA(166, 166, 166, 1)
+                BorderThickness: =gblPInput.BorderThickness
+                ChevronBackground: =RGBA(255, 255, 255, 1)
+                ChevronDisabledBackground: =RGBA(244, 244, 244, 1)
+                ChevronDisabledFill: =RGBA(166, 166, 166, 1)
+                ChevronFill: =RGBA(33, 33, 33, 1)
+                ChevronHoverBackground: =RGBA(212, 212, 212, 1)
+                ChevronHoverFill: =RGBA(33, 33, 33, 1)
+                Color: =gblPInput.Color
+                DisabledBorderColor: =RGBA(0, 0, 0, 0)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                DisabledFill: =RGBA(244, 244, 244, 1)
+                DisplayFields: =["Value"]
+                FocusedBorderThickness: =gblPInput.FocusedBorderThickness
+                Font: =Font.'Segoe UI'
+                Height: =gblPInput.Height
+                HoverBorderColor: =gblPInput.HoverBorderColor
+                HoverColor: =RGBA(51, 51, 51, 1)
+                HoverFill: =RGBA(212, 212, 212, 1)
+                Items: |-
+                    =Distinct(
+                        TNCR_Truckers,
+                        Area
+                    )
+                PressedBorderColor: =gblPInput.PressedBorderColor
+                PressedColor: =RGBA(255, 255, 255, 1)
+                PressedFill: =RGBA(0, 120, 212, 1)
+                SearchFields: =["Value"]
+                SearchItems: |-
+                    =Search(Distinct(
+                        TNCR_Truckers,
+                        Area
+                    ),CmbxArea.SearchText,"Value")
+                SelectionFill: =RGBA(0, 120, 212, 1)
+                SelectMultiple: =false
+                Size: =13
+                Width: =(Parent.Width - 60) * 0.6
+                X: =DataCardKey23.X + DataCardKey23.Width
+                Y: =10
+                ZIndex: =5
+
+    DataCardKey21_47 As label:
+        AutoHeight: =true
+        BorderColor: =gblPLabel.BorderColor
+        BorderStyle: =gblPLabel.BorderStyle 
+        BorderThickness: =gblPLabel.BorderThickness
+        Color: =gblPLabel.Color
+        DisabledBorderColor: =RGBA(0, 0, 0, 0)
+        DisabledColor: =RGBA(166, 166, 166, 1)
+        Fill: =gblPLabel.Fill
+        FocusedBorderThickness: =4
+        Font: =gblPLabel.Font
+        FontWeight: =gblPLabel.FontWeight
+        Height: =gblPLabel.Height
+        PaddingLeft: =0
+        Size: =gblPLabel.Size
+        Text: ="Search Trucker"
+        Width: =Parent.Width *0.1
+        Wrap: =false
+        X: =Parent.Width * 0.5 -(Self.Width +TxtTrucker.Width * 0.5 )
+        Y: =(FrmTrucker.Y+FrmTrucker.Height) - (Self.Height*0.5)
+        ZIndex: =4
+
+    TxtTrucker As text:
+        BorderColor: =gblPInput.BorderColor
+        BorderStyle: =gblPInput.BorderStyle
+        BorderThickness: =gblPInput.BorderThickness
+        Color: =gblPInput.Color
+        Default: =
+        DisabledBorderColor: =RGBA(0, 0, 0, 0)
+        DisabledColor: =RGBA(166, 166, 166, 1)
+        DisabledFill: =RGBA(244, 244, 244, 1)
+        Fill: =gblPInput.Fill
+        FocusedBorderThickness: =gblPInput.FocusedBorderThickness
+        Font: =gblPInput.Font
+        FontWeight: =gblPInput.FontWeight
+        Height: =27
+        HoverBorderColor: =gblPInput.HoverBorderColor
+        HoverColor: =gblPInput.HoverColor
+        HoverFill: =gblPInput.HoverFill
+        PressedBorderColor: =gblPInput.PressedBorderColor
+        PressedColor: =gblPInput.PressedColor
+        PressedFill: =gblPInput.PressedFill
+        RadiusBottomLeft: =0
+        RadiusBottomRight: =0
+        RadiusTopLeft: =0
+        RadiusTopRight: =0
+        Size: =gblPInput.Size
+        Width: =Parent.Width*0.25
+        X: =DataCardKey21_47.X+DataCardKey21_47.Width + 10
+        Y: =(FrmTrucker.Y+FrmTrucker.Height) - (Self.Height*0.5)
+        ZIndex: =5
+
+    HtmlText4_2 As htmlViewer:
+        AutoHeight: =true
+        HtmlText: |-
+            ="<table
+            style='table-layout: fixed;width: 100%; border: solid 1px black;border-collapse: collapse; background-color: RGBA(255, 255, 255, 1);'>
+            <tr>
+            <td
+            style='border: solid 1px black; padding: 5px ;font-weight: bold;  min-width: 33%; max-width: 33%;width: 33%;text-align:center;'>
+            Trucker</td>
+            <td
+            style='border: solid 1px black; padding: 5px ;font-weight: bold;  min-width: 33%; max-width: 33%;width: 33%;text-align:center;'>
+            Area</td>
+            <td
+            style='border: solid 1px black; padding: 5px ;font-weight: bold;  min-width: 33%; max-width: 33%;width: 33%;text-align:center;'>
+            Trucker Email</td>
+            </table>"
+        OnSelect: =
+        PaddingBottom: =0
+        PaddingLeft: =0
+        PaddingRight: =0
+        PaddingTop: =0
+        Size: =9
+        Width: =Parent.Width * 0.7
+        X: =Parent.Width-Parent.Width*0.85
+        Y: =206
+        ZIndex: =6
+

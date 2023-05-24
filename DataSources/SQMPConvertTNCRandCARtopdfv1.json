@@ -1,0 +1,9 @@
+[
+  {
+    "AddinConnectorId": "aac21c02-7004-4a1e-b585-4cde02b28315",
+    "AddinId": "6d1f157d-95bf-406d-b65d-cfd3240f724e",
+    "Name": "SQMPConvertTNCRandCARtopdfv1",
+    "ServiceKind": "AddinWadl",
+    "Type": "ServiceInfo"
+  }
+]

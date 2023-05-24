@@ -1,0 +1,9 @@
+[
+  {
+    "AddinConnectorId": "cec5d7ab-8734-43b5-ba95-1b2c446c20fc",
+    "AddinId": "6d1f157d-95bf-406d-b65d-cfd3240f724e",
+    "Name": "TNCRCARUpload",
+    "ServiceKind": "AddinWadl",
+    "Type": "ServiceInfo"
+  }
+]

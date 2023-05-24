@@ -1,0 +1,9 @@
+[
+  {
+    "IsComponentScoped": false,
+    "IsSampleData": false,
+    "IsWritable": true,
+    "Name": "colQMS_RRMS_dd_doc_req",
+    "Type": "CollectionDataSourceInfo"
+  }
+]

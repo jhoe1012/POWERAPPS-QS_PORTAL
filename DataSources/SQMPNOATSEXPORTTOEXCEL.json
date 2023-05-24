@@ -1,0 +1,9 @@
+[
+  {
+    "AddinConnectorId": "57924fd7-0fb6-492f-8a2c-ed1318e78877",
+    "AddinId": "6d1f157d-95bf-406d-b65d-cfd3240f724e",
+    "Name": "SQMPNOATSEXPORTTOEXCEL",
+    "ServiceKind": "AddinWadl",
+    "Type": "ServiceInfo"
+  }
+]

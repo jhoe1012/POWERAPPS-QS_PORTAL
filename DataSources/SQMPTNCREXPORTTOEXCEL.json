@@ -1,0 +1,9 @@
+[
+  {
+    "AddinConnectorId": "e7b093bb-33f9-4d66-8625-03431f3c147d",
+    "AddinId": "6d1f157d-95bf-406d-b65d-cfd3240f724e",
+    "Name": "SQMPTNCREXPORTTOEXCEL",
+    "ServiceKind": "AddinWadl",
+    "Type": "ServiceInfo"
+  }
+]

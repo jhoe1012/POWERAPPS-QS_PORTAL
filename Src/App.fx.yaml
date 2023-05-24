@@ -1,0 +1,875 @@
+App As appinfo:
+    BackEnabled: =false
+    OnStart: |
+        =Concurrent(
+            Set(
+                gblAppURL,
+                "https://apps.powerapps.com/play/6d922670-4c8d-4bff-afc9-1204acf86bc1?tenantId=af7302a2-b536-4d8b-bc51-09da778b3c30"
+            ),
+            Set(
+                gblConstRole,
+                {
+                    ADMIN: "Admin",
+                    UPLOADER: "Uploader",
+                    APPROVER: "Approver",
+                    VIEWER: "Viewer",
+                    LOGISTIC: "Logistic"
+                }
+            ),
+            //QMS
+            ClearCollect(
+                colQMS_RRMS_dd_doc_req,
+                ShowColumns(
+                    QMS_RRMS_dd_doc_req,
+                    "ID",
+                    "Department",
+                    "Requirement",
+                    "LeadTime",
+                    "DocumentCategory"
+                )
+            ),//END QMS 
+            // SQMP NOATS
+            Set(
+                gblDdPlants,
+                ShowColumns(
+                    Filter(
+                        'QMS_PLANT_&_AGENCY',
+                        SQMPPlant = 1
+                    ),
+                    "Title",
+                    "GBIPlants",
+                    "Group"
+                )
+            ),
+            ClearCollect(
+                colHolidays,
+                Filter(
+                    Holidays,
+                    Year(holiday_date) = Year(Now())
+                )
+            );
+            ClearCollect(
+                colSQMPFolder,
+                {FolderName: "Supplier Food Safety"},
+                {
+                    FolderName: "NOATS",
+                    Screen: ScrnSQMPNAdmin
+                },
+                {
+                    FolderName: "TNCR",
+                    Screen: ScrnTNCRAdmin
+                },
+                {FolderName: "IPM NCR"}
+            ),
+            Set(
+                gblDdNonConformance,
+                SortByColumns(
+                    PSQA_Non_Conformity,
+                    "Title",
+                    SortOrder.Ascending,
+                    "NON_x002d_CONFORMANCE_x0020_CATE",
+                    SortOrder.Ascending
+                )
+            ),
+            Set(
+                gblDdTypeofMaterial,
+                SortByColumns(
+                    'PSQA_Type of Material',
+                    "Title"
+                ).Title
+            ),
+            Set(
+                gblUserName,
+                User().FullName
+            ),
+            Set(
+                gblUserEmail,
+                User().Email
+            );
+            Set(
+                gblUserInfo,
+                LookUp(
+                    Users,
+                    Email = gblUserEmail
+                )
+            );
+            Set(
+                gblDdSupplier,
+                ShowColumns(
+                    PSQA_SUPPLIERS,
+                    "Title",
+                    "SupplierGrp",
+                    "BuyerEmail",
+                    "SupplierEmail",
+                    "is_intercompany"
+                )
+            );
+            Set(
+                gblPlantCode,
+                Switch(
+                    gblUserInfo.Plant,
+                    "CWM",
+                    "00",
+                    "CAKEPLANT",
+                    "01",
+                    "BREADPLANT",
+                    "02",
+                    "CFC",
+                    "03",
+                    "CMI",
+                    "04",
+                    "RBI",
+                    "05",
+                    "EGI-DAVAO",
+                    "06",
+                    "EGI-CEBU",
+                    "07",
+                    "EGI-ILOILO",
+                    "08",
+                    "DBI",
+                    "09",
+                    "EGI-TACLOBAN",
+                    "17",
+                    "TCPI",
+                    "11",
+                    "PAI",
+                    "14"
+                )
+            ),// END SQMP NOATS
+            // TNCR
+            Set(
+                gblDdTruckers,
+                SortByColumns(
+                    TNCR_Truckers.Title,
+                    "Title"
+                )
+            ),
+            Set(
+                gblDdStore,
+                Filter(
+                    TNCR_Stores,
+                    isActive = 1
+                ).Title
+            ),
+            Set(
+                gblDdTNCRDeviation,
+                TNCR_DeviationCategory.Title
+            ),
+            Set(
+                gblDdSpecificRequestToTrucker,
+                TNCR_SpecificRequestToTrucker.Title
+            )// END TNCR
+        );
+        // QMS RMS 
+        Set(
+            gblQmsRmsId,
+            Value(Param("rms_id"))
+        );
+        If(
+            gblQmsRmsId <> 0,
+            Set(
+                gblQMSRRM,
+                LookUp(
+                    QMS_REGULATORY_RMS,
+                    ID = gblQmsRmsId
+                )
+            );
+            If(
+                gblUserInfo.RRMRole = gblConstRole.APPROVER,
+                ViewForm(FrmQMS_RRM_Approval),
+                ViewForm(FrmQMS_RRM_Edit)
+            )
+        );
+        // END RMS
+        //NOATS
+        Set(
+            gblSqmpNoatsId,
+            Value(Param("sqmpnoatsid"))
+        );
+        If(
+            gblSqmpNoatsId <> 0,
+            Set(
+                gblSQMPNOATSList,
+                LookUp(
+                    SQMP_NOATS_LIST,
+                    ID = gblSqmpNoatsId
+                )
+            );
+            EditForm(FrmSQMPNOATS);
+            Concurrent(
+                Clear(colSpecReq);
+                ForAll(
+                    ForAll(
+                        Split(
+                            gblSQMPNOATSList.SpecificRequirementsToSupplier,
+                            "|"
+                        ),
+                        {Result: ThisRecord.Value}
+                    ).Result,
+                    Collect(
+                        colSpecReq,
+                        {Title: TrimEnds(Result)}
+                    )
+                ),
+                Clear(colTempNonConformity);
+                ForAll(
+                    ForAll(
+                        Split(
+                            gblSQMPNOATSList.'Type of Non Conformity',
+                            "|"
+                        ),
+                        {Result: ThisRecord.Value}
+                    ).Result,
+                    Collect(
+                        colTempNonConformity,
+                        {NonConformity: Result}
+                    )
+                ),
+                Clear(colTempNonConformaceCat);
+                ForAll(
+                    ForAll(
+                        Split(
+                            gblSQMPNOATSList.'Non Conformance Category',
+                            "|"
+                        ),
+                        {Result: ThisRecord.Value}
+                    ).Result,
+                    Collect(
+                        colTempNonConformaceCat,
+                        {NonConformanceCat: Result}
+                    )
+                ),
+                Clear(colTempFrequency);
+                ForAll(
+                    ForAll(
+                        Split(
+                            gblSQMPNOATSList.Frequency,
+                            "|"
+                        ),
+                        {Result: ThisRecord.Value}
+                    ).Result,
+                    Collect(
+                        colTempFrequency,
+                        {Frequency: Result}
+                    )
+                )
+            );
+            Clear(colDeviation);
+            ForAll(
+                FirstN(
+                    Sequence(26),
+                    Min(
+                        CountRows(colTempNonConformity),
+                        CountRows(colTempNonConformaceCat),
+                        CountRows(colTempFrequency)
+                    )
+                ),
+                Collect(
+                    colDeviation,
+                    Patch(
+                        {},
+                        Last(
+                            FirstN(
+                                colTempNonConformity,
+                                Value
+                            )
+                        ),
+                        Last(
+                            FirstN(
+                                colTempNonConformaceCat,
+                                Value
+                            )
+                        ),
+                        Last(
+                            FirstN(
+                                colTempFrequency,
+                                Value
+                            )
+                        )
+                    )
+                )
+            )
+        );
+        /*Clear(colTempDev); ForAll(    Split(   gblSQMPList.Deviation,   "|"    ).Result,    Collect(   colTempDev,   {Deviation: Result}    ));Clear(colTempDevCat);ForAll(    Split(   gblSQMPList.DeviationCategory,   "|"    ).Result,    Collect(   colTempDevCat,   {DeviationCategory: Result}    ));Clear(colDeviation);ForAll(    FirstN(   [  1,  2,  3,  4,  5,  6,  7,  8,  9,  10,  11,  12,  13,  14,  15,  16,  17,  18,  19,  20   ],   Min(  CountRows(colTempDev),  CountRows(colTempDevCat)   )    ),    Collect(   colDeviation,   Patch(  {},  Last( FirstN(  colTempDev,  Value )  ),  Last( FirstN(  colTempDevCat,  Value )  )   )    ));*/
+        //TNCR
+        Set(
+            gblSqmpTNCRId,
+            Value(Param("sqmptncrid"))
+        );
+        If(
+            gblSqmpTNCRId <> 0,
+            Set(
+                gblSQMPTNCRList,
+                LookUp(
+                    SQMP_TNCR_LIST,
+                    ID = gblSqmpTNCRId
+                )
+            );
+            EditForm(FrmSQMPTNCR);
+            Concurrent(
+                Clear(colSpectoTrucker);
+                ForAll(
+                    ForAll(
+                        Split(
+                            gblSQMPTNCRList.SpecificRequestoTrucker,
+                            "|"
+                        ),
+                        {Result: ThisRecord.Value}
+                    ).Result,
+                    Collect(
+                        colSpectoTrucker,
+                        {Title: TrimEnds(Result)}
+                    )
+                ),
+                Clear(colTempDeviation);
+                ForAll(
+                    ForAll(
+                        Split(
+                            gblSQMPTNCRList.Deviation,
+                            "|"
+                        ),
+                        {Result: ThisRecord.Value}
+                    ).Result,
+                    Collect(
+                        colTempDeviation,
+                        {Deviation: Result}
+                    )
+                ),
+                Clear(colTempDeviationCategory);
+                ForAll(
+                    ForAll(
+                        Split(
+                            gblSQMPTNCRList.DeviationCategory,
+                            "|"
+                        ),
+                        {Result: ThisRecord.Value}
+                    ).Result,
+                    Collect(
+                        colTempDeviationCategory,
+                        {DeviationCategory: Result}
+                    )
+                ),
+                Clear(colTempTNCRFrequency);
+                ForAll(
+                    ForAll(
+                        Split(
+                            gblSQMPTNCRList.Frequency,
+                            "|"
+                        ),
+                        {Result: ThisRecord.Value}
+                    ).Result,
+                    Collect(
+                        colTempTNCRFrequency,
+                        {Frequency: Result}
+                    )
+                )
+            );
+            Clear(colTNCRDev);
+            ForAll(
+                FirstN(
+                    Sequence(14),
+                    Min(
+                        CountRows(colTempDeviation),
+                        CountRows(colTempDeviationCategory),
+                        CountRows(colTempTNCRFrequency)
+                    )
+                ),
+                Collect(
+                    colTNCRDev,
+                    Patch(
+                        {},
+                        Last(
+                            FirstN(
+                                colTempDeviation,
+                                Value
+                            )
+                        ),
+                        Last(
+                            FirstN(
+                                colTempDeviationCategory,
+                                Value
+                            )
+                        ),
+                        Last(
+                            FirstN(
+                                colTempTNCRFrequency,
+                                Value
+                            )
+                        )
+                    )
+                )
+            )
+        );
+        Concurrent(
+            Set(
+                gblPCard,
+                {
+                    Height: 43,
+                    BorderColor: RGBA(
+                        166,
+                        166,
+                        166,
+                        1
+                    ),
+                    BorderStyle: BorderStyle.Solid,
+                    BorderThickness: 0
+                }
+            ),
+            Set(
+                gblPLabel,
+                {
+                    Font: Font.Arial,
+                    FontWeight: FontWeight.Semibold,
+                    Color: RGBA(
+                        51,
+                        51,
+                        51,
+                        1
+                    ),
+                    Fill: RGBA(
+                        0,
+                        0,
+                        0,
+                        0
+                    ),
+                    BorderColor: RGBA(
+                        0,
+                        0,
+                        0,
+                        0
+                    ),
+                    BorderStyle: BorderStyle.None,
+                    BorderThickness: 2,
+                    Size: 11,
+                    Height: 36,
+                    X: 30,
+                    Y: 5
+                }
+            ),
+            Set(
+                gblPInput,
+                {
+                    Font: Font.Arial,
+                    MaxLength: 40,
+                    FontWeight: FontWeight.Normal,
+                    Color: RGBA(
+                        51,
+                        51,
+                        51,
+                        1
+                    ),
+                    Fill: RGBA(
+                        255,
+                        255,
+                        255,
+                        1
+                    ),
+                    Size: 11,
+                    Height: 26,
+                    Y: 10,
+                    ChevronFill: RGBA(
+                        33,
+                        33,
+                        33,
+                        1
+                    ),
+                    ChevronHoverFill: RGBA(
+                        33,
+                        33,
+                        33,
+                        1
+                    ),
+                    ChevronBackground: RGBA(
+                        255,
+                        255,
+                        255,
+                        1
+                    ),
+                    ChevronHoverBackground: RGBA(
+                        212,
+                        212,
+                        212,
+                        1
+                    ),
+                    BorderColor: RGBA(
+                        166,
+                        166,
+                        166,
+                        1
+                    ),
+                    BorderStyle: BorderStyle.Solid,
+                    BorderThickness: 1,
+                    FocusedBorderThickness: 2,
+                    PressedColor: RGBA(
+                        255,
+                        255,
+                        255,
+                        1
+                    ),
+                    PressedBorderColor: ColorFade(
+                        RGBA(
+                            105,
+                            121,
+                            126,
+                            1
+                        ),
+                        -30%
+                    ),
+                    PressedFill: RGBA(
+                        212,
+                        212,
+                        212,
+                        1
+                    ),
+                    HoverColor: RGBA(
+                        51,
+                        51,
+                        51,
+                        1
+                    ),
+                    HoverBorderColor: ColorFade(
+                        RGBA(
+                            105,
+                            121,
+                            126,
+                            1
+                        ),
+                        -30%
+                    ),
+                    HoverFill: RGBA(
+                        0,
+                        0,
+                        0,
+                        0
+                    ),
+                    SelectionTagFill: RGBA(
+                        245,
+                        245,
+                        239,
+                        1
+                    ),
+                    SelectionTagColor: RGBA(
+                        51,
+                        51,
+                        51,
+                        1
+                    )
+                }
+            ),
+            Set(
+                gblPError,
+                {
+                    Font: Font.Arial,
+                    FontWeight: FontWeight.Semibold,
+                    Color: RGBA(
+                        168,
+                        0,
+                        0,
+                        1
+                    ),
+                    Size: 9,
+                    Height: 10,
+                    Fill: RGBA(
+                        0,
+                        0,
+                        0,
+                        0
+                    ),
+                    BorderColor: RGBA(
+                        0,
+                        0,
+                        0,
+                        0
+                    ),
+                    BorderStyle: BorderStyle.None,
+                    BorderThickness: 2
+                }
+            ),
+            Set(
+                gblPComment,
+                {
+                    Font: Font.Arial,
+                    FontWeight: FontWeight.Normal,
+                    Size: 11,
+                    MaxLength: 1000,
+                    Color: RGBA(
+                        51,
+                        51,
+                        51,
+                        1
+                    ),
+                    Fill: RGBA(
+                        255,
+                        255,
+                        255,
+                        1
+                    ),
+                    Height: 78,
+                    Width: 400,
+                    Mode: TextMode.MultiLine,
+                    RadiusTopLeft: 5,
+                    RadiusTopRight: 5,
+                    RadiusBottomLeft: 5,
+                    RadiusBottomRight: 5,
+                    BorderColor: RGBA(
+                        166,
+                        166,
+                        166,
+                        1
+                    ),
+                    BorderThickness: 1,
+                    HoverBorderColor: ColorFade(
+                        RGBA(
+                            66,
+                            87,
+                            245,
+                            1
+                        ),
+                        -30%
+                    ),
+                    HoverColor: RGBA(
+                        51,
+                        51,
+                        51,
+                        1
+                    ),
+                    HoverFill: RGBA(
+                        255,
+                        255,
+                        255,
+                        1
+                    ),
+                    PressedBorderColor: RGBA(
+                        105,
+                        121,
+                        126,
+                        1
+                    ),
+                    PressedColor: RGBA(
+                        51,
+                        51,
+                        51,
+                        1
+                    ),
+                    PressedFill: RGBA(
+                        255,
+                        255,
+                        255,
+                        1
+                    ),
+                    FocusedBorderColor: RGBA(
+                        66,
+                        87,
+                        245,
+                        .5
+                    ),
+                    FocusedBorderThickness: 3
+                }
+            ),
+            Set(
+                gblPButtonApprove,
+                {
+                    BorderColor: RGBA(
+                        24,
+                        214,
+                        55,
+                        1
+                    ),
+                    RadiusTopLeft: 15,
+                    RadiusTopRight: 15,
+                    RadiusBottomLeft: 15,
+                    RadiusBottomRight: 15,
+                    PressedBorderColor: ColorFade(
+                        RGBA(
+                            24,
+                            214,
+                            55,
+                            1
+                        ),
+                        50%
+                    ),
+                    HoverBorderColor: RGBA(
+                        24,
+                        214,
+                        55,
+                        1
+                    ),
+                    BorderStyle: BorderStyle.Solid,
+                    BorderThickness: 2,
+                    FocusedBorderColor: ColorFade(
+                        RGBA(
+                            24,
+                            214,
+                            55,
+                            1
+                        ),
+                        45%
+                    ),
+                    FocusedBorderThickness: 4,
+                    Color: RGBA(
+                        47,
+                        54,
+                        57,
+                        1
+                    ),
+                    PressedColor: RGBA(
+                        255,
+                        255,
+                        255,
+                        1
+                    ),
+                    HoverColor: RGBA(
+                        255,
+                        255,
+                        255,
+                        1
+                    ),
+                    Fill: RGBA(
+                        24,
+                        214,
+                        55,
+                        1
+                    ),
+                    PressedFill: ColorFade(
+                        RGBA(
+                            24,
+                            214,
+                            55,
+                            1
+                        ),
+                        10%
+                    ),
+                    HoverFill: ColorFade(
+                        RGBA(
+                            24,
+                            214,
+                            55,
+                            1
+                        ),
+                        -10%
+                    ),
+                    Font: Font.'Segoe UI',
+                    Size: 13,
+                    FontWeight: FontWeight.Semibold,
+                    Width: 140,
+                    Height: 35
+                }
+            ),
+            Set(
+                gblPButtonReject,
+                {
+                    BorderColor: RGBA(
+                        255,
+                        95,
+                        51,
+                        1
+                    ),
+                    RadiusTopLeft: 15,
+                    RadiusTopRight: 15,
+                    RadiusBottomLeft: 15,
+                    RadiusBottomRight: 15,
+                    PressedBorderColor: ColorFade(
+                        RGBA(
+                            255,
+                            95,
+                            51,
+                            1
+                        ),
+                        50%
+                    ),
+                    HoverBorderColor: RGBA(
+                        255,
+                        95,
+                        51,
+                        1
+                    ),
+                    BorderStyle: BorderStyle.Solid,
+                    BorderThickness: 2,
+                    FocusedBorderColor: ColorFade(
+                        RGBA(
+                            255,
+                            95,
+                            51,
+                            1
+                        ),
+                        45%
+                    ),
+                    FocusedBorderThickness: 4,
+                    Color: RGBA(
+                        47,
+                        54,
+                        57,
+                        1
+                    ),
+                    PressedColor: RGBA(
+                        255,
+                        255,
+                        255,
+                        1
+                    ),
+                    HoverColor: RGBA(
+                        255,
+                        255,
+                        255,
+                        1
+                    ),
+                    Fill: RGBA(
+                        255,
+                        95,
+                        51,
+                        1
+                    ),
+                    PressedFill: ColorFade(
+                        RGBA(
+                            255,
+                            95,
+                            51,
+                            1
+                        ),
+                        10%
+                    ),
+                    HoverFill: ColorFade(
+                        RGBA(
+                            255,
+                            95,
+                            51,
+                            1
+                        ),
+                        -10%
+                    ),
+                    Font: Font.'Segoe UI',
+                    Size: 13,
+                    FontWeight: FontWeight.Semibold,
+                    Width: 140,
+                    Height: 35
+                }
+            )
+        );
+    StartScreen: |-
+        =With({
+        wRole: LookUp(Users,Email=User().Email)},
+        If(
+            !IsBlank(Param("sqmpnoatsid")),
+            ScrnSQMPNAdd,
+            !IsBlank(Param("sqmptncrid")),
+            ScrnTNCRAdd,
+            !IsBlank(Param("rms_id")) && wRole.RRMRole = "Approver" ,
+            ScrnQMS_RRM_Approval,
+            !IsBlank(Param("rms_id")) && wRole.RRMRole = "Uploader" ,
+            ScrnQMS_RRM_Edit,
+            ScrnHome
+        ))
+        /**
+        If(!IsBlank(Param("sqmpnoatsid")),
+            ScrnHome,
+            ScrnSQMPNAdd
+        )
+        **/
+
+    Host As hostControl.DefaultHostControlVariant:
+        OnCancel: =false
+        OnEdit: =false
+        OnNew: =false
+        OnSave: =false
+        OnView: =false
+

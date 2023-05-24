@@ -1,0 +1,9 @@
+[
+  {
+    "AddinConnectorId": "5a5b0942-8dcb-45b5-90ca-082cd4a51db8",
+    "AddinId": "6d1f157d-95bf-406d-b65d-cfd3240f724e",
+    "Name": "QMSUploadDocument",
+    "ServiceKind": "AddinWadl",
+    "Type": "ServiceInfo"
+  }
+]

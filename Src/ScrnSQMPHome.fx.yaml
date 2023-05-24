@@ -1,0 +1,61 @@
+ScrnSQMPHome As screen:
+    LoadingSpinnerColor: =RGBA(0, 120, 212, 1)
+
+    CmpntHeader_7 As CmpntHeader:
+        HeaderText: ="SQMP"
+        HomeNavigation: =ScrnHome
+        Width: =Parent.Width
+
+    GalSQMPFolders As gallery.galleryVertical:
+        BorderColor: =RGBA(166, 166, 166, 1)
+        Height: =Self.TemplateHeight*(CountRows(Self.AllItems)/2)+40
+        Items: =colSQMPFolder
+        Layout: =Layout.Vertical
+        OnSelect: =
+        TemplateSize: =146
+        Transition: =Transition.Pop
+        Width: =Parent.Width *0.5
+        WrapCount: =2
+        X: =Parent.Width*0.5-Self.Width*0.5
+        Y: =Parent.Height*0.5-Self.Height*0.5
+        ZIndex: =2
+
+        Icon3 As icon.Folder:
+            BorderColor: =RGBA(255, 191, 0, 1)
+            Color: =RGBA(255, 191, 0, 1)
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(220, 220, 220, 1)
+            DisabledFill: =RGBA(0, 0, 0, 0)
+            FocusedBorderThickness: =4
+            Height: =86
+            HoverBorderColor: =RGBA(0, 0, 0, 0)
+            HoverColor: =Self.Color
+            HoverFill: =RGBA(0, 0, 0, 0)
+            Icon: =Icon.Folder
+            OnSelect: =Navigate(ThisItem.Screen,ScreenTransition.Fade)
+            PressedBorderColor: =RGBA(0, 0, 0, 0)
+            PressedColor: =Self.Color
+            PressedFill: =RGBA(0, 0, 0, 0)
+            Width: =326
+            ZIndex: =1
+
+        Label1 As label:
+            Align: =Align.Center
+            BorderColor: =RGBA(0, 0, 0, 0)
+            BorderStyle: =BorderStyle.None
+            BorderThickness: =2
+            Color: =RGBA(51, 51, 51, 1)
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            FocusedBorderThickness: =4
+            Font: =Font.'Segoe UI'
+            FontWeight: =FontWeight.Bold
+            Height: =57
+            OnSelect: =Select(Icon3)
+            Size: =13
+            Text: =ThisItem.FolderName
+            Width: =332
+            X: =2
+            Y: =Icon3.Y+Icon3.Height
+            ZIndex: =2
+

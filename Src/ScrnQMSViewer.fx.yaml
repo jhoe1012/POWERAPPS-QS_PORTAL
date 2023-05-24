@@ -1,0 +1,532 @@
+ScrnQMSViewer As screen:
+    LoadingSpinnerColor: =RGBA(0, 120, 212, 1)
+
+    CmpntHeader_2 As CmpntHeader:
+        HeaderText: ="Document List"
+        HomeNavigation: =ScrnHome
+        ZIndex: =2
+
+    "GalQMSList As gallery.'BrowseLayout_Vertical_TwoTextOneImageVariant_ver4.0'":
+        BorderColor: =RGBA(166, 166, 166, 1)
+        Height: =Parent.Height - 70
+        Items: |-
+            =SortByColumns(
+                If(
+                    gblUserInfo.QMSRole = "Uploader",
+                    Filter(
+                        QMS_LIST,
+                        DocumentCategory = DdDocCategory_QmsViewer.Selected.Title//,
+                        //DocumentStatus = "Active"
+                    ),
+                    Filter(
+                        QMS_LIST,
+                        If(
+                            IsMatch(
+                                gblUserInfo.Plant,
+                                "QARM",
+                                MatchOptions.Contains
+                            ),
+                            Plant in (ShowColumns(
+                                Filter(
+                                    'QMS_PLANT_&_AGENCY',
+                                    Group = gblUserInfo.Plant
+                                ),
+                                "Title"
+                            )),
+                            gblUserInfo.Plant in ShareTo || Plant = gblUserInfo.Plant || ShareTo = "ALL"
+                        ),
+                        DocumentStatus = "Active",
+                        DocumentCategory = DdDocCategory_QmsViewer.Selected.Title
+                    )
+                ),
+                "plant",
+                SortOrder.Ascending,
+                "DateIssued",
+                SortOrder.Ascending
+            )
+        Layout: =Layout.Vertical
+        TemplateFill: |-
+            =If(
+                IsBlank(ThisItem.DateExpiring),
+                Color.White,
+                If(
+                    DateDiff(
+                        Now(),
+                        ThisItem.DateExpiring
+                    ) <= ThisItem.NotificationTrigger && DateDiff(
+                        Now(),
+                        ThisItem.DateExpiring
+                    ) >= 1,
+                    RGBA(
+                        255,
+                        240,
+                        77,
+                        1
+                    ),
+                    DateDiff(
+                        Now(),
+                        ThisItem.DateExpiring
+                    ) < 1,
+                    RGBA(
+                        255,
+                        51,
+                        51,
+                        1
+                    ),
+                    RGBA(
+                        0,
+                        255,
+                        68,
+                        1
+                    )
+                )
+            )
+        TemplatePadding: =0
+        TemplateSize: =30
+        Width: =Parent.Width
+        Y: =70
+        ZIndex: =3
+
+        Separator1 As rectangle:
+            BorderColor: =RGBA(0, 0, 0, 0)
+            Fill: =ColorFade(RGBA(0, 120, 212, 1), -30%)
+            Height: =1
+            OnSelect: =Select(Parent)
+            Width: =Parent.TemplateWidth
+            Y: =Parent.TemplateHeight - 1
+            ZIndex: =1
+
+        LblDocumentNameQMS As label:
+            BorderColor: =RGBA(0, 0, 0, 0)
+            BorderStyle: =BorderStyle.None
+            BorderThickness: =2
+            Color: =RGBA(51, 51, 51, 1)
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            FocusedBorderThickness: =4
+            Font: =Font.Arial
+            Height: =29
+            OnSelect: =
+            PaddingLeft: =20
+            Size: =10
+            Text: =ThisItem.DocumentName
+            Width: =264
+            ZIndex: =2
+
+        LblRegNoQMS As label:
+            BorderColor: =RGBA(0, 0, 0, 0)
+            BorderStyle: =BorderStyle.None
+            BorderThickness: =2
+            Color: =LblDocumentNameQMS.Color
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            FocusedBorderThickness: =4
+            Font: =LblDocumentNameQMS.Font
+            FontWeight: =LblDocumentNameQMS.FontWeight
+            Height: =LblDocumentNameQMS.Height
+            OnSelect: =
+            Size: =LblDocumentNameQMS.Size
+            Text: =ThisItem.ReferenceNumber
+            Width: =220
+            X: =LblDocumentNameQMS.X+LblDocumentNameQMS.Width
+            Y: =LblDocumentNameQMS.Y
+            ZIndex: =3
+
+        LblIssuingAgencyQMS As label:
+            BorderColor: =RGBA(0, 0, 0, 0)
+            BorderStyle: =BorderStyle.None
+            BorderThickness: =2
+            Color: =LblDocumentNameQMS.Color
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            FocusedBorderThickness: =4
+            Font: =LblDocumentNameQMS.Font
+            FontWeight: =LblDocumentNameQMS.FontWeight
+            Height: =LblDocumentNameQMS.Height
+            OnSelect: =
+            Size: =LblDocumentNameQMS.Size
+            Text: =ThisItem.IssuingAgency
+            Width: =172
+            X: =LblRegNoQMS.X+LblRegNoQMS.Width
+            Y: =LblDocumentNameQMS.Y
+            ZIndex: =4
+
+        LblDateIssuedQMS As label:
+            BorderColor: =RGBA(0, 0, 0, 0)
+            BorderStyle: =BorderStyle.None
+            BorderThickness: =2
+            Color: =LblDocumentNameQMS.Color
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            FocusedBorderThickness: =4
+            Font: =LblDocumentNameQMS.Font
+            FontWeight: =LblDocumentNameQMS.FontWeight
+            Height: =LblDocumentNameQMS.Height
+            OnSelect: =
+            Size: =LblDocumentNameQMS.Size
+            Text: =Text(ThisItem.DateIssued,"[$-en-US]mmm. dd, yyyy")
+            Width: =133
+            X: =LblIssuingAgencyQMS.X+LblIssuingAgencyQMS.Width
+            Y: =LblDocumentNameQMS.Y
+            ZIndex: =5
+
+        LblDateExpiringQMS As label:
+            BorderColor: =RGBA(0, 0, 0, 0)
+            BorderStyle: =BorderStyle.None
+            BorderThickness: =2
+            Color: =LblDocumentNameQMS.Color
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            FocusedBorderThickness: =4
+            Font: =LblDocumentNameQMS.Font
+            FontWeight: =LblDocumentNameQMS.FontWeight
+            Height: =LblDocumentNameQMS.Height
+            OnSelect: =
+            Size: =LblDocumentNameQMS.Size
+            Text: =Text(ThisItem.DateExpiring,"[$-en-US]mmm. dd, yyyy")
+            Width: =112
+            X: =LblDateIssuedQMS.X+LblDateIssuedQMS.Width
+            Y: =LblDocumentNameQMS.Y
+            ZIndex: =6
+
+        LblDocumentCategoryQMS As label:
+            BorderColor: =RGBA(0, 0, 0, 0)
+            BorderStyle: =BorderStyle.None
+            BorderThickness: =2
+            Color: =LblDocumentNameQMS.Color
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            FocusedBorderThickness: =4
+            Font: =LblDocumentNameQMS.Font
+            FontWeight: =LblDocumentNameQMS.FontWeight
+            Height: =LblDocumentNameQMS.Height
+            OnSelect: =
+            Size: =LblDocumentNameQMS.Size
+            Text: =ThisItem.DocumentCategory
+            Width: =177
+            X: =LblDateExpiringQMS.X+LblDateExpiringQMS.Width
+            Y: =LblDocumentNameQMS.Y
+            ZIndex: =7
+
+        LblPlantQMS As label:
+            BorderColor: =RGBA(0, 0, 0, 0)
+            BorderStyle: =BorderStyle.None
+            BorderThickness: =2
+            Color: =LblDocumentNameQMS.Color
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            FocusedBorderThickness: =4
+            Font: =LblDocumentNameQMS.Font
+            FontWeight: =LblDocumentNameQMS.FontWeight
+            Height: =LblDocumentNameQMS.Height
+            OnSelect: =
+            Size: =LblDocumentNameQMS.Size
+            Text: =ThisItem.Plant
+            Width: =130
+            X: =LblDocumentCategoryQMS.X+LblDocumentCategoryQMS.Width
+            Y: =LblDocumentNameQMS.Y
+            ZIndex: =8
+
+        IcnViewDoc As icon.Document:
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(220, 220, 220, 1)
+            DisabledFill: =RGBA(0, 0, 0, 0)
+            FocusedBorderThickness: =4
+            Height: =30
+            HoverBorderColor: =RGBA(0, 0, 0, 0)
+            HoverColor: =ColorFade(RGBA(0, 120, 212, 1), -30%)
+            HoverFill: =RGBA(0, 0, 0, 0)
+            Icon: =Icon.DocumentWithContent
+            OnSelect: =Launch(Concatenate(ThisItem.SharepointLink,"?web=1"))
+            PressedBorderColor: =RGBA(0, 0, 0, 0)
+            PressedColor: =ColorFade(RGBA(0, 120, 212, 1), -30%)
+            PressedFill: =RGBA(0, 0, 0, 0)
+            Tooltip: |-
+                ="Open Document: " & ThisItem.SharepointLink
+            Width: =30
+            X: =1210
+            ZIndex: =9
+
+        IcnEdit As icon.Edit:
+            BorderColor: =RGBA(166, 166, 166, 1)
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(220, 220, 220, 1)
+            DisabledFill: =RGBA(0, 0, 0, 0)
+            FocusedBorderThickness: =4
+            Height: =30
+            HoverBorderColor: =RGBA(0, 0, 0, 0)
+            HoverColor: =ColorFade(RGBA(0, 120, 212, 1), -30%)
+            HoverFill: =RGBA(0, 0, 0, 0)
+            Icon: =Icon.Edit
+            OnSelect: |-
+                =Set(gblQMSList, GalQMSList.Selected); EditForm(FrmQmsList); Navigate(ScrnQMSAdd,ScreenTransition.Fade, {lclEditPressed:true})
+            PressedBorderColor: =RGBA(0, 0, 0, 0)
+            PressedColor: =ColorFade(RGBA(0, 120, 212, 1), -30%)
+            PressedFill: =RGBA(0, 0, 0, 0)
+            Tooltip: ="Edit " & ThisItem.DocumentName
+            Visible: =BtnAddNewDoc.Visible
+            Width: =30
+            X: =1253
+            ZIndex: =10
+
+    LblNoRecords As label:
+        Align: =LayoutAlignItems.Center
+        BorderColor: =RGBA(0, 0, 0, 0)
+        BorderStyle: =BorderStyle.None
+        BorderThickness: =2
+        Color: =RGBA(51, 51, 51, 1)
+        DisabledBorderColor: =RGBA(0, 0, 0, 0)
+        DisabledColor: =RGBA(166, 166, 166, 1)
+        FocusedBorderThickness: =4
+        Font: =Font.Arial
+        Height: =29
+        Size: =10
+        Text: ="No Records Found"
+        Visible: =If(CountRows(GalQMSList.AllItems) = 0, true,false)
+        Width: =GalQMSList.Width
+        X: =GalQMSList.X
+        Y: =70
+        ZIndex: =17
+
+    GrpControl As group:
+        Height: =5
+        Width: =5
+        X: =40
+        Y: =40
+        ZIndex: =18
+
+        BtnAddNewDoc As button:
+            BorderColor: =RGBA(255, 255, 255, 1)
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            DisabledFill: =RGBA(244, 244, 244, 1)
+            Fill: =RGBA(0, 0, 0, 0)
+            FocusedBorderColor: =ColorFade(Self.Fill, -75%)
+            Font: =Font.Arial
+            FontWeight: =FontWeight.Semibold
+            Height: =25
+            HoverBorderColor: =RGBA(0, 0, 0, 0)
+            HoverColor: =RGBA(255, 255, 255, 1)
+            HoverFill: =ColorFade(RGBA(0, 120, 212, 1), -10%)
+            OnSelect: =NewForm(FrmQmsList);Navigate(ScrnQMSAdd,ScreenTransition.Fade)
+            PaddingLeft: =10
+            PaddingRight: =10
+            PressedBorderColor: =ColorFade(RGBA(0, 120, 212, 1), -50%)
+            PressedColor: =RGBA(255, 255, 255, 1)
+            PressedFill: =ColorFade(RGBA(0, 120, 212, 1), -30%)
+            RadiusBottomLeft: =15
+            RadiusBottomRight: =15
+            RadiusTopLeft: =15
+            RadiusTopRight: =15
+            Size: =12
+            Text: ="Add Document"
+            Visible: =gblUserInfo.QMSRole = "Uploader" 
+            X: =854
+            Y: =2
+            ZIndex: =5
+
+        DdDocCategory_QmsViewer As dropdown:
+            BorderColor: =RGBA(166, 166, 166, 1)
+            BorderThickness: =1
+            ChevronBackground: =RGBA(255, 255, 255, 1)
+            ChevronDisabledBackground: =RGBA(244, 244, 244, 1)
+            ChevronDisabledFill: =RGBA(166, 166, 166, 1)
+            ChevronFill: =RGBA(33, 33, 33, 1)
+            ChevronHoverBackground: =RGBA(212, 212, 212, 1)
+            ChevronHoverFill: =RGBA(33, 33, 33, 1)
+            Color: =RGBA(51, 51, 51, 1)
+            Default: =""
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            DisabledFill: =RGBA(244, 244, 244, 1)
+            FocusedBorderThickness: =2
+            Font: =Font.Arial
+            Height: =26
+            HoverBorderColor: =ColorFade(RGBA(0, 120, 212, 1), -30%)
+            HoverColor: =RGBA(51, 51, 51, 1)
+            HoverFill: =RGBA(212, 212, 212, 1)
+            Items: ='QMS_SUB-FOLDER'
+            PaddingBottom: =5
+            PaddingLeft: =12
+            PaddingRight: =5
+            PaddingTop: =5
+            PressedBorderColor: =ColorFade(RGBA(0, 120, 212, 1), -30%)
+            PressedColor: =RGBA(255, 255, 255, 1)
+            PressedFill: =RGBA(0, 120, 212, 1)
+            SelectionFill: =RGBA(0, 120, 212, 1)
+            Size: =10
+            Width: =138
+            X: =1188
+            Y: =2
+            ZIndex: =15
+
+        LblforDdDocCat As label:
+            BorderColor: =RGBA(0, 0, 0, 0)
+            BorderStyle: =BorderStyle.None
+            BorderThickness: =2
+            Color: =RGBA(51, 51, 51, 1)
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            FocusedBorderThickness: =4
+            Font: =Font.Arial
+            FontWeight: =FontWeight.Bold
+            Height: =26
+            Size: =10
+            Text: ="Document Category"
+            X: =1038
+            Y: =2
+            ZIndex: =16
+
+    GrpTableHeaderQMS As group:
+        Height: =5
+        Width: =5
+        X: =40
+        Y: =40
+        ZIndex: =19
+
+        Rectangle3 As rectangle:
+            BorderColor: =RGBA(0, 0, 0, 0)
+            BorderStyle: =BorderStyle.None
+            DisabledFill: =RGBA(166, 166, 166, 1)
+            Fill: =RGBA(255, 255, 0, 1)
+            FocusedBorderThickness: =4
+            Height: =Label8.Height
+            Width: =1366
+            Y: =CmpntHeader_2.Y+CmpntHeader_2.Height
+            ZIndex: =1
+
+        Label8 As label:
+            BorderStyle: =BorderStyle.None
+            BorderThickness: =0.5
+            Color: =RGBA(51, 51, 51, 1)
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            FocusedBorderThickness: =4
+            Font: =Font.Verdana
+            FontWeight: =FontWeight.Bold
+            PaddingLeft: =20
+            Size: =10
+            Text: ="Document Name"
+            Width: =264
+            Y: =CmpntHeader_2.Y+CmpntHeader_2.Height
+            ZIndex: =6
+
+        Label8_1 As label:
+            BorderStyle: =BorderStyle.None
+            BorderThickness: =0.5
+            Color: =Label8.Color
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            FocusedBorderThickness: =4
+            Font: =Label8.Font
+            FontWeight: =Label8.FontWeight
+            Height: =Label8.Height
+            Size: =Label8.Size
+            Text: =If(DdDocCategory_QmsViewer.Selected.Title = "COA", "Laboratory Report No.","Registration No.")
+            Width: =220
+            X: =Label8.X+Label8.Width
+            Y: =CmpntHeader_2.Y+CmpntHeader_2.Height
+            ZIndex: =7
+
+        Label8_2 As label:
+            BorderStyle: =BorderStyle.None
+            BorderThickness: =0.5
+            Color: =Label8.Color
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            FocusedBorderThickness: =4
+            Font: =Label8.Font
+            FontWeight: =Label8.FontWeight
+            Height: =Label8.Height
+            Size: =Label8.Size
+            Text: =If(DdDocCategory_QmsViewer.Selected.Title = "COA", "Issuing Plant","Issuing Agency")
+            Width: =174
+            X: =Label8_1.X+Label8_1.Width
+            Y: =CmpntHeader_2.Y+CmpntHeader_2.Height
+            ZIndex: =8
+
+        Label8_3 As label:
+            BorderStyle: =BorderStyle.None
+            BorderThickness: =0.5
+            Color: =Label8.Color
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            FocusedBorderThickness: =4
+            Font: =Label8.Font
+            FontWeight: =Label8.FontWeight
+            Height: =Label8.Height
+            Size: =Label8.Size
+            Text: =If(DdDocCategory_QmsViewer.Selected.Title = "COA", "Date Analyzed","Date Issued")
+            Width: =133
+            X: =Label8_2.X+Label8_2.Width
+            Y: =CmpntHeader_2.Y+CmpntHeader_2.Height
+            ZIndex: =9
+
+        Label8_4 As label:
+            BorderStyle: =BorderStyle.None
+            BorderThickness: =0.5
+            Color: =Label8.Color
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            FocusedBorderThickness: =4
+            Font: =Label8.Font
+            FontWeight: =Label8.FontWeight
+            Height: =Label8.Height
+            Size: =Label8.Size
+            Text: ="Date Expiring"
+            Width: =112
+            X: =Label8_3.X+Label8_3.Width
+            Y: =CmpntHeader_2.Y+CmpntHeader_2.Height
+            ZIndex: =10
+
+        Label8_5 As label:
+            BorderStyle: =BorderStyle.None
+            BorderThickness: =0.5
+            Color: =Label8.Color
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            FocusedBorderThickness: =4
+            Font: =Label8.Font
+            FontWeight: =Label8.FontWeight
+            Height: =Label8.Height
+            Size: =Label8.Size
+            Text: ="Document Category"
+            Width: =177
+            X: =Label8_4.Width+Label8_4.X
+            Y: =CmpntHeader_2.Y+CmpntHeader_2.Height
+            ZIndex: =11
+
+        Label8_6 As label:
+            BorderStyle: =BorderStyle.None
+            BorderThickness: =0.5
+            Color: =Label8.Color
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            FocusedBorderThickness: =4
+            Font: =Label8.Font
+            FontWeight: =Label8.FontWeight
+            Height: =Label8.Height
+            Size: =Label8.Size
+            Text: ="Plant"
+            Width: =130
+            X: =Label8_5.Width+Label8_5.X
+            Y: =CmpntHeader_2.Y+CmpntHeader_2.Height
+            ZIndex: =12
+
+        Label8_7 As label:
+            BorderStyle: =BorderStyle.None
+            BorderThickness: =0.5
+            Color: =Label8.Color
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            FocusedBorderThickness: =4
+            Font: =Label8.Font
+            FontWeight: =Label8.FontWeight
+            Height: =Label8.Height
+            Size: =Label8.Size
+            Text: ="Action"
+            Width: =116
+            X: =Label8_6.Width+Label8_6.X
+            Y: =CmpntHeader_2.Y+CmpntHeader_2.Height
+            ZIndex: =13
+

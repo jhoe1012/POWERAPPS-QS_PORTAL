@@ -1,0 +1,942 @@
+ScrnQMSRRD As screen:
+    LoadingSpinnerColor: =RGBA(0, 120, 212, 1)
+
+    CmpntHeader_12 As CmpntHeader:
+        HeaderText: ="Regulatory Document Database"
+        HomeNavigation: =ScrnQMSHome
+        Width: =Parent.Width
+
+    BtnAddNewDoc_QMSAdmin_1 As button:
+        BorderColor: =RGBA(255, 255, 255, 1)
+        DisabledBorderColor: =RGBA(0, 0, 0, 0)
+        DisabledColor: =RGBA(166, 166, 166, 1)
+        DisabledFill: =RGBA(244, 244, 244, 1)
+        Fill: =RGBA(0, 0, 0, 0)
+        FocusedBorderColor: =ColorFade(Self.Fill, -75%)
+        FocusedBorderThickness: =2
+        Font: =Font.Arial
+        FontWeight: =FontWeight.Semibold
+        Height: =25
+        HoverBorderColor: =RGBA(0, 0, 0, 0)
+        HoverColor: =RGBA(255, 255, 255, 1)
+        HoverFill: =ColorFade(RGBA(0, 120, 212, 1), -10%)
+        OnSelect: |-
+            =NewForm(FrmQMSList);Navigate(ScrnQMSAddNew,ScreenTransition.Fade, {lclEditPressed:false})
+        PaddingBottom: =0
+        PaddingLeft: =10
+        PaddingRight: =10
+        PaddingTop: =0
+        PressedBorderColor: =ColorFade(RGBA(0, 120, 212, 1), -50%)
+        PressedColor: =RGBA(255, 255, 255, 1)
+        PressedFill: =ColorFade(RGBA(0, 120, 212, 1), -30%)
+        Size: =14
+        Text: ="Add Document"
+        Visible: =gblUserInfo.QMSRole = "Admin" || gblUserInfo.QMSRole = "Uploader"
+        X: =Parent.Width - Self.Width -200
+        Y: =2
+        ZIndex: =2
+
+    GalRDD As gallery.variableTemplateHeightGallery:
+        BorderColor: =RGBA(166, 166, 166, 1)
+        Height: =Parent.Height - (HtmlQMSRDDHeader.Y+HtmlQMSRDDHeader.Height -2)
+        Items: |-
+            =SortByColumns(
+                Filter(
+                    If(
+                        gblUserInfo.QMSRole = "Viewer" && IsMatch(
+                            gblUserInfo.Plant,
+                            "QARM",
+                            MatchOptions.Contains
+                        ),
+                        Filter(
+                            QMS_LIST,
+                            Plant in (ShowColumns(
+                                Filter(
+                                    'QMS_PLANT_&_AGENCY',
+                                    Group = gblUserInfo.Plant
+                                ),
+                                "Title"
+                            ))
+                        ),
+                        gblUserInfo.QMSRole = "Viewer",
+                        Filter(
+                            QMS_LIST,
+                            gblUserInfo.Plant in ShareTo || Plant = gblUserInfo.Plant || ShareTo = "ALL"
+                        ),
+                        gblUserInfo.QMSRole = "Admin",
+                        QMS_LIST
+                    ),
+                    StartsWith(
+                        ReferenceNumber,
+                        TxtQMSSearchRef.Text
+                    ),
+                    IsBlank(DpQMSDateIssuedFrom.SelectedDate) || IsEmpty(DpQMSDateIssuedFrom.SelectedDate) || IsBlank(DpQMSDateIssuedTo.SelectedDate) || IsEmpty(DpQMSDateIssuedTo.SelectedDate) || ((DateIssued >= DpQMSDateIssuedFrom.SelectedDate) && (DateIssued <= DpQMSDateIssuedTo.SelectedDate)),
+                    IsBlank(DpQMSDateExpireFrom.SelectedDate) || IsEmpty(DpQMSDateExpireFrom.SelectedDate) || IsBlank(DpQMSDateExpireTo.SelectedDate) || IsEmpty(DpQMSDateExpireTo.SelectedDate) || ((DateExpiring >= DpQMSDateExpireFrom.SelectedDate) && (DateExpiring <= DpQMSDateExpireTo.SelectedDate)),
+                    IsBlank(CmbxQMSFolder.Selected.Title) || IsEmpty(CmbxQMSFolder.Selected.Title) || StartsWith(
+                        Path,
+                        CmbxQMSFolder.Selected.Title
+                    ),
+                    IsBlank(CmbxQMSSubFolder.Selected.Title) || IsEmpty(CmbxQMSSubFolder.Selected.Title) || Plant = CmbxQMSSubFolder.Selected.Title,
+                    IsBlank(CmbxQMSDocCat.Selected.Title) || IsEmpty(CmbxQMSDocCat.Selected.Title) || DocumentCategory = CmbxQMSDocCat.Selected.Title,
+                    IsBlank(CmbxQMSDocStatus.Selected.Value) || IsEmpty(CmbxQMSDocStatus.Selected.Value) || DocumentStatus = CmbxQMSDocStatus.Selected.Value,
+                    IsBlank(CmbxQMSActivityCategory.Selected.Title) || IsEmpty(CmbxQMSActivityCategory.Selected.Title) || ActivityCategory = CmbxQMSActivityCategory.Selected.Title,
+                    IsBlank(CmbxQMSProductCategory.Selected.Title) || IsEmpty(CmbxQMSProductCategory.Selected.Title) || ProductCategory2 = CmbxQMSProductCategory.Selected.Title
+                ),
+                "DateIssued",
+                SortOrder.Descending,
+                "plant",
+                SortOrder.Ascending
+            )
+        Layout: =Layout.Vertical
+        TemplateFill: |-
+            =If(
+                IsBlank(ThisItem.DateExpiring),
+                Color.White,
+                If(
+                    DateDiff(
+                        Now(),
+                        ThisItem.DateExpiring
+                    ) <= ThisItem.NotificationTrigger && DateDiff(
+                        Now(),
+                        ThisItem.DateExpiring
+                    ) >= 1,
+                    RGBA(
+                        255,
+                        240,
+                        77,
+                        1
+                    ),
+                    DateDiff(
+                        Now(),
+                        ThisItem.DateExpiring
+                    ) < 1,
+                    RGBA(
+                        255,
+                        51,
+                        51,
+                        1
+                    ),
+                    RGBA(
+                        0,
+                        255,
+                        68,
+                        1
+                    )
+                )
+            )
+        TemplatePadding: =-3
+        TemplateSize: =32
+        Width: =Parent.Width
+        Y: =HtmlQMSRDDHeader.Y+HtmlQMSRDDHeader.Height-2
+        ZIndex: =3
+
+        HtmlQMSRDDDetail As htmlViewer:
+            AutoHeight: =true
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =Parent.TemplateHeight
+            HtmlText: |-
+                ="<table
+                style='table-layout: fixed;width: 100%; border: solid 1px black;border-collapse: collapse; background-color: RGBA(255, 255, 255, 0);text-align:justify;padding:0; margin:0'>
+                <tr>
+                <td
+                style='border: solid 1px black; padding: 5px ;  min-width: 20%; max-width: 20%;width: 20%;'>
+                "& ThisItem.DocumentName &"</td>
+                <td
+                style='border: solid 1px black; padding: 5px ;  min-width: 20%; max-width: 20%;width: 20%;'>
+                " & ThisItem.ReferenceNumber & "</td>
+                <td
+                style='border: solid 1px black; padding: 5px ; min-width: 10%;max-width: 10%;width: 10%;text-align:center;'>
+                " & ThisItem.IssuingAgency & "</td>
+                <td
+                style='border: solid 1px black; padding: 5px ; min-width:10%;max-width:10%;width:10%;'>
+                " & Text(ThisItem.DateIssued, "[$-en-US]mmm. dd, yyyy") & "</td>
+                <td
+                style='border: solid 1px black; padding: 5px ; min-width:10%;max-width:10%;width:10%;'>
+                "& Text(ThisItem.DateExpiring, "[$-en-US]mmm. dd, yyyy")&"</td>
+                <td
+                style='border: solid 1px black; padding: 5px ; min-width: 10%;max-width: 10%;width: 10%;text-align:center;'>
+                "&ThisItem.DocumentCategory&"</td>
+                <td
+                style='border: solid 1px black; padding: 5px ; min-width: 10%;max-width: 10%;width: 10%;'>
+                "&ThisItem.Plant&" </td>
+                <td
+                style='border: solid 1px black; padding: 5px ; min-width: 10%;max-width: 10%;width: 10%;'>
+                </td>
+                </table>"
+            PaddingBottom: =0
+            PaddingLeft: =3
+            PaddingRight: =0
+            PaddingTop: =0
+            Width: =Parent.Width 
+            Y: |
+                =0
+            ZIndex: =1
+
+        IcnViewDoc_2 As icon.Document:
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(220, 220, 220, 1)
+            DisabledFill: =RGBA(0, 0, 0, 0)
+            FocusedBorderThickness: =4
+            Height: =30
+            HoverBorderColor: =RGBA(0, 0, 0, 0)
+            HoverColor: =ColorFade(RGBA(0, 120, 212, 1), -30%)
+            HoverFill: =RGBA(0, 0, 0, 0)
+            Icon: =Icon.DocumentWithContent
+            OnSelect: =Launch(Concatenate(ThisItem.SharepointLink,"?web=1"))
+            PressedBorderColor: =RGBA(0, 0, 0, 0)
+            PressedColor: =ColorFade(RGBA(0, 120, 212, 1), -30%)
+            PressedFill: =RGBA(0, 0, 0, 0)
+            Tooltip: |-
+                ="Open Document: " & ThisItem.SharepointLink
+            Width: =30
+            X: =Parent.Width * 0.91
+            Y: =(HtmlQMSRDDDetail.Height* 0.5 ) - (Self.Height*0.5)
+            ZIndex: =2
+
+        IcnEdit_2 As icon.Edit:
+            BorderColor: =RGBA(166, 166, 166, 1)
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(220, 220, 220, 1)
+            DisabledFill: =RGBA(0, 0, 0, 0)
+            FocusedBorderThickness: =4
+            Height: =30
+            HoverBorderColor: =RGBA(0, 0, 0, 0)
+            HoverColor: =ColorFade(RGBA(0, 120, 212, 1), -30%)
+            HoverFill: =RGBA(0, 0, 0, 0)
+            Icon: =Icon.Edit
+            OnSelect: |-
+                =Set(gblQMSList, GalRDD.Selected); EditForm(FrmQMSList); Navigate(ScrnQMSAddNew,ScreenTransition.Fade, {lclEditPressed:true})
+            PressedBorderColor: =RGBA(0, 0, 0, 0)
+            PressedColor: =ColorFade(RGBA(0, 120, 212, 1), -30%)
+            PressedFill: =RGBA(0, 0, 0, 0)
+            Tooltip: ="Edit " & ThisItem.DocumentName
+            Visible: =gblUserInfo.QMSRole = "Admin" || gblUserInfo.QMSRole = "Uploader"
+            Width: =30
+            X: =IcnViewDoc_2.X+ IcnViewDoc_2.Width+10
+            Y: =(HtmlQMSRDDDetail.Height* 0.5 ) - (Self.Height*0.5)
+            ZIndex: =3
+
+    HtmlQMSRDDHeader As htmlViewer:
+        AutoHeight: =true
+        HtmlText: |-
+            ="<table
+            style='table-layout: fixed;width: 100%; border: solid 1px black;border-collapse: collapse; background-color: RGBA(255, 255, 255, 1);text-align:center;'>
+            <tr>
+            <td
+            style='border: solid 1px black; padding: 5px ;font-weight: bold;  min-width: 20%; max-width: 20%;width: 20%;'>
+            Document Name</td>
+            <td
+            style='border: solid 1px black; padding: 5px ;font-weight: bold;  min-width: 20%; max-width: 20%;width: 20%;'>
+            " & If(
+                CmbxQMSDocCat.Selected.Title = "COA",
+                "Laboratory Report No.",
+                "Registration No."
+            ) & "</td>
+            <td
+            style='border: solid 1px black; padding: 5px ;font-weight: bold; min-width: 10%;max-width: 10%;width: 10%;'>
+            " & If(CmbxQMSDocCat.Selected.Title = "COA",
+                "Issuing Plant",
+                "Issuing Agency"
+            ) & "</td>
+            <td
+            style='border: solid 1px black; padding: 5px ;font-weight: bold; min-width:10%;max-width:10%;width:10%;'>
+            " & If(CmbxQMSDocCat.Selected.Title = "COA",
+                "Date Analyzed",
+                "Date Issued"
+            ) & "</td>
+            <td
+            style='border: solid 1px black; padding: 5px ;font-weight: bold; min-width:10%;max-width:10%;width:10%;'>
+            Date Expiring</td>
+            <td
+            style='border: solid 1px black; padding: 5px ;font-weight: bold; min-width: 10%;max-width: 10%;width: 10%;'>
+            Document Category </td>
+            <td
+            style='border: solid 1px black; padding: 5px ;font-weight: bold; min-width: 10%;max-width: 10%;width: 10%;'>
+            Plant </td>
+            <td
+            style='border: solid 1px black; padding: 5px ;font-weight: bold; min-width: 10%;max-width: 10%;width: 10%;'>
+            Action</td>
+            </table>"
+        PaddingBottom: =0
+        PaddingLeft: =0
+        PaddingRight: =0
+        PaddingTop: =0
+        Width: =Parent.Width
+        Y: =CmpntHeader_12.Y+CmpntHeader_12.Height
+        ZIndex: =4
+
+    IcnFilterSqmp_2 As icon.FilterFlat:
+        BorderColor: =RGBA(166, 166, 166, 1)
+        DisabledBorderColor: =RGBA(0, 0, 0, 0)
+        DisabledColor: =RGBA(220, 220, 220, 1)
+        DisabledFill: =RGBA(0, 0, 0, 0)
+        FocusedBorderThickness: =4
+        Height: =30
+        HoverBorderColor: =RGBA(0, 0, 0, 0)
+        HoverColor: =ColorFade(Self.Color, 30%)
+        HoverFill: =RGBA(0, 0, 0, 0)
+        Icon: =Icon.Filter
+        OnSelect: |
+            =UpdateContext({LclShowFilter : ! LclShowFilter })
+        PressedBorderColor: =RGBA(0, 0, 0, 0)
+        PressedColor: =ColorFade(Self.Color, 30%)
+        PressedFill: =RGBA(0, 0, 0, 0)
+        Tooltip: ="Filter"
+        Width: =52
+        X: =Parent.Width*0.89
+        ZIndex: =5
+
+    GrpQMSFilterRDD As group:
+        Height: =5
+        Width: =5
+        X: =40
+        Y: =40
+        ZIndex: =29
+
+        HtmlFilter_2 As htmlViewer:
+            AutoHeight: =true
+            Height: =Parent.Height-(CmpntHeader_12.Height-CmpntHeader_12.Y)
+            HtmlText: |-
+                ="<div style='margin-left:10px;width:" & Parent.Width/1.5 & "px;height:" & Parent.Height - CmpntHeader_8.Height & "px;background-color:white;box-shadow:0 5px 6px 5px  #ccc; border-radius:10px';> </div>"
+            PaddingRight: =0
+            Visible: =LclShowFilter
+            Width: =Parent.Width/2.3
+            X: =Parent.Width - Self.Width
+            Y: =CmpntHeader_12.Y+CmpntHeader_12.Height
+            ZIndex: =6
+
+        LblRegistration As label:
+            BorderColor: =RGBA(0, 0, 0, 0)
+            BorderStyle: =BorderStyle.None
+            BorderThickness: =2
+            Color: =RGBA(51, 51, 51, 1)
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            FocusedBorderThickness: =4
+            Font: =Font.Arial
+            FontWeight: =FontWeight.Bold
+            Height: =26
+            Size: =12
+            Text: =If(CmbxQMSDocCat.Selected.Title = "COA", "Lab. Report No.", "Registration No.")
+            Visible: =LclShowFilter
+            Width: =170
+            X: =HtmlFilter_2.X +50
+            Y: =LblFilterSqmp_2.Y+LblFilterSqmp_2.Height+5
+            ZIndex: =7
+
+        TxtQMSSearchRef As text:
+            BorderColor: =RGBA(166, 166, 166, 1)
+            Clear: =true
+            Color: =RGBA(51, 51, 51, 1)
+            Default: =""
+            DelayOutput: =true
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            DisabledFill: =RGBA(244, 244, 244, 1)
+            FocusedBorderThickness: =2
+            Font: =Font.Arial
+            Height: =26
+            HintText: =If(CmbxQMSDocCat.Selected.Title = "COA", "Search Lab. Report No.", "Search Registration No.")
+            HoverBorderColor: =ColorFade(RGBA(0, 120, 212, 1), -30%)
+            HoverColor: =RGBA(51, 51, 51, 1)
+            HoverFill: =RGBA(255, 255, 255, 1)
+            PressedBorderColor: =RGBA(0, 120, 212, 1)
+            PressedColor: =RGBA(51, 51, 51, 1)
+            PressedFill: =RGBA(255, 255, 255, 1)
+            RadiusBottomLeft: =2
+            RadiusBottomRight: =2
+            RadiusTopLeft: =2
+            RadiusTopRight: =2
+            Size: =10
+            Visible: =LclShowFilter
+            Width: =HtmlFilter_2.Width/1.9
+            X: =LblRegistration.X+LblRegistration.Width
+            Y: =LblRegistration.Y
+            ZIndex: =8
+
+        LblDateIssued As label:
+            BorderColor: =RGBA(0, 0, 0, 0)
+            BorderStyle: =BorderStyle.None
+            BorderThickness: =2
+            Color: =RGBA(51, 51, 51, 1)
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            FocusedBorderThickness: =4
+            Font: =Font.Arial
+            FontWeight: =FontWeight.Bold
+            Height: =26
+            Size: =12
+            Text: =If(CmbxQMSDocCat.Selected.Title = "COA", "Date Analyzed", "Date Issued")
+            Visible: =LclShowFilter
+            Width: =170
+            X: =HtmlFilter_2.X +50
+            Y: |
+                =LblRegistration.Y+ LblRegistration.Height +10
+            ZIndex: =9
+
+        DpQMSDateIssuedFrom As datepicker:
+            BorderColor: =TxtQMSSearchRef.BorderColor
+            BorderStyle: =TxtQMSSearchRef.BorderStyle
+            BorderThickness: =TxtQMSSearchRef.BorderThickness
+            CalendarHeaderFill: =ColorFade(RGBA(0, 120, 212, 1), -30%)
+            Color: =TxtQMSSearchRef.Color
+            DefaultDate: =
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            DisabledFill: =RGBA(244, 244, 244, 1)
+            FocusedBorderThickness: =TxtQMSSearchRef.FocusedBorderThickness
+            Font: =TxtQMSSearchRef.Font
+            FontWeight: =TxtQMSSearchRef.FontWeight
+            Height: =26
+            HoverBorderColor: =TxtQMSSearchRef.HoverBorderColor
+            HoverDateFill: =RGBA(200, 200, 200, 1)
+            HoverFill: =TxtQMSSearchRef.HoverFill
+            IconBackground: =RGBA(0, 120, 212, 1)
+            InputTextPlaceholder: ="From"
+            IsEditable: =true
+            PaddingLeft: =5
+            PaddingTop: =5
+            PressedBorderColor: =TxtQMSSearchRef.PressedBorderColor
+            PressedFill: =TxtQMSSearchRef.PressedFill
+            SelectedDateFill: =RGBA(0, 120, 212, 1)
+            Size: =TxtQMSSearchRef.Size
+            Visible: =LclShowFilter
+            Width: =HtmlFilter_2.Width/4
+            X: =LblRegistration.X+LblRegistration.Width
+            Y: =LblDateIssued.Y
+            ZIndex: =10
+
+        CmbxQMSDocStatus As combobox:
+            BorderColor: =TxtQMSSearchRef.BorderColor
+            BorderStyle: =TxtQMSSearchRef.BorderStyle
+            BorderThickness: =TxtQMSSearchRef.BorderThickness
+            ChevronBackground: =RGBA(255, 255, 255, 1)
+            ChevronDisabledBackground: =RGBA(244, 244, 244, 1)
+            ChevronDisabledFill: =RGBA(166, 166, 166, 1)
+            ChevronFill: =RGBA(33, 33, 33, 1)
+            ChevronHoverBackground: =RGBA(212, 212, 212, 1)
+            ChevronHoverFill: =RGBA(33, 33, 33, 1)
+            Color: =TxtQMSSearchRef.Color
+            DefaultSelectedItems: |-
+                =Table({Value:"Active"})
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            DisabledFill: =RGBA(244, 244, 244, 1)
+            DisplayFields: =["Value"]
+            FocusedBorderThickness: =TxtQMSSearchRef.FocusedBorderThickness
+            Font: =TxtQMSSearchRef.Font
+            FontWeight: =TxtQMSSearchRef.FontWeight
+            Height: =26
+            HoverBorderColor: =TxtQMSSearchRef.HoverBorderColor
+            HoverColor: =RGBA(51, 51, 51, 1)
+            HoverFill: =Self.SelectionFill
+            InputTextPlaceholder: ="Find items"
+            IsSearchable: =false
+            Items: =["Active","Archive"]
+            PressedBorderColor: =TxtQMSSearchRef.PressedBorderColor
+            PressedColor: =RGBA(255, 255, 255, 1)
+            PressedFill: =Self.SelectionFill
+            SearchFields: =["Value"]
+            SearchItems: =[]
+            SelectionFill: =RGBA(68, 188, 252,1)
+            SelectionTagFill: =RGBA(255,255,255,1)
+            SelectMultiple: =false
+            Size: =TxtQMSSearchRef.Size
+            Visible: =LclShowFilter
+            Width: =HtmlFilter_2.Width/1.9
+            X: =LblDocStatus.X+LblDocStatus.Width
+            Y: =LblDocStatus.Y
+            ZIndex: =11
+
+        DpQMSDateIssuedTo As datepicker:
+            BorderColor: =TxtQMSSearchRef.BorderColor
+            BorderStyle: =TxtQMSSearchRef.BorderStyle
+            BorderThickness: =TxtQMSSearchRef.BorderThickness
+            CalendarHeaderFill: =ColorFade(RGBA(0, 120, 212, 1), -30%)
+            Color: =TxtQMSSearchRef.Color
+            DefaultDate: =
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            DisabledFill: =RGBA(244, 244, 244, 1)
+            FocusedBorderThickness: =TxtQMSSearchRef.FocusedBorderThickness
+            Font: =TxtQMSSearchRef.Font
+            FontWeight: =TxtQMSSearchRef.FontWeight
+            Height: =26
+            HoverBorderColor: =TxtQMSSearchRef.HoverBorderColor
+            HoverDateFill: =RGBA(200, 200, 200, 1)
+            HoverFill: =TxtQMSSearchRef.HoverFill
+            IconBackground: =RGBA(0, 120, 212, 1)
+            InputTextPlaceholder: ="To"
+            IsEditable: =true
+            PaddingLeft: =5
+            PaddingTop: =5
+            PressedBorderColor: =TxtQMSSearchRef.PressedBorderColor
+            PressedFill: =TxtQMSSearchRef.PressedFill
+            SelectedDateFill: =RGBA(0, 120, 212, 1)
+            Size: =TxtQMSSearchRef.Size
+            Visible: =LclShowFilter
+            Width: =HtmlFilter_2.Width/4
+            X: =DpQMSDateIssuedFrom.X+DpQMSDateIssuedFrom.Width + 14
+            Y: =LblDateIssued.Y
+            ZIndex: =12
+
+        LblDateExpire As label:
+            BorderColor: =RGBA(0, 0, 0, 0)
+            BorderStyle: =BorderStyle.None
+            BorderThickness: =2
+            Color: =RGBA(51, 51, 51, 1)
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            FocusedBorderThickness: =4
+            Font: =Font.Arial
+            FontWeight: =FontWeight.Bold
+            Height: =26
+            Size: =12
+            Text: ="Date Expire"
+            Visible: =LclShowFilter
+            Width: =170
+            X: =HtmlFilter_2.X +50
+            Y: =LblDateIssued.Y + LblDateIssued.Height + 10
+            ZIndex: =13
+
+        LblDocStatus As label:
+            BorderColor: =RGBA(0, 0, 0, 0)
+            BorderStyle: =BorderStyle.None
+            BorderThickness: =2
+            Color: =RGBA(51, 51, 51, 1)
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            FocusedBorderThickness: =4
+            Font: =Font.Arial
+            FontWeight: =FontWeight.Bold
+            Height: =26
+            Size: =12
+            Text: ="Document Status"
+            Visible: =LclShowFilter
+            Width: =170
+            X: =HtmlFilter_2.X +50
+            Y: =lblDocCat.Y+lblDocCat.Height + 10
+            ZIndex: =14
+
+        CmbxQMSFolder As combobox:
+            BorderColor: =TxtQMSSearchRef.BorderColor
+            BorderStyle: =TxtQMSSearchRef.BorderStyle
+            BorderThickness: =TxtQMSSearchRef.BorderThickness
+            ChevronBackground: =RGBA(255, 255, 255, 1)
+            ChevronDisabledBackground: =RGBA(244, 244, 244, 1)
+            ChevronDisabledFill: =RGBA(166, 166, 166, 1)
+            ChevronFill: =RGBA(33, 33, 33, 1)
+            ChevronHoverBackground: =RGBA(212, 212, 212, 1)
+            ChevronHoverFill: =RGBA(33, 33, 33, 1)
+            Color: =TxtQMSSearchRef.Color
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            DisabledFill: =RGBA(244, 244, 244, 1)
+            DisplayFields: =["Title"]
+            FocusedBorderThickness: =TxtQMSSearchRef.FocusedBorderThickness
+            Font: =TxtQMSSearchRef.Font
+            FontWeight: =TxtQMSSearchRef.FontWeight
+            Height: =26
+            HoverBorderColor: =TxtQMSSearchRef.HoverBorderColor
+            HoverColor: =RGBA(51, 51, 51, 1)
+            HoverFill: =Self.SelectionFill
+            IsSearchable: =false
+            Items: =colQmsDir
+            PressedBorderColor: =TxtQMSSearchRef.PressedBorderColor
+            PressedColor: =RGBA(255, 255, 255, 1)
+            PressedFill: =Self.SelectionFill
+            SearchFields: =["Title"]
+            SearchItems: =[]
+            SelectionFill: =RGBA(68, 188, 252,1)
+            SelectionTagFill: =RGBA(255,255,255,1)
+            SelectMultiple: =false
+            Size: =TxtQMSSearchRef.Size
+            Visible: =LclShowFilter
+            Width: =HtmlFilter_2.Width/1.9
+            X: =LblRegistration.X+LblRegistration.Width
+            Y: =LblFolder.Y
+            ZIndex: =15
+
+        LblFolder As label:
+            BorderColor: =RGBA(0, 0, 0, 0)
+            BorderStyle: =BorderStyle.None
+            BorderThickness: =2
+            Color: =RGBA(51, 51, 51, 1)
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            FocusedBorderThickness: =4
+            Font: =Font.Arial
+            FontWeight: =FontWeight.Bold
+            Height: =26
+            Size: =12
+            Text: ="Folder"
+            Visible: =LclShowFilter
+            Width: =170
+            X: =HtmlFilter_2.X +50
+            Y: =LblDateExpire.Y+LblDateExpire.Height+10
+            ZIndex: =16
+
+        LblFilterSqmp_2 As label:
+            BorderColor: =RGBA(0, 0, 0, 0)
+            BorderStyle: =BorderStyle.None
+            BorderThickness: =2
+            Color: =RGBA(51, 51, 51, 1)
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            FocusedBorderThickness: =4
+            Font: =Font.Arial
+            FontWeight: =FontWeight.Bold
+            Height: =31
+            Size: =20
+            Text: ="Filter "
+            Visible: =LclShowFilter
+            Width: =225
+            X: =HtmlFilter_2.X +50
+            Y: =HtmlFilter_2.Y + 20
+            ZIndex: =17
+
+        BtnOk_SqmpAdmin_2 As button:
+            BorderColor: =RGBA(54, 176, 75, 1)
+            Color: =RGBA(54, 176, 75, 1)
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            DisabledFill: =RGBA(244, 244, 244, 1)
+            Fill: =RGBA(255, 255, 255, 1)
+            FocusedBorderColor: =ColorFade(Self.BorderColor, -5%)
+            Font: =Font.'Segoe UI'
+            FontWeight: =FontWeight.Semibold
+            Height: =30
+            HoverBorderColor: =ColorFade(Self.BorderColor, -10%)
+            HoverColor: =RGBA(255, 255, 255, 1)
+            HoverFill: =ColorFade(Self.BorderColor, -10%)
+            OnSelect: |-
+                =UpdateContext({LclShowFilter : ! LclShowFilter })
+            PaddingBottom: =10
+            PaddingTop: =10
+            PressedBorderColor: =ColorFade(Self.BorderColor, -50%)
+            PressedColor: =RGBA(255, 255, 255, 1)
+            PressedFill: =ColorFade(Self.BorderColor, -10%)
+            RadiusBottomLeft: =40
+            RadiusBottomRight: =40
+            RadiusTopLeft: =40
+            RadiusTopRight: =40
+            Size: =12
+            Text: ="OK"
+            Visible: =LclShowFilter
+            Width: =150
+            X: =HtmlFilter_2.X + (HtmlFilter_2.Width * 0.5 - Self.Width*0.5)
+            Y: =LblProductCategory.Y+LblProductCategory.Height+50
+            ZIndex: =18
+
+        CmbxQMSSubFolder As combobox:
+            BorderColor: =TxtQMSSearchRef.BorderColor
+            BorderStyle: =TxtQMSSearchRef.BorderStyle
+            BorderThickness: =TxtQMSSearchRef.BorderThickness
+            ChevronBackground: =RGBA(255, 255, 255, 1)
+            ChevronDisabledBackground: =RGBA(244, 244, 244, 1)
+            ChevronDisabledFill: =RGBA(166, 166, 166, 1)
+            ChevronFill: =RGBA(33, 33, 33, 1)
+            ChevronHoverBackground: =RGBA(212, 212, 212, 1)
+            ChevronHoverFill: =RGBA(33, 33, 33, 1)
+            Color: =TxtQMSSearchRef.Color
+            DefaultSelectedItems: |-
+                =If(Self.DisplayMode = DisplayMode.View, Table({Title: gblUserInfo.Plant}))
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            DisabledFill: =RGBA(244, 244, 244, 1)
+            DisplayFields: =["Title"]
+            FocusedBorderThickness: =TxtQMSSearchRef.FocusedBorderThickness
+            Font: =TxtQMSSearchRef.Font
+            FontWeight: =TxtQMSSearchRef.FontWeight
+            Height: =26
+            HoverBorderColor: =TxtQMSSearchRef.HoverBorderColor
+            HoverColor: =RGBA(51, 51, 51, 1)
+            HoverFill: =Self.SelectionFill
+            IsSearchable: =false
+            Items: =Filter(colFolder,DIR_ID=CmbxQMSFolder.Selected.ID)
+            PressedBorderColor: =TxtQMSSearchRef.PressedBorderColor
+            PressedColor: =RGBA(255, 255, 255, 1)
+            PressedFill: =Self.SelectionFill
+            SearchFields: =["Title"]
+            SearchItems: =[]
+            SelectionFill: =RGBA(68, 188, 252,1)
+            SelectionTagFill: =RGBA(255,255,255,1)
+            SelectMultiple: =false
+            Size: =TxtQMSSearchRef.Size
+            Visible: =LclShowFilter
+            Width: =HtmlFilter_2.Width/1.9
+            X: =LblRegistration.X+LblRegistration.Width
+            Y: =LblSubFolder.Y
+            ZIndex: =19
+
+        LblSubFolder As label:
+            BorderColor: =RGBA(0, 0, 0, 0)
+            BorderStyle: =BorderStyle.None
+            BorderThickness: =2
+            Color: =RGBA(51, 51, 51, 1)
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            FocusedBorderThickness: =4
+            Font: =Font.Arial
+            FontWeight: =FontWeight.Bold
+            Height: =26
+            Size: =12
+            Text: ="Sub Folder"
+            Visible: =LclShowFilter
+            Width: =170
+            X: =HtmlFilter_2.X +50
+            Y: =LblFolder.Y+LblFolder.Height+10
+            ZIndex: =20
+
+        CmbxQMSDocCat As combobox:
+            BorderColor: =TxtQMSSearchRef.BorderColor
+            BorderStyle: =TxtQMSSearchRef.BorderStyle
+            BorderThickness: =TxtQMSSearchRef.BorderThickness
+            ChevronBackground: =RGBA(255, 255, 255, 1)
+            ChevronDisabledBackground: =RGBA(244, 244, 244, 1)
+            ChevronDisabledFill: =RGBA(166, 166, 166, 1)
+            ChevronFill: =RGBA(33, 33, 33, 1)
+            ChevronHoverBackground: =RGBA(212, 212, 212, 1)
+            ChevronHoverFill: =RGBA(33, 33, 33, 1)
+            Color: =TxtQMSSearchRef.Color
+            DefaultSelectedItems: |-
+                =If(Self.DisplayMode = DisplayMode.View, Table({Title: gblUserInfo.Plant}))
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            DisabledFill: =RGBA(244, 244, 244, 1)
+            DisplayFields: =["Title"]
+            DisplayMode: = DisplayMode.Edit
+            FocusedBorderThickness: =TxtQMSSearchRef.FocusedBorderThickness
+            Font: =TxtQMSSearchRef.Font
+            FontWeight: =FontWeight.Lighter
+            Height: =26
+            HoverBorderColor: =TxtQMSSearchRef.HoverBorderColor
+            HoverColor: =RGBA(51, 51, 51, 1)
+            HoverFill: =Self.SelectionFill
+            IsSearchable: =false
+            Items: =Filter(colSubFolder, ID in CmbxQMSSubFolder.Selected.SUB_ID)
+            OnChange: |-
+                =Reset(CmbxQMSProductCategory);
+                Reset(CmbxQMSActivityCategory)
+            PressedBorderColor: =TxtQMSSearchRef.PressedBorderColor
+            PressedColor: =RGBA(255, 255, 255, 1)
+            PressedFill: =Self.SelectionFill
+            SearchFields: =["Title"]
+            SearchItems: =[]
+            SelectionFill: =RGBA(68, 188, 252,1)
+            SelectionTagFill: =RGBA(255,255,255,1)
+            SelectMultiple: =false
+            Size: =TxtQMSSearchRef.Size
+            Visible: =LclShowFilter
+            Width: =HtmlFilter_2.Width/1.9
+            X: =LblRegistration.X+LblRegistration.Width
+            Y: =lblDocCat.Y
+            ZIndex: =21
+
+        lblDocCat As label:
+            BorderColor: =RGBA(0, 0, 0, 0)
+            BorderStyle: =BorderStyle.None
+            BorderThickness: =2
+            Color: =RGBA(51, 51, 51, 1)
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            FocusedBorderThickness: =4
+            Font: =Font.Arial
+            FontWeight: =FontWeight.Bold
+            Height: =26
+            Size: =12
+            Text: ="Document Category"
+            Visible: =LclShowFilter
+            Width: =170
+            X: =HtmlFilter_2.X +50
+            Y: =LblSubFolder.Y+LblSubFolder.Height+10
+            ZIndex: =22
+
+        CmbxQMSActivityCategory As combobox:
+            BorderColor: =TxtQMSSearchRef.BorderColor
+            BorderStyle: =TxtQMSSearchRef.BorderStyle
+            BorderThickness: =TxtQMSSearchRef.BorderThickness
+            ChevronBackground: =RGBA(255, 255, 255, 1)
+            ChevronDisabledBackground: =RGBA(244, 244, 244, 1)
+            ChevronDisabledFill: =RGBA(166, 166, 166, 1)
+            ChevronFill: =RGBA(33, 33, 33, 1)
+            ChevronHoverBackground: =RGBA(212, 212, 212, 1)
+            ChevronHoverFill: =RGBA(33, 33, 33, 1)
+            Color: =TxtQMSSearchRef.Color
+            DefaultSelectedItems: =If(Self.DisplayMode=DisplayMode.View,Filter(Users,Title=gblUserInfo.Title))
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            DisabledFill: =RGBA(244, 244, 244, 1)
+            DisplayFields: =["Title"]
+            DisplayMode: |
+                =If(gblUserInfo.SQMPRole="Admin"&&gblUserInfo.Department="PROCUREMENT",DisplayMode.View,DisplayMode.Edit)
+                //DisplayMode.Edit
+            FocusedBorderThickness: =TxtQMSSearchRef.FocusedBorderThickness
+            Font: =TxtQMSSearchRef.Font
+            FontWeight: =FontWeight.Lighter
+            Height: =26
+            HoverBorderColor: =TxtQMSSearchRef.HoverBorderColor
+            HoverColor: =RGBA(51, 51, 51, 1)
+            HoverFill: =Self.SelectionFill
+            InputTextPlaceholder: ="Activity Category"
+            Items: =colQMSActivityCategory
+            PressedBorderColor: =TxtQMSSearchRef.PressedBorderColor
+            PressedColor: =RGBA(255, 255, 255, 1)
+            PressedFill: =Self.SelectionFill
+            SearchFields: =["Title"]
+            SearchItems: =Search(colQMSActivityCategory,CmbxQMSActivityCategory.SearchText,"Title")
+            SelectionFill: =RGBA(68, 188, 252,1)
+            SelectionTagFill: =RGBA(255,255,255,1)
+            SelectMultiple: =false
+            Size: =TxtQMSSearchRef.Size
+            Visible: =LclShowFilter && CmbxQMSDocCat.Selected.Title = "LTO"
+            Width: =HtmlFilter_2.Width/1.9
+            X: =992
+            Y: =LblActivityCategory.Y
+            ZIndex: =23
+
+        LblActivityCategory As label:
+            BorderColor: =RGBA(0, 0, 0, 0)
+            BorderStyle: =BorderStyle.None
+            BorderThickness: =2
+            Color: =RGBA(51, 51, 51, 1)
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            FocusedBorderThickness: =4
+            Font: =Font.Arial
+            FontWeight: =FontWeight.Bold
+            Height: =26
+            Size: =12
+            Text: ="Activity Category"
+            Visible: =LclShowFilter && CmbxQMSDocCat.Selected.Title = "LTO"
+            Width: =170
+            X: =HtmlFilter_2.X +50
+            Y: =LblDocStatus.Y+LblDocStatus.Height+10
+            ZIndex: =24
+
+        DpQMSDateExpireFrom As datepicker:
+            BorderColor: =TxtQMSSearchRef.BorderColor
+            BorderStyle: =TxtQMSSearchRef.BorderStyle
+            BorderThickness: =TxtQMSSearchRef.BorderThickness
+            CalendarHeaderFill: =ColorFade(RGBA(0, 120, 212, 1), -30%)
+            Color: =TxtQMSSearchRef.Color
+            DefaultDate: =
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            DisabledFill: =RGBA(244, 244, 244, 1)
+            FocusedBorderThickness: =TxtQMSSearchRef.FocusedBorderThickness
+            Font: =TxtQMSSearchRef.Font
+            FontWeight: =TxtQMSSearchRef.FontWeight
+            Height: =26
+            HoverBorderColor: =TxtQMSSearchRef.HoverBorderColor
+            HoverDateFill: =RGBA(200, 200, 200, 1)
+            HoverFill: =TxtQMSSearchRef.HoverFill
+            IconBackground: =RGBA(0, 120, 212, 1)
+            InputTextPlaceholder: ="From"
+            IsEditable: =true
+            PaddingLeft: =5
+            PaddingTop: =5
+            PressedBorderColor: =TxtQMSSearchRef.PressedBorderColor
+            PressedFill: =TxtQMSSearchRef.PressedFill
+            SelectedDateFill: =RGBA(0, 120, 212, 1)
+            Size: =TxtQMSSearchRef.Size
+            Visible: =LclShowFilter
+            Width: =HtmlFilter_2.Width/4
+            X: =LblRegistration.X+LblRegistration.Width
+            Y: =LblDateExpire.Y
+            ZIndex: =25
+
+        DpQMSDateExpireTo As datepicker:
+            BorderColor: =TxtQMSSearchRef.BorderColor
+            BorderStyle: =TxtQMSSearchRef.BorderStyle
+            BorderThickness: =TxtQMSSearchRef.BorderThickness
+            CalendarHeaderFill: =ColorFade(RGBA(0, 120, 212, 1), -30%)
+            Color: =TxtQMSSearchRef.Color
+            DefaultDate: =
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            DisabledFill: =RGBA(244, 244, 244, 1)
+            FocusedBorderThickness: =TxtQMSSearchRef.FocusedBorderThickness
+            Font: =TxtQMSSearchRef.Font
+            FontWeight: =TxtQMSSearchRef.FontWeight
+            Height: =26
+            HoverBorderColor: =TxtQMSSearchRef.HoverBorderColor
+            HoverDateFill: =RGBA(200, 200, 200, 1)
+            HoverFill: =TxtQMSSearchRef.HoverFill
+            IconBackground: =RGBA(0, 120, 212, 1)
+            InputTextPlaceholder: ="To"
+            IsEditable: =true
+            PaddingLeft: =5
+            PaddingTop: =5
+            PressedBorderColor: =TxtQMSSearchRef.PressedBorderColor
+            PressedFill: =TxtQMSSearchRef.PressedFill
+            SelectedDateFill: =RGBA(0, 120, 212, 1)
+            Size: =TxtQMSSearchRef.Size
+            Visible: =LclShowFilter
+            Width: =HtmlFilter_2.Width/4
+            X: =DpQMSDateExpireFrom.X+DpQMSDateExpireFrom.Width + 14
+            Y: =LblDateExpire.Y
+            ZIndex: =26
+
+        CmbxQMSProductCategory As combobox:
+            BorderColor: =TxtQMSSearchRef.BorderColor
+            BorderStyle: =TxtQMSSearchRef.BorderStyle
+            BorderThickness: =TxtQMSSearchRef.BorderThickness
+            ChevronBackground: =RGBA(255, 255, 255, 1)
+            ChevronDisabledBackground: =RGBA(244, 244, 244, 1)
+            ChevronDisabledFill: =RGBA(166, 166, 166, 1)
+            ChevronFill: =RGBA(33, 33, 33, 1)
+            ChevronHoverBackground: =RGBA(212, 212, 212, 1)
+            ChevronHoverFill: =RGBA(33, 33, 33, 1)
+            Color: =TxtQMSSearchRef.Color
+            DefaultSelectedItems: =If(Self.DisplayMode=DisplayMode.View,Filter(Users,Title=gblUserInfo.Title))
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            DisabledFill: =RGBA(244, 244, 244, 1)
+            DisplayFields: =["Title"]
+            DisplayMode: |
+                =If(gblUserInfo.SQMPRole="Admin"&&gblUserInfo.Department="PROCUREMENT",DisplayMode.View,DisplayMode.Edit)
+                //DisplayMode.Edit
+            FocusedBorderThickness: =TxtQMSSearchRef.FocusedBorderThickness
+            Font: =TxtQMSSearchRef.Font
+            FontWeight: =FontWeight.Lighter
+            Height: =26
+            HoverBorderColor: =TxtQMSSearchRef.HoverBorderColor
+            HoverColor: =RGBA(51, 51, 51, 1)
+            HoverFill: =Self.SelectionFill
+            InputTextPlaceholder: ="Product Category"
+            Items: =colQMSProductCategory
+            PressedBorderColor: =TxtQMSSearchRef.PressedBorderColor
+            PressedColor: =RGBA(255, 255, 255, 1)
+            PressedFill: =Self.SelectionFill
+            SearchFields: =["Title"]
+            SearchItems: =Search(colQMSProductCategory,CmbxQMSProductCategory.SearchText,"Title")
+            SelectionFill: =RGBA(68, 188, 252,1)
+            SelectionTagFill: =RGBA(255,255,255,1)
+            SelectMultiple: =false
+            Size: =TxtQMSSearchRef.Size
+            Visible: =LclShowFilter && CmbxQMSDocCat.Selected.Title = "CPR"
+            Width: =HtmlFilter_2.Width/1.9
+            X: =990
+            Y: =LblProductCategory.Y
+            ZIndex: =27
+
+        LblProductCategory As label:
+            BorderColor: =RGBA(0, 0, 0, 0)
+            BorderStyle: =BorderStyle.None
+            BorderThickness: =2
+            Color: =RGBA(51, 51, 51, 1)
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            FocusedBorderThickness: =4
+            Font: =Font.Arial
+            FontWeight: =FontWeight.Bold
+            Height: =26
+            Size: =12
+            Text: ="Product Category"
+            Visible: =LclShowFilter && CmbxQMSDocCat.Selected.Title = "CPR"
+            Width: =170
+            X: =HtmlFilter_2.X +50
+            Y: =LblDocStatus.Y+LblDocStatus.Height+10
+            ZIndex: =28
+

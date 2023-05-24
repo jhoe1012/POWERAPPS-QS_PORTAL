@@ -1,0 +1,138 @@
+ScrnQMSRRM As screen:
+    LoadingSpinnerColor: =RGBA(0, 120, 212, 1)
+    OnVisible: =
+
+    CmpntHeader_13 As CmpntHeader:
+        HeaderText: ="Regulatory Requirment Monitoring "
+        HomeNavigation: =ScrnQMSHome
+        Width: =Parent.Width
+
+    BtnQMSRRM_ReqDoc As button:
+        BorderColor: =RGBA(255, 255, 255, 1)
+        DisabledBorderColor: =RGBA(0, 0, 0, 0)
+        DisabledColor: =RGBA(166, 166, 166, 1)
+        DisabledFill: =RGBA(244, 244, 244, 1)
+        Fill: =RGBA(0, 0, 0, 0)
+        FocusedBorderColor: =ColorFade(Self.Fill, -75%)
+        FocusedBorderThickness: =2
+        Font: =Font.Arial
+        FontWeight: =FontWeight.Semibold
+        Height: =25
+        HoverBorderColor: =RGBA(0, 0, 0, 0)
+        HoverColor: =RGBA(255, 255, 255, 1)
+        HoverFill: =ColorFade(RGBA(0, 120, 212, 1), -10%)
+        OnSelect: =NewForm(FrmQMS_RRM_Add); Navigate(ScrnQMS_RRM_Add)
+        PaddingBottom: =0
+        PaddingLeft: =10
+        PaddingRight: =10
+        PaddingTop: =0
+        PressedBorderColor: =ColorFade(RGBA(0, 120, 212, 1), -50%)
+        PressedColor: =RGBA(255, 255, 255, 1)
+        PressedFill: =ColorFade(RGBA(0, 120, 212, 1), -30%)
+        RadiusBottomLeft: =5
+        RadiusBottomRight: =5
+        RadiusTopLeft: =5
+        RadiusTopRight: =5
+        Size: =12
+        Text: ="Request Document"
+        Visible: =gblUserInfo.RRMRole = "Admin" || gblUserInfo.RRMRole = "Approver"
+        Width: =250
+        X: =Parent.Width - Self.Width -200
+        Y: =2
+        ZIndex: =2
+
+    GalQMSRRM As gallery.variableTemplateHeightGallery:
+        BorderColor: =RGBA(166, 166, 166, 1)
+        Height: =Parent.Height -( HtmlQMSRRMHeader.Y+HtmlQMSRRMHeader.Height) 
+        Items: =QMS_REGULATORY_RMS
+        Layout: =Layout.Vertical
+        TemplatePadding: |
+            =-3
+        TemplateSize: =32
+        Width: =Parent.Width
+        Y: =HtmlQMSRRMHeader.Y + HtmlQMSRRMHeader.Height
+        ZIndex: =3
+
+        HtmlText5 As htmlViewer:
+            AutoHeight: =true
+            HtmlText: |-
+                ="<table
+                style='table-layout: fixed;width: 100%; border: solid 1px black;border-collapse: collapse; background-color: RGBA(255, 255, 255, 1);text-align:center;'>
+                <tr>
+                <td
+                style='border: solid 1px black; padding: 5px ; min-width: 20%; max-width: 20%;width: 20%;'>
+                " & ThisItem.Department & "</td>
+                <td
+                style='border: solid 1px black; padding: 5px ; min-width: 15%; max-width: 15%;width: 15%;'>
+                "&ThisItem.TypeOfApplication&"</td>
+                <td
+                style='border: solid 1px black; padding: 5px ;min-width: 20%;max-width: 20%;width: 20%;'>
+                "&ThisItem.PersonToNotify&"</td>
+                <td
+                style='border: solid 1px black; padding: 5px ;min-width:10%;max-width:10%;width:10%;'>
+                "&Text(ThisItem.DateRequested, DateTimeFormat.ShortDate)&"</td>
+                <td
+                style='border: solid 1px black; padding: 5px ;min-width:10%;max-width:10%;width:10%;'>
+                "&Proper(ThisItem.Appr_Status)&"</td>
+                <td
+                style='border: solid 1px black; padding: 5px ;min-width:30%;max-width:30%;width:30%;'>
+                "& ThisItem.Appr_Comment &"</td>
+                </table>"
+            OnSelect: |-
+                =Set(
+                    gblQMSRRM,
+                    GalQMSRRM.Selected
+                );
+                If(
+                    gblUserInfo.RRMRole = gblConstRole.APPROVER || gblUserInfo.RRMRole = gblConstRole.ADMIN,
+                    Navigate(
+                        ScrnQMS_RRM_Approval,
+                        ScreenTransition.Fade
+                    );
+                    ViewForm(FrmQMS_RRM_Approval),
+                    Navigate(
+                        ScrnQMS_RRM_Edit,
+                        ScreenTransition.Fade
+                    );
+                    ViewForm(FrmQMS_RRM_Edit)
+                )
+            PaddingBottom: =0
+            PaddingLeft: =4
+            PaddingRight: =0
+            PaddingTop: =0
+            Width: =Parent.Width
+            ZIndex: =1
+
+    HtmlQMSRRMHeader As htmlViewer:
+        AutoHeight: =true
+        HtmlText: |-
+            ="<table
+            style='table-layout: fixed;width: 100%; border: solid 1px black;border-collapse: collapse; background-color: RGBA(255, 255, 255, 1);text-align:center;'>
+            <tr>
+            <td
+            style='border: solid 1px black; padding: 5px ;font-weight: bold;  min-width: 20%; max-width: 20%;width: 20%;'>
+            Department</td>
+            <td
+            style='border: solid 1px black; padding: 5px ;font-weight: bold;  min-width: 15%; max-width: 15%;width: 15%;'>
+            Type of Application</td>
+            <td
+            style='border: solid 1px black; padding: 5px ;font-weight: bold; min-width: 20%;max-width: 20%;width: 20%;'>
+            Person to notify</td>
+            <td
+            style='border: solid 1px black; padding: 5px ;font-weight: bold; min-width:10%;max-width:10%;width:10%;'>
+            Date Requested</td>
+            <td
+            style='border: solid 1px black; padding: 5px ;font-weight: bold; min-width:10%;max-width:10%;width:10%;'>
+            Status</td>
+            <td
+            style='border: solid 1px black; padding: 5px ;font-weight: bold; min-width:30%;max-width:30%;width:30%;'>
+            Comment</td>
+            </table>"
+        PaddingBottom: =0
+        PaddingLeft: =0
+        PaddingRight: =0
+        PaddingTop: =0
+        Width: =Parent.Width
+        Y: =CmpntHeader_12.Y+CmpntHeader_12.Height
+        ZIndex: =4
+
