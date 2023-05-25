@@ -14360,6 +14360,166 @@
             {
               "logicalLocations": [
                 {
+                  "fullyQualifiedName": "ScrnSQMPNAdd.Canvas1_1.DataCard4_1.FrmSQMPNOATS.Associates_name_DataCard1.DataCardValue64.Items"
+                }
+              ],
+              "physicalLocation": {
+                "address": {
+                  "fullyQualifiedName": "ScrnSQMPNAdd.Canvas1_1.DataCard4_1.FrmSQMPNOATS.Associates_name_DataCard1.DataCardValue64.Items",
+                  "relativeAddress": 0
+                },
+                "region": {
+                  "charLength": 5,
+                  "charOffset": 222,
+                  "snippet": {
+                    "text": "Email"
+                  }
+                }
+              },
+              "properties": {
+                "member": "Items",
+                "module": "ScrnSQMPNAdd",
+                "type": "ScrnSQMPNAdd.Canvas1_1.DataCard4_1.FrmSQMPNOATS.Associates_name_DataCard1.DataCardValue64"
+              }
+            }
+          ],
+          "message": {
+            "arguments": [
+              "Email"
+            ],
+            "id": "issue"
+          },
+          "properties": {
+            "level": "Medium"
+          },
+          "ruleId": "app-SuggestRemoteExecutionHint-OpNotSupportedByColumn",
+          "ruleIndex": 2
+        },
+        {
+          "locations": [
+            {
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "ScrnSQMPNAdd.Canvas1_1.DataCard4_1.FrmSQMPNOATS.Associates_name_DataCard1.DataCardValue64.Items"
+                }
+              ],
+              "physicalLocation": {
+                "address": {
+                  "fullyQualifiedName": "ScrnSQMPNAdd.Canvas1_1.DataCard4_1.FrmSQMPNOATS.Associates_name_DataCard1.DataCardValue64.Items",
+                  "relativeAddress": 0
+                },
+                "region": {
+                  "charLength": 2,
+                  "charOffset": 228,
+                  "snippet": {
+                    "text": "<>"
+                  }
+                }
+              },
+              "properties": {
+                "member": "Items",
+                "module": "ScrnSQMPNAdd",
+                "type": "ScrnSQMPNAdd.Canvas1_1.DataCard4_1.FrmSQMPNOATS.Associates_name_DataCard1.DataCardValue64"
+              }
+            }
+          ],
+          "message": {
+            "arguments": [
+              "Filter"
+            ],
+            "id": "issue"
+          },
+          "properties": {
+            "level": "Medium"
+          },
+          "ruleId": "app-SuggestRemoteExecutionHint",
+          "ruleIndex": 0
+        },
+        {
+          "locations": [
+            {
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "ScrnSQMPNAdd.Canvas1_1.DataCard4_1.FrmSQMPNOATS.Associates_name_DataCard1.DataCardValue64.Items"
+                }
+              ],
+              "physicalLocation": {
+                "address": {
+                  "fullyQualifiedName": "ScrnSQMPNAdd.Canvas1_1.DataCard4_1.FrmSQMPNOATS.Associates_name_DataCard1.DataCardValue64.Items",
+                  "relativeAddress": 0
+                },
+                "region": {
+                  "charLength": 5,
+                  "charOffset": 372,
+                  "snippet": {
+                    "text": "Email"
+                  }
+                }
+              },
+              "properties": {
+                "member": "Items",
+                "module": "ScrnSQMPNAdd",
+                "type": "ScrnSQMPNAdd.Canvas1_1.DataCard4_1.FrmSQMPNOATS.Associates_name_DataCard1.DataCardValue64"
+              }
+            }
+          ],
+          "message": {
+            "arguments": [
+              "Email"
+            ],
+            "id": "issue"
+          },
+          "properties": {
+            "level": "Medium"
+          },
+          "ruleId": "app-SuggestRemoteExecutionHint-OpNotSupportedByColumn",
+          "ruleIndex": 2
+        },
+        {
+          "locations": [
+            {
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "ScrnSQMPNAdd.Canvas1_1.DataCard4_1.FrmSQMPNOATS.Associates_name_DataCard1.DataCardValue64.Items"
+                }
+              ],
+              "physicalLocation": {
+                "address": {
+                  "fullyQualifiedName": "ScrnSQMPNAdd.Canvas1_1.DataCard4_1.FrmSQMPNOATS.Associates_name_DataCard1.DataCardValue64.Items",
+                  "relativeAddress": 0
+                },
+                "region": {
+                  "charLength": 2,
+                  "charOffset": 378,
+                  "snippet": {
+                    "text": "<>"
+                  }
+                }
+              },
+              "properties": {
+                "member": "Items",
+                "module": "ScrnSQMPNAdd",
+                "type": "ScrnSQMPNAdd.Canvas1_1.DataCard4_1.FrmSQMPNOATS.Associates_name_DataCard1.DataCardValue64"
+              }
+            }
+          ],
+          "message": {
+            "arguments": [
+              "Filter"
+            ],
+            "id": "issue"
+          },
+          "properties": {
+            "level": "Medium"
+          },
+          "ruleId": "app-SuggestRemoteExecutionHint",
+          "ruleIndex": 0
+        },
+        {
+          "locations": [
+            {
+              "logicalLocations": [
+                {
                   "fullyQualifiedName": "ScrnSQMPNAdd.Canvas1_1.DataCard4_1.FrmSQMPNOATS.Associates_name_DataCard1.DataCardValue64.DefaultSelectedItems"
                 }
               ],
@@ -14674,6 +14834,46 @@
           },
           "ruleId": "app-SuggestRemoteExecutionHint",
           "ruleIndex": 0
+        },
+        {
+          "locations": [
+            {
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "ScrnQMSRRM.GalQMSRRM.Items"
+                }
+              ],
+              "physicalLocation": {
+                "address": {
+                  "fullyQualifiedName": "ScrnQMSRRM.GalQMSRRM.Items",
+                  "relativeAddress": 0
+                },
+                "region": {
+                  "charLength": 2,
+                  "charOffset": 184,
+                  "snippet": {
+                    "text": "in"
+                  }
+                }
+              },
+              "properties": {
+                "member": "Items",
+                "module": "ScrnQMSRRM",
+                "type": "ScrnQMSRRM.GalQMSRRM"
+              }
+            }
+          ],
+          "message": {
+            "arguments": [
+              "PersonToNotifyEmail"
+            ],
+            "id": "issue"
+          },
+          "properties": {
+            "level": "Medium"
+          },
+          "ruleId": "app-SuggestRemoteExecutionHint-OpNotSupportedByColumn",
+          "ruleIndex": 2
         },
         {
           "locations": [
@@ -18210,66 +18410,6 @@
             {
               "logicalLocations": [
                 {
-                  "fullyQualifiedName": "ScrnSQMPNAdd.Canvas1_1.DataCard4_1.FrmSQMPNOATS.SupplierEmail_DataCard1.DataCardValue20.AccessibleLabel"
-                }
-              ],
-              "physicalLocation": {
-                "address": {
-                  "fullyQualifiedName": "ScrnSQMPNAdd.Canvas1_1.DataCard4_1.FrmSQMPNOATS.SupplierEmail_DataCard1.DataCardValue20.AccessibleLabel",
-                  "relativeAddress": 0
-                }
-              },
-              "properties": {
-                "member": "AccessibleLabel",
-                "module": "ScrnSQMPNAdd",
-                "type": "ScrnSQMPNAdd.Canvas1_1.DataCard4_1.FrmSQMPNOATS.SupplierEmail_DataCard1.DataCardValue20"
-              }
-            }
-          ],
-          "message": {
-            "id": "issue"
-          },
-          "properties": {
-            "level": "Medium"
-          },
-          "ruleId": "acc-AccessibleLabelNeeded",
-          "ruleIndex": 3
-        },
-        {
-          "locations": [
-            {
-              "logicalLocations": [
-                {
-                  "fullyQualifiedName": "ScrnSQMPNAdd.Canvas1_1.DataCard4_1.FrmSQMPNOATS.Associates_email_DataCard1.DataCardValue65.AccessibleLabel"
-                }
-              ],
-              "physicalLocation": {
-                "address": {
-                  "fullyQualifiedName": "ScrnSQMPNAdd.Canvas1_1.DataCard4_1.FrmSQMPNOATS.Associates_email_DataCard1.DataCardValue65.AccessibleLabel",
-                  "relativeAddress": 0
-                }
-              },
-              "properties": {
-                "member": "AccessibleLabel",
-                "module": "ScrnSQMPNAdd",
-                "type": "ScrnSQMPNAdd.Canvas1_1.DataCard4_1.FrmSQMPNOATS.Associates_email_DataCard1.DataCardValue65"
-              }
-            }
-          ],
-          "message": {
-            "id": "issue"
-          },
-          "properties": {
-            "level": "Medium"
-          },
-          "ruleId": "acc-AccessibleLabelNeeded",
-          "ruleIndex": 3
-        },
-        {
-          "locations": [
-            {
-              "logicalLocations": [
-                {
                   "fullyQualifiedName": "ScrnSQMPNAdd.Canvas1_1.DataCard4_1.FrmSQMPNOATS.'Type of Non Conformity_DataCard1'.DataCardValue99.AccessibleLabel"
                 }
               ],
@@ -18403,6 +18543,66 @@
                 "member": "AccessibleLabel",
                 "module": "ScrnSQMPNAdd",
                 "type": "ScrnSQMPNAdd.Canvas1_1.DataCard4_1.FrmSQMPNOATS.'CAR Upload_DataCard1'.DataCardValue106"
+              }
+            }
+          ],
+          "message": {
+            "id": "issue"
+          },
+          "properties": {
+            "level": "Medium"
+          },
+          "ruleId": "acc-AccessibleLabelNeeded",
+          "ruleIndex": 3
+        },
+        {
+          "locations": [
+            {
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "ScrnSQMPNAdd.Canvas1_1.DataCard4_1.FrmSQMPNOATS.SupplierEmail_DataCard1.DataCardValue20.AccessibleLabel"
+                }
+              ],
+              "physicalLocation": {
+                "address": {
+                  "fullyQualifiedName": "ScrnSQMPNAdd.Canvas1_1.DataCard4_1.FrmSQMPNOATS.SupplierEmail_DataCard1.DataCardValue20.AccessibleLabel",
+                  "relativeAddress": 0
+                }
+              },
+              "properties": {
+                "member": "AccessibleLabel",
+                "module": "ScrnSQMPNAdd",
+                "type": "ScrnSQMPNAdd.Canvas1_1.DataCard4_1.FrmSQMPNOATS.SupplierEmail_DataCard1.DataCardValue20"
+              }
+            }
+          ],
+          "message": {
+            "id": "issue"
+          },
+          "properties": {
+            "level": "Medium"
+          },
+          "ruleId": "acc-AccessibleLabelNeeded",
+          "ruleIndex": 3
+        },
+        {
+          "locations": [
+            {
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "ScrnSQMPNAdd.Canvas1_1.DataCard4_1.FrmSQMPNOATS.Associates_email_DataCard1.DataCardValue65.AccessibleLabel"
+                }
+              ],
+              "physicalLocation": {
+                "address": {
+                  "fullyQualifiedName": "ScrnSQMPNAdd.Canvas1_1.DataCard4_1.FrmSQMPNOATS.Associates_email_DataCard1.DataCardValue65.AccessibleLabel",
+                  "relativeAddress": 0
+                }
+              },
+              "properties": {
+                "member": "AccessibleLabel",
+                "module": "ScrnSQMPNAdd",
+                "type": "ScrnSQMPNAdd.Canvas1_1.DataCard4_1.FrmSQMPNOATS.Associates_email_DataCard1.DataCardValue65"
               }
             }
           ],
@@ -18840,19 +19040,19 @@
             {
               "logicalLocations": [
                 {
-                  "fullyQualifiedName": "ScrnSQMPNAdmin.TxtSearchNoats.AccessibleLabel"
+                  "fullyQualifiedName": "ScrnSQMPNAdmin.DdStatus.AccessibleLabel"
                 }
               ],
               "physicalLocation": {
                 "address": {
-                  "fullyQualifiedName": "ScrnSQMPNAdmin.TxtSearchNoats.AccessibleLabel",
+                  "fullyQualifiedName": "ScrnSQMPNAdmin.DdStatus.AccessibleLabel",
                   "relativeAddress": 0
                 }
               },
               "properties": {
                 "member": "AccessibleLabel",
                 "module": "ScrnSQMPNAdmin",
-                "type": "ScrnSQMPNAdmin.TxtSearchNoats"
+                "type": "ScrnSQMPNAdmin.DdStatus"
               }
             }
           ],
@@ -18870,19 +19070,49 @@
             {
               "logicalLocations": [
                 {
-                  "fullyQualifiedName": "ScrnSQMPNAdmin.DdStatus.AccessibleLabel"
+                  "fullyQualifiedName": "ScrnSQMPNAdmin.TxtReport.AccessibleLabel"
                 }
               ],
               "physicalLocation": {
                 "address": {
-                  "fullyQualifiedName": "ScrnSQMPNAdmin.DdStatus.AccessibleLabel",
+                  "fullyQualifiedName": "ScrnSQMPNAdmin.TxtReport.AccessibleLabel",
                   "relativeAddress": 0
                 }
               },
               "properties": {
                 "member": "AccessibleLabel",
                 "module": "ScrnSQMPNAdmin",
-                "type": "ScrnSQMPNAdmin.DdStatus"
+                "type": "ScrnSQMPNAdmin.TxtReport"
+              }
+            }
+          ],
+          "message": {
+            "id": "issue"
+          },
+          "properties": {
+            "level": "Medium"
+          },
+          "ruleId": "acc-AccessibleLabelNeeded",
+          "ruleIndex": 3
+        },
+        {
+          "locations": [
+            {
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "ScrnSQMPNAdmin.TxtSearchNoats.AccessibleLabel"
+                }
+              ],
+              "physicalLocation": {
+                "address": {
+                  "fullyQualifiedName": "ScrnSQMPNAdmin.TxtSearchNoats.AccessibleLabel",
+                  "relativeAddress": 0
+                }
+              },
+              "properties": {
+                "member": "AccessibleLabel",
+                "module": "ScrnSQMPNAdmin",
+                "type": "ScrnSQMPNAdmin.TxtSearchNoats"
               }
             }
           ],
@@ -18943,36 +19173,6 @@
                 "member": "AccessibleLabel",
                 "module": "ScrnSQMPNAdmin",
                 "type": "ScrnSQMPNAdmin.DpTo"
-              }
-            }
-          ],
-          "message": {
-            "id": "issue"
-          },
-          "properties": {
-            "level": "Medium"
-          },
-          "ruleId": "acc-AccessibleLabelNeeded",
-          "ruleIndex": 3
-        },
-        {
-          "locations": [
-            {
-              "logicalLocations": [
-                {
-                  "fullyQualifiedName": "ScrnSQMPNAdmin.TxtReport.AccessibleLabel"
-                }
-              ],
-              "physicalLocation": {
-                "address": {
-                  "fullyQualifiedName": "ScrnSQMPNAdmin.TxtReport.AccessibleLabel",
-                  "relativeAddress": 0
-                }
-              },
-              "properties": {
-                "member": "AccessibleLabel",
-                "module": "ScrnSQMPNAdmin",
-                "type": "ScrnSQMPNAdmin.TxtReport"
               }
             }
           ],
@@ -20520,6 +20720,126 @@
             {
               "logicalLocations": [
                 {
+                  "fullyQualifiedName": "ScrnTNCRAdd.Canvas1.DataCard5.FrmSQMPTNCR.Plant_DataCard3.DataCardValue70.AccessibleLabel"
+                }
+              ],
+              "physicalLocation": {
+                "address": {
+                  "fullyQualifiedName": "ScrnTNCRAdd.Canvas1.DataCard5.FrmSQMPTNCR.Plant_DataCard3.DataCardValue70.AccessibleLabel",
+                  "relativeAddress": 0
+                }
+              },
+              "properties": {
+                "member": "AccessibleLabel",
+                "module": "ScrnTNCRAdd",
+                "type": "ScrnTNCRAdd.Canvas1.DataCard5.FrmSQMPTNCR.Plant_DataCard3.DataCardValue70"
+              }
+            }
+          ],
+          "message": {
+            "id": "issue"
+          },
+          "properties": {
+            "level": "Medium"
+          },
+          "ruleId": "acc-AccessibleLabelNeeded",
+          "ruleIndex": 3
+        },
+        {
+          "locations": [
+            {
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "ScrnTNCRAdd.Canvas1.DataCard5.FrmSQMPTNCR.SpecificRequestoTrucker_DataCard2.DataCardValue104.AccessibleLabel"
+                }
+              ],
+              "physicalLocation": {
+                "address": {
+                  "fullyQualifiedName": "ScrnTNCRAdd.Canvas1.DataCard5.FrmSQMPTNCR.SpecificRequestoTrucker_DataCard2.DataCardValue104.AccessibleLabel",
+                  "relativeAddress": 0
+                }
+              },
+              "properties": {
+                "member": "AccessibleLabel",
+                "module": "ScrnTNCRAdd",
+                "type": "ScrnTNCRAdd.Canvas1.DataCard5.FrmSQMPTNCR.SpecificRequestoTrucker_DataCard2.DataCardValue104"
+              }
+            }
+          ],
+          "message": {
+            "id": "issue"
+          },
+          "properties": {
+            "level": "Medium"
+          },
+          "ruleId": "acc-AccessibleLabelNeeded",
+          "ruleIndex": 3
+        },
+        {
+          "locations": [
+            {
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "ScrnTNCRAdd.Canvas1.DataCard5.FrmSQMPTNCR.Deviation_DataCard2.DataCardValue75.AccessibleLabel"
+                }
+              ],
+              "physicalLocation": {
+                "address": {
+                  "fullyQualifiedName": "ScrnTNCRAdd.Canvas1.DataCard5.FrmSQMPTNCR.Deviation_DataCard2.DataCardValue75.AccessibleLabel",
+                  "relativeAddress": 0
+                }
+              },
+              "properties": {
+                "member": "AccessibleLabel",
+                "module": "ScrnTNCRAdd",
+                "type": "ScrnTNCRAdd.Canvas1.DataCard5.FrmSQMPTNCR.Deviation_DataCard2.DataCardValue75"
+              }
+            }
+          ],
+          "message": {
+            "id": "issue"
+          },
+          "properties": {
+            "level": "Medium"
+          },
+          "ruleId": "acc-AccessibleLabelNeeded",
+          "ruleIndex": 3
+        },
+        {
+          "locations": [
+            {
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "ScrnTNCRAdd.Canvas1.DataCard5.FrmSQMPTNCR.DeviationCategory_DataCard2.DataCardValue76.AccessibleLabel"
+                }
+              ],
+              "physicalLocation": {
+                "address": {
+                  "fullyQualifiedName": "ScrnTNCRAdd.Canvas1.DataCard5.FrmSQMPTNCR.DeviationCategory_DataCard2.DataCardValue76.AccessibleLabel",
+                  "relativeAddress": 0
+                }
+              },
+              "properties": {
+                "member": "AccessibleLabel",
+                "module": "ScrnTNCRAdd",
+                "type": "ScrnTNCRAdd.Canvas1.DataCard5.FrmSQMPTNCR.DeviationCategory_DataCard2.DataCardValue76"
+              }
+            }
+          ],
+          "message": {
+            "id": "issue"
+          },
+          "properties": {
+            "level": "Medium"
+          },
+          "ruleId": "acc-AccessibleLabelNeeded",
+          "ruleIndex": 3
+        },
+        {
+          "locations": [
+            {
+              "logicalLocations": [
+                {
                   "fullyQualifiedName": "ScrnTNCRAdd.Canvas1.DataCard5.FrmSQMPTNCR.DataCard9.DataCardKey81_7.TabIndex"
                 }
               ],
@@ -20713,126 +21033,6 @@
                 "member": "AccessibleLabel",
                 "module": "ScrnTNCRAdd",
                 "type": "ScrnTNCRAdd.Canvas1.DataCard5.FrmSQMPTNCR.DataCard9.AttachmentTNCRCar"
-              }
-            }
-          ],
-          "message": {
-            "id": "issue"
-          },
-          "properties": {
-            "level": "Medium"
-          },
-          "ruleId": "acc-AccessibleLabelNeeded",
-          "ruleIndex": 3
-        },
-        {
-          "locations": [
-            {
-              "logicalLocations": [
-                {
-                  "fullyQualifiedName": "ScrnTNCRAdd.Canvas1.DataCard5.FrmSQMPTNCR.Plant_DataCard3.DataCardValue70.AccessibleLabel"
-                }
-              ],
-              "physicalLocation": {
-                "address": {
-                  "fullyQualifiedName": "ScrnTNCRAdd.Canvas1.DataCard5.FrmSQMPTNCR.Plant_DataCard3.DataCardValue70.AccessibleLabel",
-                  "relativeAddress": 0
-                }
-              },
-              "properties": {
-                "member": "AccessibleLabel",
-                "module": "ScrnTNCRAdd",
-                "type": "ScrnTNCRAdd.Canvas1.DataCard5.FrmSQMPTNCR.Plant_DataCard3.DataCardValue70"
-              }
-            }
-          ],
-          "message": {
-            "id": "issue"
-          },
-          "properties": {
-            "level": "Medium"
-          },
-          "ruleId": "acc-AccessibleLabelNeeded",
-          "ruleIndex": 3
-        },
-        {
-          "locations": [
-            {
-              "logicalLocations": [
-                {
-                  "fullyQualifiedName": "ScrnTNCRAdd.Canvas1.DataCard5.FrmSQMPTNCR.SpecificRequestoTrucker_DataCard2.DataCardValue104.AccessibleLabel"
-                }
-              ],
-              "physicalLocation": {
-                "address": {
-                  "fullyQualifiedName": "ScrnTNCRAdd.Canvas1.DataCard5.FrmSQMPTNCR.SpecificRequestoTrucker_DataCard2.DataCardValue104.AccessibleLabel",
-                  "relativeAddress": 0
-                }
-              },
-              "properties": {
-                "member": "AccessibleLabel",
-                "module": "ScrnTNCRAdd",
-                "type": "ScrnTNCRAdd.Canvas1.DataCard5.FrmSQMPTNCR.SpecificRequestoTrucker_DataCard2.DataCardValue104"
-              }
-            }
-          ],
-          "message": {
-            "id": "issue"
-          },
-          "properties": {
-            "level": "Medium"
-          },
-          "ruleId": "acc-AccessibleLabelNeeded",
-          "ruleIndex": 3
-        },
-        {
-          "locations": [
-            {
-              "logicalLocations": [
-                {
-                  "fullyQualifiedName": "ScrnTNCRAdd.Canvas1.DataCard5.FrmSQMPTNCR.Deviation_DataCard2.DataCardValue75.AccessibleLabel"
-                }
-              ],
-              "physicalLocation": {
-                "address": {
-                  "fullyQualifiedName": "ScrnTNCRAdd.Canvas1.DataCard5.FrmSQMPTNCR.Deviation_DataCard2.DataCardValue75.AccessibleLabel",
-                  "relativeAddress": 0
-                }
-              },
-              "properties": {
-                "member": "AccessibleLabel",
-                "module": "ScrnTNCRAdd",
-                "type": "ScrnTNCRAdd.Canvas1.DataCard5.FrmSQMPTNCR.Deviation_DataCard2.DataCardValue75"
-              }
-            }
-          ],
-          "message": {
-            "id": "issue"
-          },
-          "properties": {
-            "level": "Medium"
-          },
-          "ruleId": "acc-AccessibleLabelNeeded",
-          "ruleIndex": 3
-        },
-        {
-          "locations": [
-            {
-              "logicalLocations": [
-                {
-                  "fullyQualifiedName": "ScrnTNCRAdd.Canvas1.DataCard5.FrmSQMPTNCR.DeviationCategory_DataCard2.DataCardValue76.AccessibleLabel"
-                }
-              ],
-              "physicalLocation": {
-                "address": {
-                  "fullyQualifiedName": "ScrnTNCRAdd.Canvas1.DataCard5.FrmSQMPTNCR.DeviationCategory_DataCard2.DataCardValue76.AccessibleLabel",
-                  "relativeAddress": 0
-                }
-              },
-              "properties": {
-                "member": "AccessibleLabel",
-                "module": "ScrnTNCRAdd",
-                "type": "ScrnTNCRAdd.Canvas1.DataCard5.FrmSQMPTNCR.DeviationCategory_DataCard2.DataCardValue76"
               }
             }
           ],

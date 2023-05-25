@@ -44,7 +44,28 @@ ScrnQMSRRM As screen:
     GalQMSRRM As gallery.variableTemplateHeightGallery:
         BorderColor: =RGBA(166, 166, 166, 1)
         Height: =Parent.Height -( HtmlQMSRRMHeader.Y+HtmlQMSRRMHeader.Height) 
-        Items: =QMS_REGULATORY_RMS
+        Items: |-
+            =//QMS_REGULATORY_RMS
+            //MOD GPARAISO (May 24,2023)
+            If(
+                gblUserInfo.RRMRole = "Uploader",
+                SortByColumns(
+                    Filter(
+                        QMS_REGULATORY_RMS,
+                        gblUserEmail in PersonToNotifyEmail 
+                        /*gblUserEmail in (ForAll(
+                            Split(
+                                PersonToNotifyEmail,
+                                ";"
+                            ),
+                            {Result: ThisRecord.Value}
+                        ).Result)*/
+                    ),
+                    "Title",
+                    SortOrder.Ascending
+                ),
+                QMS_REGULATORY_RMS
+            )
         Layout: =Layout.Vertical
         TemplatePadding: |
             =-3
@@ -60,20 +81,32 @@ ScrnQMSRRM As screen:
                 style='table-layout: fixed;width: 100%; border: solid 1px black;border-collapse: collapse; background-color: RGBA(255, 255, 255, 1);text-align:center;'>
                 <tr>
                 <td
-                style='border: solid 1px black; padding: 5px ; min-width: 20%; max-width: 20%;width: 20%;'>
+                style='border: solid 1px black; padding: 5px ; min-width: 21%; max-width: 21%;width: 21%;'>
+                " & ThisItem.RequestNumber & "</td>
+                <td
+                style='border: solid 1px black; padding: 5px ; min-width: 18%; max-width: 18%;width: 18%;'>
                 " & ThisItem.Department & "</td>
+                <td
+                style='border: solid 1px black; padding: 5px ; min-width: 16%; max-width: 16%;width: 16%;'>
+                " & ThisItem.Plant & "</td>
+                <td
+                style='border: solid 1px black; padding: 5px ; min-width: 15%; max-width: 15%;width: 15%;'>
+                "&ThisItem.ProductName&"</td>
                 <td
                 style='border: solid 1px black; padding: 5px ; min-width: 15%; max-width: 15%;width: 15%;'>
                 "&ThisItem.TypeOfApplication&"</td>
                 <td
+                style='border: solid 1px black; padding: 5px ;min-width:12%;max-width:12%;width:12%;'>
+                "&Text(ThisItem.DateRequested, DateTimeFormat.ShortDate)&"</td>
+                <td
                 style='border: solid 1px black; padding: 5px ;min-width: 20%;max-width: 20%;width: 20%;'>
                 "&ThisItem.PersonToNotify&"</td>
                 <td
-                style='border: solid 1px black; padding: 5px ;min-width:10%;max-width:10%;width:10%;'>
-                "&Text(ThisItem.DateRequested, DateTimeFormat.ShortDate)&"</td>
-                <td
-                style='border: solid 1px black; padding: 5px ;min-width:10%;max-width:10%;width:10%;'>
+                style='border: solid 1px black; padding: 5px ;min-width:13%;max-width:13%;width:13%;'>
                 "&Proper(ThisItem.Appr_Status)&"</td>
+                <td
+                style='border: solid 1px black; padding: 5px ;min-width: 20%;max-width: 20%;width: 20%;'>
+                "&ThisItem.Appr_Name&"</td>
                 <td
                 style='border: solid 1px black; padding: 5px ;min-width:30%;max-width:30%;width:30%;'>
                 "& ThisItem.Appr_Comment &"</td>
@@ -110,22 +143,34 @@ ScrnQMSRRM As screen:
             style='table-layout: fixed;width: 100%; border: solid 1px black;border-collapse: collapse; background-color: RGBA(255, 255, 255, 1);text-align:center;'>
             <tr>
             <td
-            style='border: solid 1px black; padding: 5px ;font-weight: bold;  min-width: 20%; max-width: 20%;width: 20%;'>
+            style='border: solid 1px black; padding: 5px ; min-width: 21%; max-width: 21%;width: 21%;'>
+            Request Number</td>
+            <td
+            style='border: solid 1px black; padding: 5px ; min-width: 18%; max-width: 18%;width: 18%;'>
             Department</td>
             <td
-            style='border: solid 1px black; padding: 5px ;font-weight: bold;  min-width: 15%; max-width: 15%;width: 15%;'>
-            Type of Application</td>
+            style='border: solid 1px black; padding: 5px ; min-width: 16%; max-width: 16%;width: 16%;'>
+            Plant</td>
             <td
-            style='border: solid 1px black; padding: 5px ;font-weight: bold; min-width: 20%;max-width: 20%;width: 20%;'>
-            Person to notify</td>
+            style='border: solid 1px black; padding: 5px ; min-width: 15%; max-width: 15%;width: 15%;'>
+            Product Name</td>
             <td
-            style='border: solid 1px black; padding: 5px ;font-weight: bold; min-width:10%;max-width:10%;width:10%;'>
+            style='border: solid 1px black; padding: 5px ; min-width: 15%; max-width: 15%;width: 15%;'>
+            Type Of Application</td>
+            <td
+            style='border: solid 1px black; padding: 5px ;min-width:12%;max-width:12%;width:12%;'>
             Date Requested</td>
             <td
-            style='border: solid 1px black; padding: 5px ;font-weight: bold; min-width:10%;max-width:10%;width:10%;'>
+            style='border: solid 1px black; padding: 5px ;min-width: 20%;max-width: 20%;width: 20%;'>
+            Person to Notify</td>
+            <td
+            style='border: solid 1px black; padding: 5px ;min-width:13%;max-width:13%;width:13%;'>
             Status</td>
             <td
-            style='border: solid 1px black; padding: 5px ;font-weight: bold; min-width:30%;max-width:30%;width:30%;'>
+            style='border: solid 1px black; padding: 5px ;min-width: 20%;max-width: 20%;width: 20%;'>
+            Approver Name</td>
+            <td
+            style='border: solid 1px black; padding: 5px ;min-width:30%;max-width:30%;width:30%;'>
             Comment</td>
             </table>"
         PaddingBottom: =0

@@ -3010,8 +3010,8 @@ ScrnSQMPNAdd As screen:
                         HoverColor: =DataCardValue92.HoverColor
                         HoverFill: =DataCardValue92.HoverFill
                         IsSearchable: =false
-                        Items: |
-                            =/*SortByColumns(
+                        Items: |+
+                            =SortByColumns(
                                 If(
                                     CmbxSupplier.Selected.is_intercompany = 1 ,
                                     Filter(
@@ -3028,11 +3028,8 @@ ScrnSQMPNAdd As screen:
                                     )
                                 ),
                                 "Title"
-                            )*/
-                            SortByColumns(Filter(
-                                Users,
-                                SQMPRole = "Admin"
-                            ), "Title")
+                            )
+                            
                         PressedBorderColor: =DataCardValue92.PressedBorderColor
                         PressedColor: =RGBA(0, 0, 0, 1)
                         PressedFill: =RGBA(255, 255, 255, 1)
