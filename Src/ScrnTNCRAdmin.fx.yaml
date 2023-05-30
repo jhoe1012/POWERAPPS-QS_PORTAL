@@ -306,8 +306,8 @@ ScrnTNCRAdmin As screen:
                     Size: =13
                     Text: =ThisItem.Title
                     Tooltip: =If(gblUserInfo.TNCRRole = "Logistic" && gblUserInfo.Department="SQMP", "Update CAR Status")
-                    Width: =Parent.Width*0.30
-                    X: =LblTNCRCarLink.X+LblTNCRCarLink.Width-420
+                    Width: =Parent.Width*0.275
+                    X: =LblTNCRCarLink.X+LblTNCRCarLink.Width+LblTNCRCarLink.Width
                     ZIndex: =2
 
                 LblTNCRCarLink As label:
@@ -323,7 +323,7 @@ ScrnTNCRAdmin As screen:
                     OnSelect: =Launch(ThisItem.CARSPLINK & "?web=1")
                     Size: =13
                     Text: =ThisItem.Title
-                    Width: =Parent.Width*0.091
+                    Width: =Parent.Width*0.083
                     X: =LblTNCRLink.X+LblTNCRLink.Width
                     ZIndex: =3
 
@@ -340,8 +340,8 @@ ScrnTNCRAdmin As screen:
                     OnSelect: =Launch(ThisItem.TNCRSPLink & "?web=1")
                     Size: =13
                     Text: =ThisItem.Title
-                    Width: =Parent.Width*0.09
-                    X: =Parent.Width*0.32
+                    Width: =Parent.Width*0.084
+                    X: =Parent.Width*0.325
                     ZIndex: =4
 
             HtmlText2_1 As htmlViewer:

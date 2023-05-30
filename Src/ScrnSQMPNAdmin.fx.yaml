@@ -275,6 +275,7 @@ ScrnSQMPNAdmin As screen:
                     Color: =RGBA(51, 51, 51, 1)
                     DisabledBorderColor: =RGBA(0, 0, 0, 0)
                     DisabledColor: =RGBA(166, 166, 166, 1)
+                    Fill: =RGBA(0,0,0,0)
                     FocusedBorderThickness: =4
                     Font: =Font.'Segoe UI'
                     Height: =HtmlText3.Height
@@ -288,7 +289,7 @@ ScrnSQMPNAdmin As screen:
                     Text: =
                     Tooltip: =If(gblUserInfo.SQMPRole = "Admin" && gblUserInfo.Department="SQMP", "Update CAR Status")
                     Width: =Parent.Width*0.23
-                    X: =LblCARUpLink.X+LblCARUpLink.Width-450
+                    X: =LblCARUpLink.X+LblCARUpLink.Width + LblCARUpLink.Width
                     ZIndex: =2
 
                 LblCARUpLink As label:
@@ -296,10 +297,9 @@ ScrnSQMPNAdmin As screen:
                     BorderStyle: =BorderStyle.None
                     BorderThickness: =2
                     Color: =RGBA(51, 51, 51, 1)
-                    DisabledBorderColor: =RGBA(0, 0, 0, 0)
+                    DisabledBorderColor: =RGBA(255, 255, 255, 1)
                     DisabledColor: =RGBA(166, 166, 166, 1)
-                    Fill: |
-                        =RGBA(0, 0, 0,0)
+                    Fill: =RGBA(0,0,0,0)
                     FocusedBorderThickness: =4
                     Font: =Font.'Segoe UI'
                     Height: =HtmlText3.Height
@@ -307,7 +307,7 @@ ScrnSQMPNAdmin As screen:
                     Size: =13
                     Text: =
                     Tooltip: =If(! IsBlank(ThisItem.'CAR Upload'),"Open Document " & ThisItem.CARPSPLink)
-                    Width: = If(gblUserInfo.SQMPRole="Uploader" || gblUserInfo.SQMPRole="Approver",Parent.Width*0.08,Parent.Width*0.10)
+                    Width: = If(gblUserInfo.SQMPRole="Uploader" || gblUserInfo.SQMPRole="Approver",Parent.Width*0.07,Parent.Width*0.9)
                     X: =LblNoatsUpLink.X+LblNoatsUpLink.Width
                     ZIndex: =3
 
@@ -327,7 +327,7 @@ ScrnSQMPNAdmin As screen:
                     Size: =13
                     Text: =
                     Tooltip: =If(! IsBlank(ThisItem.'NOATS Upload'),"Open Document " & ThisItem.NOATSSPLink)
-                    Width: = If(gblUserInfo.SQMPRole="Uploader" || gblUserInfo.SQMPRole="Approver", Parent.Width*0.08, Parent.Width*0.10)
+                    Width: = If(gblUserInfo.SQMPRole="Uploader" || gblUserInfo.SQMPRole="Approver", Parent.Width*0.07, Parent.Width*0.9)
                     X: |
                         = If(gblUserInfo.SQMPRole="Uploader" || gblUserInfo.SQMPRole="Approver",Parent.Width*0.36,Parent.Width*0.37)
                     ZIndex: =4

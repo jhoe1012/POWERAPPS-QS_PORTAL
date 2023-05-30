@@ -9555,7 +9555,7 @@
       "LayoutName": "",
       "MetaDataIDKey": "",
       "Name": "HtmlText3",
-      "ParentIndex": 2,
+      "ParentIndex": 1,
       "PersistMetaDataIDKey": false,
       "Properties": [
         {
@@ -11183,7 +11183,7 @@
       "LayoutName": "",
       "MetaDataIDKey": "",
       "Name": "LblCARStatus",
-      "ParentIndex": 1,
+      "ParentIndex": 4,
       "PersistMetaDataIDKey": false,
       "Properties": [
         {
@@ -11749,7 +11749,14 @@
         "PressedColor",
         "HoverColor",
         "BorderColor",
-        "DisabledBorderColor",
+        {
+          "AFDDataSourceName": "",
+          "AutoRuleBindingEnabled": false,
+          "AutoRuleBindingString": "",
+          "InvariantPropertyName": "DisabledBorderColor",
+          "IsLockable": false,
+          "NameMapSourceSchema": "?"
+        },
         "PressedBorderColor",
         "HoverBorderColor",
         "BorderStyle",
@@ -11842,7 +11849,7 @@
       "LayoutName": "",
       "MetaDataIDKey": "",
       "Name": "LblCARUpLink",
-      "ParentIndex": 4,
+      "ParentIndex": 3,
       "PersistMetaDataIDKey": false,
       "Properties": [
         {
@@ -13133,7 +13140,7 @@
       "LayoutName": "",
       "MetaDataIDKey": "",
       "Name": "LblNoatsUpLink",
-      "ParentIndex": 3,
+      "ParentIndex": 2,
       "PersistMetaDataIDKey": false,
       "Properties": [
         {

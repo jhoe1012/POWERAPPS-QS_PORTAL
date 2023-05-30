@@ -43,28 +43,29 @@ ScrnQMSRRM As screen:
 
     GalQMSRRM As gallery.variableTemplateHeightGallery:
         BorderColor: =RGBA(166, 166, 166, 1)
-        Height: =Parent.Height -( HtmlQMSRRMHeader.Y+HtmlQMSRRMHeader.Height) 
+        Height: =650
         Items: |-
             =//QMS_REGULATORY_RMS
             //MOD GPARAISO (May 24,2023)
             If(
                 gblUserInfo.RRMRole = "Uploader",
-                SortByColumns(
-                    Filter(
-                        QMS_REGULATORY_RMS,
-                        gblUserEmail in PersonToNotifyEmail 
-                        /*gblUserEmail in (ForAll(
-                            Split(
-                                PersonToNotifyEmail,
-                                ";"
-                            ),
-                            {Result: ThisRecord.Value}
-                        ).Result)*/
+                    SortByColumns(
+                        Filter(
+                            QMS_REGULATORY_RMS,
+                            gblUserEmail in PersonToNotifyEmail,
+                            Appr_Status = galTabs.Selected.Value
+                        ),
+                        "Title",
+                        SortOrder.Ascending
                     ),
-                    "Title",
-                    SortOrder.Ascending
-                ),
-                QMS_REGULATORY_RMS
+                    SortByColumns(
+                        Filter(
+                            QMS_REGULATORY_RMS,
+                            Appr_Status = galTabs.Selected.Value
+                        ),
+                        "Title",
+                        SortOrder.Ascending
+                    )
             )
         Layout: =Layout.Vertical
         TemplatePadding: |
@@ -84,10 +85,10 @@ ScrnQMSRRM As screen:
                 style='border: solid 1px black; padding: 5px ; min-width: 21%; max-width: 21%;width: 21%;'>
                 " & ThisItem.RequestNumber & "</td>
                 <td
-                style='border: solid 1px black; padding: 5px ; min-width: 18%; max-width: 18%;width: 18%;'>
+                style='border: solid 1px black; padding: 5px ; min-width: 18.3%; max-width: 18.3%;width: 18.3%;'>
                 " & ThisItem.Department & "</td>
                 <td
-                style='border: solid 1px black; padding: 5px ; min-width: 16%; max-width: 16%;width: 16%;'>
+                style='border: solid 1px black; padding: 5px ; min-width: 16.1%; max-width: 16.1%;width: 16.1%;'>
                 " & ThisItem.Plant & "</td>
                 <td
                 style='border: solid 1px black; padding: 5px ; min-width: 15%; max-width: 15%;width: 15%;'>
@@ -96,13 +97,25 @@ ScrnQMSRRM As screen:
                 style='border: solid 1px black; padding: 5px ; min-width: 15%; max-width: 15%;width: 15%;'>
                 "&ThisItem.TypeOfApplication&"</td>
                 <td
-                style='border: solid 1px black; padding: 5px ;min-width:12%;max-width:12%;width:12%;'>
+                style='border: solid 1px black; padding: 5px ;min-width:12.3%;max-width:12.3%;width:12.3%;'>
                 "&Text(ThisItem.DateRequested, DateTimeFormat.ShortDate)&"</td>
                 <td
-                style='border: solid 1px black; padding: 5px ;min-width: 20%;max-width: 20%;width: 20%;'>
+                style='border: solid 1px black; padding: 5px ;min-width:12.1%;max-width:12.1%;width:12.1%;'>
+                "&Text(ThisItem.dateDeadLine, DateTimeFormat.ShortDate)&"</td>
+                <td
+                style='border: solid 1px black; padding: 5px ;min-width: 20.2%;max-width: 20.2%;width: 20.2%;'>
                 "&ThisItem.PersonToNotify&"</td>
                 <td
-                style='border: solid 1px black; padding: 5px ;min-width:13%;max-width:13%;width:13%;'>
+                style='border: solid 1px black; padding: 5px ;min-width:13%;max-width:13%;width:13%; background-color: " & If(
+                    ThisItem.Appr_Status = "FOR APPROVAL",
+                    "rgb(238, 255, 65)",
+                    ThisItem.Appr_Status = "FOR COMPLIANCE",
+                    "rgb(64, 196, 255)",
+                    ThisItem.Appr_Status = "REJECTED",
+                    "rgb(255, 0, 0)",
+                    ThisItem.Appr_Status = "APPROVED",
+                    "rgb(60, 179, 113)"
+                ) & " ;'> 
                 "&Proper(ThisItem.Appr_Status)&"</td>
                 <td
                 style='border: solid 1px black; padding: 5px ;min-width: 20%;max-width: 20%;width: 20%;'>
@@ -133,11 +146,13 @@ ScrnQMSRRM As screen:
             PaddingLeft: =4
             PaddingRight: =0
             PaddingTop: =0
+            Size: =9
             Width: =Parent.Width
             ZIndex: =1
 
     HtmlQMSRRMHeader As htmlViewer:
         AutoHeight: =true
+        Height: =45
         HtmlText: |-
             ="<table
             style='table-layout: fixed;width: 100%; border: solid 1px black;border-collapse: collapse; background-color: RGBA(255, 255, 255, 1);text-align:center;'>
@@ -161,6 +176,9 @@ ScrnQMSRRM As screen:
             style='border: solid 1px black; padding: 5px ;min-width:12%;max-width:12%;width:12%;'>
             Date Requested</td>
             <td
+            style='border: solid 1px black; padding: 5px ;min-width:12%;max-width:12%;width:12%;'>
+            Date Deadline</td>
+            <td
             style='border: solid 1px black; padding: 5px ;min-width: 20%;max-width: 20%;width: 20%;'>
             Person to Notify</td>
             <td
@@ -177,7 +195,68 @@ ScrnQMSRRM As screen:
         PaddingLeft: =0
         PaddingRight: =0
         PaddingTop: =0
+        Size: =9
         Width: =Parent.Width
-        Y: =CmpntHeader_12.Y+CmpntHeader_12.Height
+        Y: =70
         ZIndex: =4
+
+    galTabs As gallery.galleryHorizontal:
+        BorderColor: =RGBA(166, 166, 166, 1)
+        DelayItemLoading: =true
+        Height: =54
+        Items: =["FOR APPROVAL","FOR COMPLIANCE","REJECTED","APPROVED"]
+        LoadingSpinner: =LoadingSpinner.Data
+        OnSelect: =
+        ShowScrollbar: =false
+        TemplateSize: =If(Self.Layout = Layout.Horizontal, Min(320, Self.Width - 60), Min(320, Self.Height - 60))
+        Width: =Parent.Width
+        Y: =27
+        ZIndex: =9
+
+        Button6 As button:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderThickness: =0
+            Color: =If(ThisItem.IsSelected, RGBA(0, 121, 187, 1), Color.White)
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            DisabledFill: =RGBA(244, 244, 244, 1)
+            Fill: =If(ThisItem.IsSelected,Color.White, Color.LightGray)
+            FocusedBorderColor: =ColorFade(Self.Fill, -75%)
+            FocusedBorderThickness: =0
+            FontWeight: =FontWeight.Semibold
+            Height: =30
+            HoverBorderColor: =RGBA(0, 0, 0, 0)
+            HoverColor: =RGBA(0, 108, 191, 1)
+            HoverFill: =
+            OnSelect: =Select(Parent)
+            PaddingBottom: =0
+            PaddingLeft: =0
+            PaddingRight: =0
+            PaddingTop: =0
+            PressedBorderColor: =
+            PressedColor: =RGBA(255, 255, 255, 1)
+            PressedFill: =ColorFade(RGBA(100, 118, 132, 1), -1%)
+            RadiusBottomLeft: =0
+            RadiusBottomRight: =0
+            RadiusTopLeft: =0
+            RadiusTopRight: =0
+            Size: =11
+            Text: =ThisItem.Value
+            Width: =Parent.Width/4
+            Y: =2
+            ZIndex: =1
+
+        Rectangle4 As rectangle:
+            BorderColor: =RGBA(0, 0, 0, 0)
+            BorderStyle: =BorderStyle.None
+            DisabledFill: =RGBA(166, 166, 166, 1)
+            Fill: =If(ThisItem.IsSelected, RGBA(0, 121, 187, 1), Color.Gray)
+            FocusedBorderThickness: =4
+            Height: =3
+            HoverFill: =RGBA(0, 120, 212, 1)
+            OnSelect: =Select(Parent)
+            PressedFill: =RGBA(0, 120, 212, 1)
+            Width: |
+                =Parent.Width/4
+            ZIndex: =2
 
