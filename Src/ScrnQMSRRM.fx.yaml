@@ -43,29 +43,47 @@ ScrnQMSRRM As screen:
 
     GalQMSRRM As gallery.variableTemplateHeightGallery:
         BorderColor: =RGBA(166, 166, 166, 1)
-        Height: =650
+        Height: =648
         Items: |-
             =//QMS_REGULATORY_RMS
             //MOD GPARAISO (May 24,2023)
             If(
                 gblUserInfo.RRMRole = "Uploader",
-                    SortByColumns(
-                        Filter(
-                            QMS_REGULATORY_RMS,
-                            gblUserEmail in PersonToNotifyEmail,
-                            Appr_Status = galTabs.Selected.Value
+                SortByColumns(
+                    Filter(
+                        QMS_REGULATORY_RMS,
+                        StartsWith(
+                            RequestNumber,
+                            TxtSearchRRM.Text
                         ),
-                        "Title",
-                        SortOrder.Ascending
+                        IsBlank(DpDRTo.SelectedDate) || IsEmpty(DpDRTo.SelectedDate) || IsBlank(DpDRFrom.SelectedDate) || IsEmpty(DpDRFrom.SelectedDate) || ((DateRequested >= DpDRFrom.SelectedDate) && (DateRequested <= DpDRTo.SelectedDate)),
+                        IsBlank(DpDDTo.SelectedDate) || IsEmpty(DpDDTo.SelectedDate) || IsBlank(DpDDFrom.SelectedDate) || IsEmpty(DpDDFrom.SelectedDate) || ((dateDeadLine >= DpDDFrom.SelectedDate) && (dateDeadLine <= DpDDTo.SelectedDate)),
+                        IsBlank(CmbxDepartment.Selected.Result) || IsBlank(CmbxDepartment.Selected.Result) || Department = CmbxDepartment.Selected.Result,
+                        IsBlank(CmbxPlant.Selected.Title) || IsBlank(CmbxPlant.Selected.Title) || Plant = CmbxPlant.Selected.Title,
+                        IsBlank(CmbxTypeofApp.Selected.Result) || IsBlank(CmbxTypeofApp.Selected.Result) || TypeOfApplication = CmbxTypeofApp.Selected.Result,
+                        gblUserEmail in PersonToNotifyEmail,
+                        Appr_Status = galTabs.Selected.Value
                     ),
-                    SortByColumns(
-                        Filter(
-                            QMS_REGULATORY_RMS,
-                            Appr_Status = galTabs.Selected.Value
+                    "Title",
+                    SortOrder.Ascending
+                ),
+                SortByColumns(
+                    Filter(
+                        QMS_REGULATORY_RMS,
+                        StartsWith(
+                            RequestNumber,
+                            TxtSearchRRM.Text
                         ),
-                        "Title",
-                        SortOrder.Ascending
-                    )
+                        IsBlank(DpDRTo.SelectedDate) || IsEmpty(DpDRTo.SelectedDate) || IsBlank(DpDRFrom.SelectedDate) || IsEmpty(DpDRFrom.SelectedDate) || ((DateRequested >= DpDRFrom.SelectedDate) && (DateRequested <= DpDRTo.SelectedDate)),
+                        IsBlank(DpDDTo.SelectedDate) || IsEmpty(DpDDTo.SelectedDate) || IsBlank(DpDDFrom.SelectedDate) || IsEmpty(DpDDFrom.SelectedDate) || ((dateDeadLine >= DpDDFrom.SelectedDate) && (dateDeadLine <= DpDDTo.SelectedDate)),
+                        IsBlank(CmbxDepartment.Selected.Result) || IsBlank(CmbxDepartment.Selected.Result) || Department = CmbxDepartment.Selected.Result,
+                        IsBlank(CmbxPlant.Selected.Title) || IsBlank(CmbxPlant.Selected.Title) || Plant = CmbxPlant.Selected.Title,
+                        IsBlank(CmbxTypeofApp.Selected.Result) || IsBlank(CmbxTypeofApp.Selected.Result) || TypeOfApplication = CmbxTypeofApp.Selected.Result,
+                        Appr_Status = galTabs.Selected.Value
+                    ),
+                    "Title",
+                    SortOrder.Ascending
+                )
             )
         Layout: =Layout.Vertical
         TemplatePadding: |
@@ -92,37 +110,44 @@ ScrnQMSRRM As screen:
                 " & ThisItem.Plant & "</td>
                 <td
                 style='border: solid 1px black; padding: 5px ; min-width: 15%; max-width: 15%;width: 15%;'>
-                "&ThisItem.ProductName&"</td>
+                " & ThisItem.ProductName & "</td>
                 <td
                 style='border: solid 1px black; padding: 5px ; min-width: 15%; max-width: 15%;width: 15%;'>
-                "&ThisItem.TypeOfApplication&"</td>
+                " & ThisItem.TypeOfApplication & "</td>
                 <td
                 style='border: solid 1px black; padding: 5px ;min-width:12.3%;max-width:12.3%;width:12.3%;'>
-                "&Text(ThisItem.DateRequested, DateTimeFormat.ShortDate)&"</td>
+                " & Text(
+                    ThisItem.DateRequested,
+                    DateTimeFormat.ShortDate
+                ) & "</td>
                 <td
                 style='border: solid 1px black; padding: 5px ;min-width:12.1%;max-width:12.1%;width:12.1%;'>
-                "&Text(ThisItem.dateDeadLine, DateTimeFormat.ShortDate)&"</td>
+                " & Text(
+                    ThisItem.dateDeadLine,
+                    DateTimeFormat.ShortDate
+                ) & "</td>
                 <td
                 style='border: solid 1px black; padding: 5px ;min-width: 20.2%;max-width: 20.2%;width: 20.2%;'>
-                "&ThisItem.PersonToNotify&"</td>
+                " & ThisItem.PersonToNotify & "</td>
                 <td
-                style='border: solid 1px black; padding: 5px ;min-width:13%;max-width:13%;width:13%; background-color: " & If(
+                style='border: solid 1px black; padding: 5px ;min-width:13%;max-width:13%;width:13%;'> 
+                <div style='display: flex; align-items: center; justify-content: center; width: 100%;'>
+                <span style='background-color:" & If(
                     ThisItem.Appr_Status = "FOR APPROVAL",
-                    "rgb(238, 255, 65)",
+                    "#FFD700;",
                     ThisItem.Appr_Status = "FOR COMPLIANCE",
-                    "rgb(64, 196, 255)",
+                    "#1E90FF;",
                     ThisItem.Appr_Status = "REJECTED",
-                    "rgb(255, 0, 0)",
+                    "#FF0000;",
                     ThisItem.Appr_Status = "APPROVED",
-                    "rgb(60, 179, 113)"
-                ) & " ;'> 
-                "&Proper(ThisItem.Appr_Status)&"</td>
+                    "#32CD32;"
+                ) & "color: white; border-radius: 12px; padding: 4px 8px; font-size: 12px;'>" & Proper(ThisItem.Appr_Status) & "</span></div> </td>
                 <td
                 style='border: solid 1px black; padding: 5px ;min-width: 20%;max-width: 20%;width: 20%;'>
-                "&ThisItem.Appr_Name&"</td>
+                " & ThisItem.Appr_Name & "</td>
                 <td
                 style='border: solid 1px black; padding: 5px ;min-width:30%;max-width:30%;width:30%;'>
-                "& ThisItem.Appr_Comment &"</td>
+                " & ThisItem.Appr_Comment & "</td>
                 </table>"
             OnSelect: |-
                 =Set(
@@ -197,20 +222,20 @@ ScrnQMSRRM As screen:
         PaddingTop: =0
         Size: =9
         Width: =Parent.Width
-        Y: =70
+        Y: =galTabs.Height + galTabs.Y + 1
         ZIndex: =4
 
     galTabs As gallery.galleryHorizontal:
         BorderColor: =RGBA(166, 166, 166, 1)
         DelayItemLoading: =true
-        Height: =54
+        Height: =40
         Items: =["FOR APPROVAL","FOR COMPLIANCE","REJECTED","APPROVED"]
         LoadingSpinner: =LoadingSpinner.Data
         OnSelect: =
         ShowScrollbar: =false
         TemplateSize: =If(Self.Layout = Layout.Horizontal, Min(320, Self.Width - 60), Min(320, Self.Height - 60))
         Width: =Parent.Width
-        Y: =27
+        Y: =CmpntHeader_13.Y + CmpntHeader_13.Height+1
         ZIndex: =9
 
         Button6 As button:
@@ -259,4 +284,522 @@ ScrnQMSRRM As screen:
             Width: |
                 =Parent.Width/4
             ZIndex: =2
+
+    IcnFilterRRM As icon.FilterFlat:
+        BorderColor: =RGBA(166, 166, 166, 1)
+        DisabledBorderColor: =RGBA(0, 0, 0, 0)
+        DisabledColor: =RGBA(220, 220, 220, 1)
+        DisabledFill: =RGBA(0, 0, 0, 0)
+        FocusedBorderThickness: =4
+        Height: =30
+        HoverBorderColor: =RGBA(0, 0, 0, 0)
+        HoverColor: =ColorFade(Self.Color, 30%)
+        HoverFill: =RGBA(0, 0, 0, 0)
+        Icon: =Icon.Filter
+        OnSelect: |-
+            =UpdateContext({LclShowRRMFilter : ! LclShowRRMFilter })
+        PressedBorderColor: =RGBA(0, 0, 0, 0)
+        PressedColor: =ColorFade(Self.Color, 30%)
+        PressedFill: =RGBA(0, 0, 0, 0)
+        Tooltip: ="Filter"
+        Width: =52
+        X: =BtnQMSRRM_ReqDoc.Width + BtnQMSRRM_ReqDoc.X + 120
+        Y: =BtnQMSRRM_ReqDoc.Y
+        ZIndex: =33
+
+    GrpRRMFilter As group:
+        Height: =5
+        Width: =5
+        X: =840.6153846153846
+        Y: =18
+        ZIndex: =33
+
+        HtmlFilter_3 As htmlViewer:
+            AutoHeight: =true
+            Height: =Parent.Height-(CmpntHeader_8.Height-CmpntHeader_8.Y)
+            HtmlText: |-
+                ="<div style='margin-left:10px;width:" & Parent.Width/1.5 & "px;height:" & Parent.Height - CmpntHeader_8.Height & "px;background-color:white;box-shadow:0 5px 6px 5px  #ccc; border-radius:10px';> </div>"
+            PaddingRight: =0
+            Visible: =LclShowRRMFilter
+            Width: =Parent.Width/2.6
+            X: =Parent.Width-Self.Width
+            Y: =CmpntHeader_8.Y+CmpntHeader_8.Height
+            ZIndex: =10
+
+        LblSearchRRM As label:
+            BorderColor: =RGBA(0, 0, 0, 0)
+            BorderStyle: =BorderStyle.None
+            BorderThickness: =2
+            Color: =RGBA(51, 51, 51, 1)
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            FocusedBorderThickness: =4
+            Font: =Font.Arial
+            FontWeight: =FontWeight.Bold
+            Height: =26
+            Size: =12
+            Text: ="Search "
+            Visible: =LclShowRRMFilter
+            X: =HtmlFilter_3.X +50
+            Y: =LblFilterRRM.Y+LblFilterRRM.Height+20
+            ZIndex: =11
+
+        TxtSearchRRM As text:
+            BorderColor: =RGBA(166, 166, 166, 1)
+            Clear: =true
+            Color: =RGBA(51, 51, 51, 1)
+            Default: =""
+            DelayOutput: =true
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            DisabledFill: =RGBA(244, 244, 244, 1)
+            FocusedBorderThickness: =2
+            Font: =Font.Arial
+            Height: =26
+            HintText: ="Search Request Number"
+            HoverBorderColor: =ColorFade(RGBA(0, 120, 212, 1), -30%)
+            HoverColor: =RGBA(51, 51, 51, 1)
+            HoverFill: =RGBA(255, 255, 255, 1)
+            PressedBorderColor: =RGBA(0, 120, 212, 1)
+            PressedColor: =RGBA(51, 51, 51, 1)
+            PressedFill: =RGBA(255, 255, 255, 1)
+            RadiusBottomLeft: =2
+            RadiusBottomRight: =2
+            RadiusTopLeft: =2
+            RadiusTopRight: =2
+            Size: =10
+            Visible: =LclShowRRMFilter
+            Width: =HtmlFilter_3.Width/1.9
+            X: =LblSearchRRM.X+LblSearchRRM.Width
+            Y: =LblSearchRRM.Y
+            ZIndex: =12
+
+        LblFrom_2 As label:
+            BorderColor: =RGBA(0, 0, 0, 0)
+            BorderStyle: =BorderStyle.None
+            BorderThickness: =2
+            Color: =RGBA(51, 51, 51, 1)
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            FocusedBorderThickness: =4
+            Font: =Font.Arial
+            FontWeight: =FontWeight.Bold
+            Height: =26
+            Size: =12
+            Text: ="Date Requested"
+            Visible: =LclShowRRMFilter
+            X: =HtmlFilter_3.X +50
+            Y: |
+                =LblSearchRRM.Y+ LblSearchRRM.Height +20
+            ZIndex: =13
+
+        DpDRFrom As datepicker:
+            BorderColor: =TxtSearchRRM.BorderColor
+            BorderStyle: =TxtSearchRRM.BorderStyle
+            BorderThickness: =TxtSearchRRM.BorderThickness
+            CalendarHeaderFill: =ColorFade(RGBA(0, 120, 212, 1), -30%)
+            Color: =TxtSearchRRM.Color
+            DefaultDate: =Date(Year(Today()), Month(Today()), 1)
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            DisabledFill: =RGBA(244, 244, 244, 1)
+            FocusedBorderThickness: =TxtSearchRRM.FocusedBorderThickness
+            Font: =TxtSearchRRM.Font
+            FontWeight: =TxtSearchRRM.FontWeight
+            Height: =26
+            HoverBorderColor: =TxtSearchRRM.HoverBorderColor
+            HoverDateFill: =RGBA(200, 200, 200, 1)
+            HoverFill: =TxtSearchRRM.HoverFill
+            IconBackground: =RGBA(0, 120, 212, 1)
+            InputTextPlaceholder: ="From"
+            IsEditable: =true
+            PaddingLeft: =5
+            PaddingTop: =5
+            PressedBorderColor: =TxtSearchRRM.PressedBorderColor
+            PressedFill: =TxtSearchRRM.PressedFill
+            SelectedDateFill: =RGBA(0, 120, 212, 1)
+            Size: =TxtSearchRRM.Size
+            Visible: =LclShowRRMFilter
+            Width: =HtmlFilter_3.Width/4
+            X: =LblSearchRRM.X+LblSearchRRM.Width
+            Y: =LblFrom_2.Y
+            ZIndex: =14
+
+        DpDRTo As datepicker:
+            BorderColor: =TxtSearchRRM.BorderColor
+            BorderStyle: =TxtSearchRRM.BorderStyle
+            BorderThickness: =TxtSearchRRM.BorderThickness
+            CalendarHeaderFill: =ColorFade(RGBA(0, 120, 212, 1), -30%)
+            Color: =TxtSearchRRM.Color
+            DefaultDate: =Date(Year(Today()), Month(Today())+1, 0)
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            DisabledFill: =RGBA(244, 244, 244, 1)
+            FocusedBorderThickness: =TxtSearchRRM.FocusedBorderThickness
+            Font: =TxtSearchRRM.Font
+            FontWeight: =TxtSearchRRM.FontWeight
+            Height: =26
+            HoverBorderColor: =TxtSearchRRM.HoverBorderColor
+            HoverDateFill: =RGBA(200, 200, 200, 1)
+            HoverFill: =TxtSearchRRM.HoverFill
+            IconBackground: =RGBA(0, 120, 212, 1)
+            InputTextPlaceholder: ="To"
+            IsEditable: =true
+            PaddingLeft: =5
+            PaddingTop: =5
+            PressedBorderColor: =TxtSearchRRM.PressedBorderColor
+            PressedFill: =TxtSearchRRM.PressedFill
+            SelectedDateFill: =RGBA(0, 120, 212, 1)
+            Size: =TxtSearchRRM.Size
+            Visible: =LclShowRRMFilter
+            Width: =HtmlFilter_3.Width/4
+            X: =DpDRFrom.X+DpDRFrom.Width + 14
+            Y: =LblFrom_2.Y
+            ZIndex: =16
+
+        LblTo_2 As label:
+            BorderColor: =RGBA(0, 0, 0, 0)
+            BorderStyle: =BorderStyle.None
+            BorderThickness: =2
+            Color: =RGBA(51, 51, 51, 1)
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            FocusedBorderThickness: =4
+            Font: =Font.Arial
+            FontWeight: =FontWeight.Bold
+            Height: =26
+            Size: =12
+            Text: ="Date Deadline"
+            Visible: =LclShowRRMFilter
+            X: =HtmlFilter_3.X +50
+            Y: =LblFrom_2.Y + LblFrom_2.Height + 20
+            ZIndex: =17
+
+        CmbxDepartment As combobox:
+            BorderColor: =TxtSearchRRM.BorderColor
+            BorderStyle: =TxtSearchRRM.BorderStyle
+            BorderThickness: =TxtSearchRRM.BorderThickness
+            ChevronBackground: =RGBA(255, 255, 255, 1)
+            ChevronDisabledBackground: =RGBA(244, 244, 244, 1)
+            ChevronDisabledFill: =RGBA(166, 166, 166, 1)
+            ChevronFill: =RGBA(33, 33, 33, 1)
+            ChevronHoverBackground: =RGBA(212, 212, 212, 1)
+            ChevronHoverFill: =RGBA(33, 33, 33, 1)
+            Color: =TxtSearchRRM.Color
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            DisabledFill: =RGBA(244, 244, 244, 1)
+            DisplayFields: =["Result"]
+            FocusedBorderThickness: =TxtSearchRRM.FocusedBorderThickness
+            Font: =TxtSearchRRM.Font
+            FontWeight: =TxtSearchRRM.FontWeight
+            Height: =26
+            HoverBorderColor: =TxtSearchRRM.HoverBorderColor
+            HoverColor: =RGBA(51, 51, 51, 1)
+            HoverFill: =Self.SelectionFill
+            Items: |-
+                =SortByColumns(
+                    ForAll(
+                        Distinct(
+                            colQMS_RRMS_dd_doc_req,
+                            Department
+                        ),
+                        {Result: ThisRecord.Value}
+                    ).Result,
+                    "Result"
+                )
+            PressedBorderColor: =TxtSearchRRM.PressedBorderColor
+            PressedColor: =RGBA(255, 255, 255, 1)
+            PressedFill: =Self.SelectionFill
+            SearchFields: =["Result"]
+            SearchItems: |-
+                =Search(SortByColumns(
+                    ForAll(
+                        Distinct(
+                            colQMS_RRMS_dd_doc_req,
+                            Department
+                        ),
+                        {Result: ThisRecord.Value}
+                    ).Result,
+                    "Result"
+                ),CmbxDepartment.SearchText,"Result")
+            SelectionFill: =RGBA(68, 188, 252,1)
+            SelectionTagFill: =RGBA(255,255,255,1)
+            SelectMultiple: =false
+            Size: =TxtSearchRRM.Size
+            Visible: =LclShowRRMFilter
+            Width: =HtmlFilter_3.Width/1.9
+            X: =LblSearchRRM.X+LblSearchRRM.Width
+            Y: =LblDepartment.Y
+            ZIndex: =19
+
+        LblDepartment As label:
+            BorderColor: =RGBA(0, 0, 0, 0)
+            BorderStyle: =BorderStyle.None
+            BorderThickness: =2
+            Color: =RGBA(51, 51, 51, 1)
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            FocusedBorderThickness: =4
+            Font: =Font.Arial
+            FontWeight: =FontWeight.Bold
+            Height: =26
+            Size: =12
+            Text: ="Department"
+            Visible: =LclShowRRMFilter
+            X: =HtmlFilter_3.X +50
+            Y: =LblTo_2.Y+LblTo_2.Height+20
+            ZIndex: =20
+
+        LblFilterRRM As label:
+            BorderColor: =RGBA(0, 0, 0, 0)
+            BorderStyle: =BorderStyle.None
+            BorderThickness: =2
+            Color: =RGBA(51, 51, 51, 1)
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            FocusedBorderThickness: =4
+            Font: =Font.Arial
+            FontWeight: =FontWeight.Bold
+            Height: =31
+            Size: =20
+            Text: ="Filter "
+            Visible: =LclShowRRMFilter
+            Width: =225
+            X: =HtmlFilter_3.X +50
+            Y: =HtmlFilter_3.Y + 20
+            ZIndex: =21
+
+        BtnOk_RRM As button:
+            BorderColor: =RGBA(54, 176, 75, 1)
+            Color: =RGBA(54, 176, 75, 1)
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            DisabledFill: =RGBA(244, 244, 244, 1)
+            Fill: =RGBA(255, 255, 255, 1)
+            FocusedBorderColor: =ColorFade(Self.BorderColor, -5%)
+            Font: =Font.'Segoe UI'
+            FontWeight: =FontWeight.Semibold
+            Height: =30
+            HoverBorderColor: =ColorFade(Self.BorderColor, -10%)
+            HoverColor: =RGBA(255, 255, 255, 1)
+            HoverFill: =ColorFade(Self.BorderColor, -10%)
+            OnSelect: |-
+                =UpdateContext({LclShowRRMFilter : ! LclShowRRMFilter })
+            PaddingBottom: =10
+            PaddingTop: =10
+            PressedBorderColor: =ColorFade(Self.BorderColor, -50%)
+            PressedColor: =RGBA(255, 255, 255, 1)
+            PressedFill: =ColorFade(Self.BorderColor, -10%)
+            RadiusBottomLeft: =40
+            RadiusBottomRight: =40
+            RadiusTopLeft: =40
+            RadiusTopRight: =40
+            Size: =12
+            Text: ="OK"
+            Visible: =LclShowRRMFilter
+            Width: =150
+            X: =HtmlFilter_3.X + (HtmlFilter_3.Width * 0.5 - Self.Width*0.5)
+            Y: =LblTypeofApp.Y+LblTypeofApp.Height+10
+            ZIndex: =22
+
+        CmbxRRMPlant As combobox:
+            BorderColor: =TxtSearchRRM.BorderColor
+            BorderStyle: =TxtSearchRRM.BorderStyle
+            BorderThickness: =TxtSearchRRM.BorderThickness
+            ChevronBackground: =RGBA(255, 255, 255, 1)
+            ChevronDisabledBackground: =RGBA(244, 244, 244, 1)
+            ChevronDisabledFill: =RGBA(166, 166, 166, 1)
+            ChevronFill: =RGBA(33, 33, 33, 1)
+            ChevronHoverBackground: =RGBA(212, 212, 212, 1)
+            ChevronHoverFill: =RGBA(33, 33, 33, 1)
+            Color: =TxtSearchRRM.Color
+            DefaultSelectedItems: |-
+                =If(Self.DisplayMode = DisplayMode.View, Table({Title: gblUserInfo.Plant}))
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            DisabledFill: =RGBA(244, 244, 244, 1)
+            DisplayFields: =["Title"]
+            FocusedBorderThickness: =TxtSearchRRM.FocusedBorderThickness
+            Font: =TxtSearchRRM.Font
+            FontWeight: =TxtSearchRRM.FontWeight
+            Height: =26
+            HoverBorderColor: =TxtSearchRRM.HoverBorderColor
+            HoverColor: =RGBA(51, 51, 51, 1)
+            HoverFill: =Self.SelectionFill
+            Items: =SortByColumns(gblDdPlants,"Title",SortOrder.Ascending)
+            PressedBorderColor: =TxtSearchRRM.PressedBorderColor
+            PressedColor: =RGBA(255, 255, 255, 1)
+            PressedFill: =Self.SelectionFill
+            SearchFields: =["Title"]
+            SearchItems: =Search(SortByColumns(gblDdPlants,"Title",SortOrder.Ascending),CmbxRRMPlant.SearchText,"Title")
+            SelectionFill: =RGBA(68, 188, 252,1)
+            SelectionTagFill: =RGBA(255,255,255,1)
+            SelectMultiple: =false
+            Size: =TxtSearchRRM.Size
+            Visible: =LclShowRRMFilter
+            Width: =HtmlFilter_3.Width/1.9
+            X: =LblSearchRRM.X+LblSearchRRM.Width
+            Y: =LblRRMPlant.Y
+            ZIndex: =23
+
+        LblRRMPlant As label:
+            BorderColor: =RGBA(0, 0, 0, 0)
+            BorderStyle: =BorderStyle.None
+            BorderThickness: =2
+            Color: =RGBA(51, 51, 51, 1)
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            FocusedBorderThickness: =4
+            Font: =Font.Arial
+            FontWeight: =FontWeight.Bold
+            Height: =26
+            Size: =12
+            Text: ="Plant"
+            Visible: =LclShowRRMFilter
+            X: =HtmlFilter_3.X +50
+            Y: =LblDepartment.Y+LblDepartment.Height+20
+            ZIndex: =24
+
+        CmbxTypeofApp As combobox:
+            BorderColor: =TxtSearchRRM.BorderColor
+            BorderStyle: =TxtSearchRRM.BorderStyle
+            BorderThickness: =TxtSearchRRM.BorderThickness
+            ChevronBackground: =RGBA(255, 255, 255, 1)
+            ChevronDisabledBackground: =RGBA(244, 244, 244, 1)
+            ChevronDisabledFill: =RGBA(166, 166, 166, 1)
+            ChevronFill: =RGBA(33, 33, 33, 1)
+            ChevronHoverBackground: =RGBA(212, 212, 212, 1)
+            ChevronHoverFill: =RGBA(33, 33, 33, 1)
+            Color: =TxtSearchRRM.Color
+            DefaultSelectedItems: =
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            DisabledFill: =RGBA(244, 244, 244, 1)
+            DisplayFields: =["Result"]
+            DisplayMode: = DisplayMode.Edit
+            FocusedBorderThickness: =TxtSearchRRM.FocusedBorderThickness
+            Font: =TxtSearchRRM.Font
+            FontWeight: =TxtSearchRRM.FontWeight
+            Height: =26
+            HoverBorderColor: =TxtSearchRRM.HoverBorderColor
+            HoverColor: =RGBA(51, 51, 51, 1)
+            HoverFill: =Self.SelectionFill
+            Items: |-
+                =SortByColumns(
+                    ForAll(
+                        Distinct(
+                            colQMS_RRMS_dd_doc_req,
+                            DocumentCategory
+                        ),
+                        {Result: ThisRecord.Value}
+                    ).Result,
+                    "Result"
+                )
+            PressedBorderColor: =TxtSearchRRM.PressedBorderColor
+            PressedColor: =RGBA(255, 255, 255, 1)
+            PressedFill: =Self.SelectionFill
+            SearchFields: =["Result"]
+            SearchItems: |-
+                =Search(SortByColumns(
+                    ForAll(
+                        Distinct(
+                            colQMS_RRMS_dd_doc_req,
+                            DocumentCategory
+                        ),
+                        {Result: ThisRecord.Value}
+                    ).Result,
+                    "Result"
+                ),CmbxTypeofApp.SearchText,"Result")
+            SelectionFill: =RGBA(68, 188, 252,1)
+            SelectionTagFill: =RGBA(255,255,255,1)
+            SelectMultiple: =false
+            Size: =TxtSearchRRM.Size
+            Visible: =LclShowRRMFilter
+            Width: =HtmlFilter_3.Width/1.9
+            X: =LblSearchRRM.X+LblSearchRRM.Width
+            Y: =LblTypeofApp.Y
+            ZIndex: =25
+
+        LblTypeofApp As label:
+            BorderColor: =RGBA(0, 0, 0, 0)
+            BorderStyle: =BorderStyle.None
+            BorderThickness: =2
+            Color: =RGBA(51, 51, 51, 1)
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            FocusedBorderThickness: =4
+            Font: =Font.Arial
+            FontWeight: =FontWeight.Bold
+            Height: =35
+            Size: =12
+            Text: ="Type of Application"
+            Visible: =LclShowRRMFilter
+            X: =HtmlFilter_3.X +50
+            Y: =LblRRMPlant.Y+LblRRMPlant.Height+20
+            ZIndex: =26
+
+        DpDDFrom As datepicker:
+            BorderColor: =TxtSearchRRM.BorderColor
+            BorderStyle: =TxtSearchRRM.BorderStyle
+            BorderThickness: =TxtSearchRRM.BorderThickness
+            CalendarHeaderFill: =ColorFade(RGBA(0, 120, 212, 1), -30%)
+            Color: =TxtSearchRRM.Color
+            DefaultDate: =
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            DisabledFill: =RGBA(244, 244, 244, 1)
+            FocusedBorderThickness: =TxtSearchRRM.FocusedBorderThickness
+            Font: =TxtSearchRRM.Font
+            FontWeight: =TxtSearchRRM.FontWeight
+            Height: =26
+            HoverBorderColor: =TxtSearchRRM.HoverBorderColor
+            HoverDateFill: =RGBA(200, 200, 200, 1)
+            HoverFill: =TxtSearchRRM.HoverFill
+            IconBackground: =RGBA(0, 120, 212, 1)
+            InputTextPlaceholder: ="From"
+            IsEditable: =true
+            PaddingLeft: =5
+            PaddingTop: =5
+            PressedBorderColor: =TxtSearchRRM.PressedBorderColor
+            PressedFill: =TxtSearchRRM.PressedFill
+            SelectedDateFill: =RGBA(0, 120, 212, 1)
+            Size: =TxtSearchRRM.Size
+            Visible: =LclShowRRMFilter
+            Width: =HtmlFilter_3.Width/4
+            X: =LblSearchRRM.X+LblSearchRRM.Width
+            Y: =LblTo_2.Y
+            ZIndex: =29
+
+        DpDDTo As datepicker:
+            BorderColor: =TxtSearchRRM.BorderColor
+            BorderStyle: =TxtSearchRRM.BorderStyle
+            BorderThickness: =TxtSearchRRM.BorderThickness
+            CalendarHeaderFill: =ColorFade(RGBA(0, 120, 212, 1), -30%)
+            Color: =TxtSearchRRM.Color
+            DefaultDate: =
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            DisabledFill: =RGBA(244, 244, 244, 1)
+            FocusedBorderThickness: =TxtSearchRRM.FocusedBorderThickness
+            Font: =TxtSearchRRM.Font
+            FontWeight: =TxtSearchRRM.FontWeight
+            Height: =26
+            HoverBorderColor: =TxtSearchRRM.HoverBorderColor
+            HoverDateFill: =RGBA(200, 200, 200, 1)
+            HoverFill: =TxtSearchRRM.HoverFill
+            IconBackground: =RGBA(0, 120, 212, 1)
+            InputTextPlaceholder: ="To"
+            IsEditable: =true
+            PaddingLeft: =5
+            PaddingTop: =5
+            PressedBorderColor: =TxtSearchRRM.PressedBorderColor
+            PressedFill: =TxtSearchRRM.PressedFill
+            SelectedDateFill: =RGBA(0, 120, 212, 1)
+            Size: =TxtSearchRRM.Size
+            Visible: =LclShowRRMFilter
+            Width: =HtmlFilter_3.Width/4
+            X: =DpDDFrom.X+DpDDFrom.Width + 14
+            Y: =LblTo_2.Y
+            ZIndex: =30
 

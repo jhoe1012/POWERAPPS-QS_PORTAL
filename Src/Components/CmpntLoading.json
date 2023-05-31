@@ -87,7 +87,7 @@
         "Name": "Rectangle7",
         "Parent": "CmpntLoading",
         "PersistMetaDataIDKey": false,
-        "PublishOrderIndex": 1130,
+        "PublishOrderIndex": 1149,
         "Rules": [
           {
             "Category": "Data",
@@ -309,7 +309,7 @@
             "Name": "ImgLoading",
             "Parent": "Container2",
             "PersistMetaDataIDKey": false,
-            "PublishOrderIndex": 1132,
+            "PublishOrderIndex": 1151,
             "Rules": [
               {
                 "Category": "Data",
@@ -597,7 +597,7 @@
         "Name": "Container2",
         "Parent": "CmpntLoading",
         "PersistMetaDataIDKey": false,
-        "PublishOrderIndex": 1131,
+        "PublishOrderIndex": 1150,
         "Rules": [
           {
             "Category": "Design",
@@ -783,7 +783,7 @@
       "Y",
       "ZIndex"
     ],
-    "LastModifiedTimestamp": "638210062441313658",
+    "LastModifiedTimestamp": "638210907146246010",
     "Name": "CmpntLoading",
     "Rules": [
       {
@@ -842,7 +842,7 @@
   "IsPcfControl": false,
   "IsPremiumPcfControl": false,
   "IsWidgetTemplate": false,
-  "LastModifiedTimestamp": "638210062441313658",
+  "LastModifiedTimestamp": "638210907146246010",
   "Name": "766e1aed0dfd41f291a6ceb69a614988",
   "OverridableProperties": {},
   "Version": "637708914324074881"
