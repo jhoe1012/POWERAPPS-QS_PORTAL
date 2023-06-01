@@ -129,7 +129,8 @@ ScrnTNCRTrucker As screen:
                 HoverColor: =RGBA(255, 255, 255, 1)
                 HoverFill: =ColorFade(Self.Fill, -10%)
                 OnSelect: |-
-                    =Office365Outlook.SendEmailV2(
+                    =If(FrmTrucker.Mode = FormMode.New,
+                    Office365Outlook.SendEmailV2(
                             Concat(
                                 Filter(
                                     Users,
@@ -143,7 +144,8 @@ ScrnTNCRTrucker As screen:
                             {
                                 Importance: "High"
                             }
-                        );
+                        )
+                    );
                     SubmitForm(FrmTrucker);
                 PaddingBottom: =0
                 PaddingLeft: =0
