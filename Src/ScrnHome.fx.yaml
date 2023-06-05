@@ -1,239 +1,245 @@
 ScrnHome As screen:
+    ImagePosition: =ImagePosition.Fill
     LoadingSpinnerColor: =RGBA(0, 120, 212, 1)
+
+    Rectangle2 As rectangle:
+        BorderColor: =RGBA(0, 0, 0, 0)
+        BorderStyle: =BorderStyle.None
+        DisabledFill: =RGBA(254, 209, 46, 1)
+        Fill: =RGBA(254, 209, 46, 1)
+        FocusedBorderThickness: =0
+        Height: =Parent.Height
+        HoverFill: =RGBA(254, 209, 46, 1)
+        PressedFill: =RGBA(254, 209, 46, 1)
+        Width: =Parent.Width/2.8
+        X: =Parent.Width*0.65
+        ZIndex: =1
 
     CmpntHeader_6 As CmpntHeader:
         HeaderText: ="QUALITY SYSTEMS PORTAL"
         ShowIcon: =false
+        Visible: =false
         Width: =Parent.Width
+        ZIndex: =2
 
-    HtmlText1 As htmlViewer:
-        AutoHeight: =true
-        Height: =347
-        HtmlText: |-
-            ="<div style='text-align:justify;'>
-            		
-            	
-            		  <hr >
-            		  <h3 style='font-family:gabriola;color:#783D2B;'><b>MISSION</h3>
-            		  <p style='color:#783D2B;font-family:Comic Sans MS;'>
-            			&nbsp;&nbsp;&nbsp;
-            			To create Goldilocks sweet and delightful
-            			moments by consistently offering quality
-            			products and outstanding services making
-            			everyone an ambassador of our brand.
-            			To foster a culture of a value-driven company.
-            			</p></b>
-            		  <h3 style='font-family:gabriola;color:#783D2B;'><b>VISION</h3>
-            		  <p style='color:#783D2B;font-family:Comic Sans MS;'>
-            			&nbsp;&nbsp;&nbsp;
-            			Goldilocks will be the leading Filipino
-            			Global brand that will fulfill the changing
-            			customer needs through world class
-            			products and services in markets served.
-            		  </p></b>
-            		  <h3 style='font-family:gabriola;color:#783D2B;'><b>PURPOSE</h3>
-            		  <p style='color:#783D2B;font-family:Comic Sans MS;'>
-            			&nbsp;&nbsp;&nbsp;
-            			Make every moment a celebration.
-            		  </p>
-            		  </b>
-            </div>"
-        Width: =Parent.Width * 0.3
-        X: =Parent.Width * 0.05
-        Y: =206
+    BtnRegulatory As button:
+        BorderColor: =RGBA(0, 108, 191, 1)
+        DisabledBorderColor: =RGBA(0, 0, 0, 0)
+        DisabledColor: =RGBA(166, 166, 166, 1)
+        DisabledFill: =RGBA(244, 244, 244, 1)
+        Fill: =RGBA(102, 174, 229, 1)
+        FocusedBorderColor: =ColorFade(Self.Fill, -75%)
+        FontWeight: =FontWeight.Semibold
+        Height: =Parent.Height * 0.09
+        HoverBorderColor: =RGBA(0, 0, 0, 0)
+        HoverColor: =RGBA(0, 0, 0, 1)
+        HoverFill: =ColorFade(Self.Fill, -10%)
+        OnSelect: |-
+            =If(
+                gblUserInfo.QMSRole = gblConstRole.ADMIN || gblUserInfo.QMSRole = gblConstRole.UPLOADER || gblUserInfo.QMSRole = gblConstRole.VIEWER || gblUserInfo.RRMRole = gblConstRole.ADMIN || gblUserInfo.RRMRole = gblConstRole.UPLOADER || gblUserInfo.RRMRole = gblConstRole.VIEWER || gblUserInfo.RRMRole = gblConstRole.APPROVER,
+                Navigate(
+                    ScrnQMSHome,
+                    ScreenTransition.Fade
+                ),
+                Notify(
+                    "You are not allowed to access this link",
+                    NotificationType.Warning,
+                    2000
+                )
+            )
+        PressedBorderColor: =RGBA(0,0,0,1)
+        PressedColor: =RGBA(0, 0, 0, 1)
+        PressedFill: =ColorFade(Self.Fill, -30%)
+        RadiusBottomLeft: =0
+        RadiusBottomRight: =0
+        RadiusTopLeft: =0
+        RadiusTopRight: =0
+        Size: =15
+        Text: ="REGULATORY"
+        Width: =Parent.Width * 0.2
+        X: =Parent.Width * 0.73
+        Y: =Parent.Height *0.45
+        ZIndex: =3
+
+    BtnSQMP As button:
+        BorderColor: =RGBA(0, 108, 191, 1)
+        DisabledBorderColor: =RGBA(0, 0, 0, 0)
+        DisabledColor: =RGBA(166, 166, 166, 1)
+        DisabledFill: =RGBA(244, 244, 244, 1)
+        Fill: =RGBA(102, 174, 229, 1)
+        FocusedBorderColor: =ColorFade(Self.Fill, -75%)
+        FontWeight: =FontWeight.Semibold
+        Height: =BtnRegulatory.Height
+        HoverBorderColor: =RGBA(0, 0, 0, 0)
+        HoverColor: =RGBA(0, 0, 0, 1)
+        HoverFill: =ColorFade(Self.Fill, -10%)
+        OnSelect: |-
+            =If(
+                gblUserInfo.SQMPRole = gblConstRole.UPLOADER || gblUserInfo.SQMPRole = gblConstRole.ADMIN || gblUserInfo.SQMPRole = gblConstRole.APPROVER || gblUserInfo.SQMPRole = gblConstRole.VIEWER || gblUserInfo.TNCRRole = gblConstRole.UPLOADER || gblUserInfo.TNCRRole = gblConstRole.ADMIN || gblUserInfo.TNCRRole = gblConstRole.APPROVER || gblUserInfo.TNCRRole = gblConstRole.VIEWER || gblUserInfo.TNCRRole = gblConstRole.LOGISTIC,
+                Navigate(
+                    ScrnSQMPHome,
+                    ScreenTransition.Fade
+                ),
+                Notify(
+                    "You are not allowed to access this link",
+                    NotificationType.Warning,
+                    2000
+                )
+            )
+        PressedBorderColor: =RGBA(0,0,0,1)
+        PressedColor: =RGBA(0, 0, 0, 1)
+        PressedFill: =ColorFade(Self.Fill, -30%)
+        RadiusBottomLeft: =0
+        RadiusBottomRight: =0
+        RadiusTopLeft: =0
+        RadiusTopRight: =0
+        Size: =15
+        Text: ="SQMP"
+        Tooltip: ="v1"
+        Width: =BtnRegulatory.Width
+        X: =BtnRegulatory.X
+        Y: =BtnRegulatory.Y + BtnRegulatory.Height + 25
         ZIndex: =4
 
-    GrpMenu As group:
+    BtnDMS As button:
+        BorderColor: =RGBA(0, 108, 191, 1)
+        DisabledBorderColor: =RGBA(0, 0, 0, 0)
+        DisabledColor: =RGBA(166, 166, 166, 1)
+        DisabledFill: =RGBA(244, 244, 244, 1)
+        Fill: =RGBA(102, 174, 229, 1)
+        FocusedBorderColor: =ColorFade(Self.Fill, -75%)
+        FontWeight: =FontWeight.Semibold
+        Height: =BtnRegulatory.Height
+        HoverBorderColor: =RGBA(0, 0, 0, 0)
+        HoverColor: =RGBA(0, 0, 0, 1)
+        HoverFill: =ColorFade(Self.Fill, -10%)
+        OnSelect: |-
+            =If(
+                gblUserInfo.DMSRole = gblConstRole.UPLOADER|| gblUserInfo.DMSRole = gblConstRole.ADMIN || gblUserInfo.DMSRole = gblConstRole.APPROVER || gblUserInfo.DMSRole = gblConstRole.VIEWER,
+                Launch("https://web.powerapps.com/play/78ca8f90-4b93-4f98-9c0c-8b50ba7fdd11?tenantId=af7302a2-b536-4d8b-bc51-09da778b3c30"),
+                Notify(
+                    "You are not allowed to access this link",
+                    NotificationType.Warning,
+                    2000
+                )
+            )
+        PressedBorderColor: =RGBA(0,0,0,1)
+        PressedColor: =RGBA(0, 0, 0, 1)
+        PressedFill: =ColorFade(Self.Fill, -30%)
+        RadiusBottomLeft: =0
+        RadiusBottomRight: =0
+        RadiusTopLeft: =0
+        RadiusTopRight: =0
+        Size: =15
+        Text: ="DMS"
+        Width: =BtnRegulatory.Width
+        X: =BtnRegulatory.X
+        Y: =BtnSQMP.Y + BtnSQMP.Height + 25
+        ZIndex: =5
+
+    imgFrontDesign As image:
+        BorderColor: =RGBA(0, 0, 0, 0)
+        BorderStyle: =BorderStyle.None
+        BorderThickness: =2
+        DisabledBorderColor: =RGBA(0, 0, 0, 0)
+        DisabledFill: =RGBA(0, 0, 0, 0)
+        FocusedBorderThickness: =4
+        Height: =Parent.Height*0.82
+        HoverBorderColor: =RGBA(0, 0, 0, 0)
+        HoverFill: =RGBA(0, 0, 0, 0)
+        Image: =supplier
+        ImagePosition: =ImagePosition.Stretch
+        PressedBorderColor: =RGBA(0, 0, 0, 0)
+        PressedFill: =RGBA(0, 0, 0, 0)
+        Width: =Parent.Width*0.65
+        Y: =60
+        ZIndex: =6
+
+    Label3 As label:
+        BorderColor: =RGBA(0, 0, 0, 0)
+        BorderStyle: =BorderStyle.None
+        BorderThickness: =2
+        Color: =RGBA(51, 51, 51, 1)
+        DisabledBorderColor: =RGBA(0, 0, 0, 0)
+        DisabledColor: =RGBA(166, 166, 166, 1)
+        FocusedBorderThickness: =4
+        Font: =Font.'Lato Black'
+        FontWeight: =FontWeight.Semibold
+        Height: =70
+        PaddingLeft: =30
+        Size: =22
+        Text: ="QUALITY SYSTEM PORTAL"
+        Width: =660
+        X: =Parent.Width * 0.01
+        ZIndex: =7
+
+    Label2_1 As label:
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(0, 0, 0, 1)
+        DisabledColor: =RGBA(166, 166, 166, 1)
+        Height: =16
+        Size: =9
+        Text: ="copyright @goldilocks.inc 2023"
+        Width: =182
+        X: =Parent.Width * 0.50
+        Y: =imgFrontDesign.Height + imgFrontDesign.Y + 10
+        ZIndex: =8
+
+    Imglogo As image:
+        BorderColor: =RGBA(0, 0, 0, 0)
+        BorderStyle: =BorderStyle.None
+        BorderThickness: =2
+        DisabledBorderColor: =RGBA(0, 0, 0, 0)
+        DisabledFill: =RGBA(0, 0, 0, 0)
+        FocusedBorderThickness: =4
+        Height: =162
+        HoverBorderColor: =RGBA(0, 0, 0, 0)
+        HoverFill: =RGBA(0, 0, 0, 0)
+        Image: ='Goldilocks-removebg-preview'
+        PressedBorderColor: =RGBA(0, 0, 0, 0)
+        PressedFill: =RGBA(0, 0, 0, 0)
+        Width: =341
+        X: =Parent.Width * 0.35
+        Y: =Parent.Height * 0.05
+        ZIndex: =9
+
+    GrpLogo As group:
         Height: =5
         Width: =5
         X: =40
         Y: =40
         ZIndex: =15
 
-        Button3 As button:
+        RtgBgLogo As rectangle:
             BorderColor: =RGBA(0, 0, 0, 0)
-            DisabledBorderColor: =RGBA(0, 0, 0, 0)
-            DisabledColor: =RGBA(166, 166, 166, 1)
-            DisabledFill: =RGBA(244, 244, 244, 1)
-            Fill: =RGBA(0, 0, 0, 0)
-            FocusedBorderColor: =ColorFade(Self.Fill, -75%)
-            Font: =Font.'Segoe UI'
-            FontWeight: =FontWeight.Bold
-            Height: =30
-            HoverBorderColor: =RGBA(0, 0, 0, 0)
-            HoverColor: =RGBA(0, 0, 0, 1)
-            HoverFill: =ColorFade(Self.Fill, -10%)
-            OnSelect: |-
-                =If(
-                    gblUserInfo.QMSRole = gblConstRole.ADMIN || gblUserInfo.QMSRole = gblConstRole.UPLOADER || gblUserInfo.QMSRole = gblConstRole.VIEWER || gblUserInfo.RRMRole = gblConstRole.ADMIN || gblUserInfo.RRMRole = gblConstRole.UPLOADER || gblUserInfo.RRMRole = gblConstRole.VIEWER || gblUserInfo.RRMRole = gblConstRole.APPROVER,
-                    Navigate(
-                        ScrnQMSHome,
-                        ScreenTransition.Fade
-                    ),
-                    Notify(
-                        "You are not allowed to access this link",
-                        NotificationType.Warning,
-                        2000
-                    )
-                )
-            PressedBorderColor: =RGBA(0,0,0,1)
-            PressedColor: =RGBA(0, 0, 0, 1)
-            PressedFill: =ColorFade(Self.Fill, -30%)
-            RadiusBottomLeft: =0
-            RadiusBottomRight: =0
-            RadiusTopLeft: =0
-            RadiusTopRight: =0
-            Size: =12
-            Text: ="REGULATORY"
-            Width: =120
-            X: =Parent.Width * 0.47
+            BorderStyle: =BorderStyle.None
+            BorderThickness: =2
+            DisabledFill: =RGBA(166, 166, 166, 1)
+            Fill: =RGBA(255, 255, 255, 1)
+            FocusedBorderThickness: =4
+            Height: =ImgFrontLogo.Height *0.45
+            HoverFill: =RGBA(0, 120, 212, 1)
+            PressedFill: =RGBA(0, 120, 212, 1)
+            Width: =ImgFrontLogo.Width *0.2
+            X: =ImgFrontLogo.X * 1.18
+            Y: =ImgFrontLogo.Y * 2.2
             ZIndex: =10
 
-        Button3_1 As button:
-            BorderColor: =RGBA(0, 0, 0, 0)
-            DisabledBorderColor: =RGBA(0, 0, 0, 0)
-            DisabledColor: =RGBA(166, 166, 166, 1)
-            DisabledFill: =RGBA(244, 244, 244, 1)
-            Fill: =RGBA(0, 0, 0, 0)
-            FocusedBorderColor: =ColorFade(Self.Fill, -75%)
-            Font: =Font.'Segoe UI'
-            FontWeight: =FontWeight.Semibold
-            Height: =30
-            HoverBorderColor: =RGBA(0, 0, 0, 0)
-            HoverColor: =RGBA(0, 0, 0, 1)
-            HoverFill: =ColorFade(Self.Fill, -10%)
-            OnSelect: |-
-                =If(
-                    gblUserInfo.SQMPRole = gblConstRole.UPLOADER || gblUserInfo.SQMPRole = gblConstRole.ADMIN || gblUserInfo.SQMPRole = gblConstRole.APPROVER || gblUserInfo.SQMPRole = gblConstRole.VIEWER || gblUserInfo.TNCRRole = gblConstRole.UPLOADER || gblUserInfo.TNCRRole = gblConstRole.ADMIN || gblUserInfo.TNCRRole = gblConstRole.APPROVER || gblUserInfo.TNCRRole = gblConstRole.VIEWER || gblUserInfo.TNCRRole = gblConstRole.LOGISTIC,
-                    Navigate(
-                        ScrnSQMPHome,
-                        ScreenTransition.Fade
-                    ),
-                    Notify(
-                        "You are not allowed to access this link",
-                        NotificationType.Warning,
-                        2000
-                    )
-                )
-            PressedBorderColor: =RGBA(0,0,0,1)
-            PressedColor: =RGBA(0, 0, 0, 1)
-            PressedFill: =ColorFade(Self.Fill, -30%)
-            RadiusBottomLeft: =0
-            RadiusBottomRight: =0
-            RadiusTopLeft: =0
-            RadiusTopRight: =0
-            Size: =12
-            Text: ="SQMP"
-            Tooltip: ="v1"
-            Width: =120
-            X: =Button3.X+Button3.Width
-            ZIndex: =11
-
-        Button3_2 As button:
-            BorderColor: =RGBA(0, 0, 0, 0)
-            DisabledBorderColor: =RGBA(0, 0, 0, 0)
-            DisabledColor: =RGBA(166, 166, 166, 1)
-            DisabledFill: =RGBA(244, 244, 244, 1)
-            Fill: =RGBA(0, 0, 0, 0)
-            FocusedBorderColor: =ColorFade(Self.Fill, -75%)
-            Font: =Font.'Segoe UI'
-            FontWeight: =FontWeight.Semibold
-            Height: =30
-            HoverBorderColor: =RGBA(0, 0, 0, 0)
-            HoverColor: =RGBA(0, 0, 0, 1)
-            HoverFill: =ColorFade(Self.Fill, -10%)
-            OnSelect: |-
-                =If(
-                    gblUserInfo.DMSRole = gblConstRole.UPLOADER|| gblUserInfo.DMSRole = gblConstRole.ADMIN || gblUserInfo.DMSRole = gblConstRole.APPROVER || gblUserInfo.DMSRole = gblConstRole.VIEWER,
-                    Launch("https://web.powerapps.com/play/78ca8f90-4b93-4f98-9c0c-8b50ba7fdd11?tenantId=af7302a2-b536-4d8b-bc51-09da778b3c30"),
-                    Notify(
-                        "You are not allowed to access this link",
-                        NotificationType.Warning,
-                        2000
-                    )
-                )
-            PressedBorderColor: =RGBA(0,0,0,1)
-            PressedColor: =RGBA(0, 0, 0, 1)
-            PressedFill: =ColorFade(Self.Fill, -30%)
-            RadiusBottomLeft: =0
-            RadiusBottomRight: =0
-            RadiusTopLeft: =0
-            RadiusTopRight: =0
-            Size: =12
-            Text: ="DMS"
-            Width: =120
-            X: =Button3_1.X+Button3_1.Width
-            ZIndex: =12
-
-        Button3_3 As button:
-            BorderColor: =RGBA(0, 0, 0, 0)
-            DisabledBorderColor: =RGBA(0, 0, 0, 0)
-            DisabledColor: =RGBA(166, 166, 166, 1)
-            DisabledFill: =RGBA(244, 244, 244, 1)
-            Fill: =RGBA(0, 0, 0, 0)
-            FocusedBorderColor: =ColorFade(Self.Fill, -75%)
-            Font: =Font.'Segoe UI'
-            FontWeight: =FontWeight.Semibold
-            Height: =30
-            HoverBorderColor: =RGBA(0, 0, 0, 0)
-            HoverColor: =RGBA(0, 0, 0, 1)
-            HoverFill: =ColorFade(Self.Fill, -10%)
-            PressedBorderColor: =ColorFade(RGBA(0, 120, 212, 1), -50%)
-            PressedColor: =RGBA(0, 0, 0, 1)
-            PressedFill: =ColorFade(Self.Fill, -30%)
-            RadiusBottomLeft: =0
-            RadiusBottomRight: =0
-            RadiusTopLeft: =0
-            RadiusTopRight: =0
-            Size: =12
-            Text: =""
-            Tooltip: ="v6"
-            X: =Button3_2.X+Button3_2.Width
-            ZIndex: =13
-
-    GrpImages As group:
-        Height: =5
-        Width: =5
-        X: =40
-        Y: =40
-        ZIndex: =15
-
-        Image4 As image:
+        ImgFrontLogo As image:
             BorderColor: =RGBA(0, 0, 0, 0)
             BorderStyle: =BorderStyle.None
             BorderThickness: =2
             DisabledBorderColor: =RGBA(0, 0, 0, 0)
             DisabledFill: =RGBA(0, 0, 0, 0)
             FocusedBorderThickness: =4
-            Height: =127
+            Height: =Parent.Height * 0.3
             HoverBorderColor: =RGBA(0, 0, 0, 0)
             HoverFill: =RGBA(0, 0, 0, 0)
-            Image: |-
-                ="https://goldilocksbakeshopinc.sharepoint.com/sites/qmspotal/Shared%20Documents/goldilocksLogo.jpg"
+            Image: ='GBI_logo-removebg-preview'
             PressedBorderColor: =RGBA(0, 0, 0, 0)
             PressedFill: =RGBA(0, 0, 0, 0)
             Width: =Parent.Width * 0.3
-            X: =Parent.Width * 0.05
-            Y: =CmpntHeader_6.Y+CmpntHeader_6.Height
-            ZIndex: =3
-
-        Image4_1 As image:
-            BorderColor: =RGBA(0, 0, 0, 0)
-            BorderStyle: =BorderStyle.None
-            BorderThickness: =2
-            DisabledBorderColor: =RGBA(0, 0, 0, 0)
-            DisabledFill: =RGBA(0, 0, 0, 0)
-            FocusedBorderThickness: =4
-            Height: =Parent.Height-CmpntHeader_6.Height
-            HoverBorderColor: =RGBA(0, 0, 0, 0)
-            HoverFill: =RGBA(0, 0, 0, 0)
-            Image: |-
-                ="https://goldilocksbakeshopinc.sharepoint.com/sites/qmspotal/Shared%20Documents/viber_image_2021-06-09_14-57-58.jpg"
-            ImagePosition: =ImagePosition.Stretch
-            PressedBorderColor: =RGBA(0, 0, 0, 0)
-            PressedFill: =RGBA(0, 0, 0, 0)
-            Width: =Parent.Width * 0.62
-            X: =Image4.X+ Image4.Width+20
-            Y: =CmpntHeader_6.Y+CmpntHeader_6.Height
-            ZIndex: =14
+            X: =Parent.Width* 0.67
+            Y: =Parent.Height * 0.1
+            ZIndex: =11
 

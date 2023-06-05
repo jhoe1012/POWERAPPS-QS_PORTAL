@@ -25,7 +25,6 @@ CmpntHeader As CanvasComponent:
         DisabledBorderColor: =RGBA(0, 0, 0, 0)
         DisabledColor: =RGBA(166, 166, 166, 1)
         FocusedBorderThickness: =4
-        Font: =Font.Arial
         FontWeight: =FontWeight.Bold
         Height: =30
         PaddingLeft: =100

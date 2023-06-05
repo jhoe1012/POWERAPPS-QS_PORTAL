@@ -1,28 +1,52 @@
 ScrnSQMPHome As screen:
     LoadingSpinnerColor: =RGBA(0, 120, 212, 1)
 
-    CmpntHeader_7 As CmpntHeader:
-        HeaderText: ="SQMP"
-        HomeNavigation: =ScrnHome
-        Width: =Parent.Width
+    Rectangle5 As rectangle:
+        BorderColor: =RGBA(254, 209, 46, 1)
+        BorderStyle: =BorderStyle.None
+        DisabledFill: =RGBA(254, 209, 46, 1)
+        Fill: =RGBA(254, 209, 46, 1)
+        FocusedBorderThickness: =0
+        Height: =Parent.Height
+        HoverFill: =RGBA(254, 209, 46, 1)
+        PressedFill: =RGBA(254, 209, 46, 1)
+        Width: =Parent.Width *0.44
+        X: =Parent.Width * 0.56
+        ZIndex: =1
+
+    ImgSQMP As image:
+        BorderColor: =RGBA(0, 0, 0, 0)
+        BorderStyle: =BorderStyle.None
+        BorderThickness: =2
+        DisabledBorderColor: =RGBA(0, 0, 0, 0)
+        DisabledFill: =RGBA(0, 0, 0, 0)
+        FocusedBorderThickness: =4
+        Height: =Parent.Height 
+        HoverBorderColor: =RGBA(0, 0, 0, 0)
+        HoverFill: =RGBA(0, 0, 0, 0)
+        Image: ='61fa48434728a61869a328e8_best-feedback'
+        PressedBorderColor: =RGBA(0, 0, 0, 0)
+        PressedFill: =RGBA(0, 0, 0, 0)
+        Width: =Parent.Width * 0.56
+        ZIndex: =2
 
     GalSQMPFolders As gallery.galleryVertical:
         BorderColor: =RGBA(166, 166, 166, 1)
-        Height: =Self.TemplateHeight*(CountRows(Self.AllItems)/2)+40
+        Height: =382
         Items: =colSQMPFolder
         Layout: =Layout.Vertical
         OnSelect: =
         TemplateSize: =146
         Transition: =Transition.Pop
-        Width: =Parent.Width *0.5
+        Width: =Parent.Width * 0.4
         WrapCount: =2
-        X: =Parent.Width*0.5-Self.Width*0.5
-        Y: =Parent.Height*0.5-Self.Height*0.5
-        ZIndex: =2
+        X: =Parent.Width * 0.56
+        Y: =Parent.Width * 0.1
+        ZIndex: =4
 
         Icon3 As icon.Folder:
             BorderColor: =RGBA(255, 191, 0, 1)
-            Color: =RGBA(255, 191, 0, 1)
+            Color: =RGBA(255, 255, 255, 1)
             DisabledBorderColor: =RGBA(0, 0, 0, 0)
             DisabledColor: =RGBA(220, 220, 220, 1)
             DisabledFill: =RGBA(0, 0, 0, 0)
@@ -44,7 +68,7 @@ ScrnSQMPHome As screen:
             BorderColor: =RGBA(0, 0, 0, 0)
             BorderStyle: =BorderStyle.None
             BorderThickness: =2
-            Color: =RGBA(51, 51, 51, 1)
+            Color: =RGBA(0, 0, 0, 1)
             DisabledBorderColor: =RGBA(0, 0, 0, 0)
             DisabledColor: =RGBA(166, 166, 166, 1)
             FocusedBorderThickness: =4
@@ -58,4 +82,40 @@ ScrnSQMPHome As screen:
             X: =2
             Y: =Icon3.Y+Icon3.Height
             ZIndex: =2
+
+    Label5 As label:
+        BorderColor: =RGBA(0, 0, 0, 0)
+        BorderStyle: =BorderStyle.None
+        BorderThickness: =2
+        Color: =RGBA(51, 51, 51, 1)
+        DisabledBorderColor: =RGBA(0, 0, 0, 0)
+        DisabledColor: =RGBA(166, 166, 166, 1)
+        FocusedBorderThickness: =4
+        Font: =Font.'Lato Black'
+        FontWeight: =FontWeight.Semibold
+        Size: =22
+        Text: ="SQMP"
+        X: =IcnBack.X + IcnBack.Width + 20
+        Y: =Parent.Height * 0.02
+        ZIndex: =5
+
+    IcnBack As icon.Home:
+        BorderColor: =RGBA(166, 166, 166, 1)
+        DisabledBorderColor: =RGBA(0, 0, 0, 0)
+        DisabledColor: =RGBA(220, 220, 220, 1)
+        DisabledFill: =RGBA(0, 0, 0, 0)
+        FocusedBorderThickness: =4
+        Height: =40
+        HoverBorderColor: =RGBA(0, 0, 0, 0)
+        HoverColor: =Color.Black
+        HoverFill: =RGBA(0, 0, 0, 0)
+        Icon: =Icon.BackArrow
+        OnSelect: =Navigate(ScrnHome, ScreenTransition.Fade)
+        PressedBorderColor: =RGBA(0, 0, 0, 0)
+        PressedColor: =ColorFade(RGBA(0, 120, 212, 1), -30%)
+        PressedFill: =RGBA(0, 0, 0, 0)
+        Width: =40
+        X: =Parent.Width * 0.01
+        Y: =Parent.Height * 0.02
+        ZIndex: =6
 

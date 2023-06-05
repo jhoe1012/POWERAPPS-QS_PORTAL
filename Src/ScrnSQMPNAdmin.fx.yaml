@@ -307,7 +307,7 @@ ScrnSQMPNAdmin As screen:
                     Size: =13
                     Text: =
                     Tooltip: =If(! IsBlank(ThisItem.'CAR Upload'),"Open Document " & ThisItem.CARPSPLink)
-                    Width: = If(gblUserInfo.SQMPRole="Uploader" || gblUserInfo.SQMPRole="Approver",Parent.Width*0.07,Parent.Width*0.9)
+                    Width: = If(gblUserInfo.SQMPRole="Uploader" || gblUserInfo.SQMPRole="Approver",Parent.Width*0.07,Parent.Width*0.08)
                     X: =LblNoatsUpLink.X+LblNoatsUpLink.Width
                     ZIndex: =3
 
@@ -327,9 +327,9 @@ ScrnSQMPNAdmin As screen:
                     Size: =13
                     Text: =
                     Tooltip: =If(! IsBlank(ThisItem.'NOATS Upload'),"Open Document " & ThisItem.NOATSSPLink)
-                    Width: = If(gblUserInfo.SQMPRole="Uploader" || gblUserInfo.SQMPRole="Approver", Parent.Width*0.07, Parent.Width*0.9)
+                    Width: = If(gblUserInfo.SQMPRole="Uploader" || gblUserInfo.SQMPRole="Approver", Parent.Width*0.07, Parent.Width*0.08)
                     X: |
-                        = If(gblUserInfo.SQMPRole="Uploader" || gblUserInfo.SQMPRole="Approver",Parent.Width*0.36,Parent.Width*0.37)
+                        = If(gblUserInfo.SQMPRole="Uploader" || gblUserInfo.SQMPRole="Approver",Parent.Width*0.36,Parent.Width*0.42)
                     ZIndex: =4
 
             HtmlText2 As htmlViewer:

@@ -58,7 +58,7 @@
         "Name": "RectQuickActionBar",
         "Parent": "CmpntHeader",
         "PersistMetaDataIDKey": false,
-        "PublishOrderIndex": 1140,
+        "PublishOrderIndex": 1145,
         "Rules": [
           {
             "Category": "Data",
@@ -302,7 +302,7 @@
         "Name": "LblHeader",
         "Parent": "CmpntHeader",
         "PersistMetaDataIDKey": false,
-        "PublishOrderIndex": 1141,
+        "PublishOrderIndex": 1146,
         "Rules": [
           {
             "Category": "Data",
@@ -450,7 +450,7 @@
           },
           {
             "Category": "Design",
-            "InvariantScript": "Font.Arial",
+            "InvariantScript": "Font.'Open Sans'",
             "Property": "Font",
             "RuleProviderType": "Unknown"
           },
@@ -640,7 +640,7 @@
         "Name": "IcnHome",
         "Parent": "CmpntHeader",
         "PersistMetaDataIDKey": false,
-        "PublishOrderIndex": 1142,
+        "PublishOrderIndex": 1147,
         "Rules": [
           {
             "Category": "Data",
@@ -841,7 +841,7 @@
       "HomeNavigation",
       "ShowIcon"
     ],
-    "LastModifiedTimestamp": "638211962737117435",
+    "LastModifiedTimestamp": "638215235152962320",
     "Name": "CmpntHeader",
     "Rules": [
       {
@@ -946,7 +946,7 @@
   "IsPcfControl": false,
   "IsPremiumPcfControl": false,
   "IsWidgetTemplate": false,
-  "LastModifiedTimestamp": "638211962737117435",
+  "LastModifiedTimestamp": "638215235152962320",
   "Name": "30619f4d3f9a44b5b3f66f3f42b3c848",
   "OverridableProperties": {},
   "Version": "637708914324062125"
