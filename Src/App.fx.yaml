@@ -48,6 +48,17 @@ App As appinfo:
                     Year(holiday_date) = Year(Now())
                 )
             );
+            Set(
+                gblUserRoleEmail,
+                User().Email
+            );
+            Set(
+                gblUserRoleInfo,
+                LookUp(
+                    Users,
+                    Email = gblUserRoleEmail
+                )
+            );
             ClearCollect(
                 colSQMPFolder,
                 {FolderName: "Supplier Food Safety"},
@@ -59,7 +70,13 @@ App As appinfo:
                     FolderName: "TNCR",
                     Screen: ScrnTNCRAdmin
                 },
-                {FolderName: "IPM NCR"}
+                {FolderName: "IPM NCR"},
+                If(gblUserRoleInfo.SQMPRole = "Admin" And gblUserRoleInfo.Department <> "PROCUREMENT",
+                {
+                    FolderName: "User Maintenance",
+                    Screen: ScrnUserMaintenance
+                }
+                )
             ),
             Set(
                 gblDdNonConformance,
@@ -82,7 +99,7 @@ App As appinfo:
                 gblUserName,
                 User().FullName
             ),
-            Set(
+          Set(
                 gblUserEmail,
                 User().Email
             );

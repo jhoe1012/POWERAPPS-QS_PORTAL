@@ -11183,7 +11183,7 @@
       "LayoutName": "",
       "MetaDataIDKey": "",
       "Name": "LblCARStatus",
-      "ParentIndex": 4,
+      "ParentIndex": 2,
       "PersistMetaDataIDKey": false,
       "Properties": [
         {
@@ -13140,7 +13140,7 @@
       "LayoutName": "",
       "MetaDataIDKey": "",
       "Name": "LblNoatsUpLink",
-      "ParentIndex": 2,
+      "ParentIndex": 4,
       "PersistMetaDataIDKey": false,
       "Properties": [
         {

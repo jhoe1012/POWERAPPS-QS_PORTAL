@@ -1,7 +1,7 @@
 {
   "FormatVersion": "0.24",
   "Header": {
-    "DocVersion": "1.331",
+    "DocVersion": "1.332",
     "MinVersionToLoad": "1.331",
     "MSAppStructureVersion": "2.0"
   },
@@ -48,6 +48,7 @@
       "enablerulespanel": false,
       "enableruntimepolicies": false,
       "enablesaveloadcleardataonweb": false,
+      "enableupdateifdelegation": false,
       "enhanceddelegation": true,
       "enhancedgalleryinitialization": true,
       "errorhandling": true,
@@ -64,6 +65,7 @@
       "improvedmediacapture": false,
       "improvedtabstopbehavior": false,
       "impurenodedelegation": false,
+      "isemptyrequirestableargument": true,
       "keeprecentscreensloaded": false,
       "longlivingcache": false,
       "mobilenativerendering": false,
@@ -109,7 +111,7 @@
     "DocumentType": "App",
     "EnableInstrumentation": false,
     "FileID": "eba8d656-9ad6-4d1f-9d1d-d8304e53405d",
-    "Id": "903359d1-7067-47a7-9e9d-61bb90663607",
+    "Id": "07138e45-5201-4620-920e-a5dce6425e5b",
     "InstrumentationKey": "",
     "ManualOfflineProfileId": "",
     "Name": "QS+Portal.msapp",
@@ -145,6 +147,7 @@
     "ScrnSQMPNAdd",
     "ScrnSQMPSupplier",
     "ScrnTNCRTrucker",
+    "ScrnUserMaintenance",
     "ScrnTNCRAdmin",
     "ScrnTNCRAdd"
   ]

@@ -2798,7 +2798,7 @@ ScrnSQMPNAdd As screen:
                                         ) - 1
                                     )
                                 ),
-                                FrmSQMPNOATS.Mode = FormMode.New And !IsEmpty(CmbxSupplier.Selected.SupplierGrp),
+                                FrmSQMPNOATS.Mode = FormMode.New And !false,
                                 Filter(
                                     Users,
                                     SupplierGrp = CmbxSupplier.Selected.SupplierGrp,
@@ -3761,7 +3761,7 @@ ScrnSQMPNAdd As screen:
                         DisabledFill: =RGBA(244, 244, 244, 1)
                         DisplayMode: |-
                             =If(
-                                (IsEmpty(DataCardValue1.Selected.Title) || IsBlank(DataCardValue1.Selected.Title)) || (gblUserInfo.Department = "PROCUREMENT" && IsBlank(Last(AttachmentCAR.Attachments).Value)),
+                                (false || IsBlank(DataCardValue1.Selected.Title)) || (gblUserInfo.Department = "PROCUREMENT" && IsBlank(Last(AttachmentCAR.Attachments).Value)),
                                 DisplayMode.Disabled,
                                 DisplayMode.Edit
                             )

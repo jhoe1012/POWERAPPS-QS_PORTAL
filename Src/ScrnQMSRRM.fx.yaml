@@ -56,8 +56,8 @@ ScrnQMSRRM As screen:
                             RequestNumber,
                             TxtSearchRRM.Text
                         ),
-                        IsBlank(DpDRTo.SelectedDate) || IsEmpty(DpDRTo.SelectedDate) || IsBlank(DpDRFrom.SelectedDate) || IsEmpty(DpDRFrom.SelectedDate) || ((DateRequested >= DpDRFrom.SelectedDate) && (DateRequested <= DpDRTo.SelectedDate)),
-                        IsBlank(DpDDTo.SelectedDate) || IsEmpty(DpDDTo.SelectedDate) || IsBlank(DpDDFrom.SelectedDate) || IsEmpty(DpDDFrom.SelectedDate) || ((dateDeadLine >= DpDDFrom.SelectedDate) && (dateDeadLine <= DpDDTo.SelectedDate)),
+                        IsBlank(DpDRTo.SelectedDate) || false || IsBlank(DpDRFrom.SelectedDate) || false || ((DateRequested >= DpDRFrom.SelectedDate) && (DateRequested <= DpDRTo.SelectedDate)),
+                        IsBlank(DpDDTo.SelectedDate) || false || IsBlank(DpDDFrom.SelectedDate) || false || ((dateDeadLine >= DpDDFrom.SelectedDate) && (dateDeadLine <= DpDDTo.SelectedDate)),
                         IsBlank(CmbxDepartment.Selected.Result) || IsBlank(CmbxDepartment.Selected.Result) || Department = CmbxDepartment.Selected.Result,
                         IsBlank(CmbxPlant.Selected.Title) || IsBlank(CmbxPlant.Selected.Title) || Plant = CmbxPlant.Selected.Title,
                         IsBlank(CmbxTypeofApp.Selected.Result) || IsBlank(CmbxTypeofApp.Selected.Result) || TypeOfApplication = CmbxTypeofApp.Selected.Result,
@@ -74,8 +74,8 @@ ScrnQMSRRM As screen:
                             RequestNumber,
                             TxtSearchRRM.Text
                         ),
-                        IsBlank(DpDRTo.SelectedDate) || IsEmpty(DpDRTo.SelectedDate) || IsBlank(DpDRFrom.SelectedDate) || IsEmpty(DpDRFrom.SelectedDate) || ((DateRequested >= DpDRFrom.SelectedDate) && (DateRequested <= DpDRTo.SelectedDate)),
-                        IsBlank(DpDDTo.SelectedDate) || IsEmpty(DpDDTo.SelectedDate) || IsBlank(DpDDFrom.SelectedDate) || IsEmpty(DpDDFrom.SelectedDate) || ((dateDeadLine >= DpDDFrom.SelectedDate) && (dateDeadLine <= DpDDTo.SelectedDate)),
+                        IsBlank(DpDRTo.SelectedDate) || false || IsBlank(DpDRFrom.SelectedDate) || false || ((DateRequested >= DpDRFrom.SelectedDate) && (DateRequested <= DpDRTo.SelectedDate)),
+                        IsBlank(DpDDTo.SelectedDate) || false || IsBlank(DpDDFrom.SelectedDate) || false || ((dateDeadLine >= DpDDFrom.SelectedDate) && (dateDeadLine <= DpDDTo.SelectedDate)),
                         IsBlank(CmbxDepartment.Selected.Result) || IsBlank(CmbxDepartment.Selected.Result) || Department = CmbxDepartment.Selected.Result,
                         IsBlank(CmbxPlant.Selected.Title) || IsBlank(CmbxPlant.Selected.Title) || Plant = CmbxPlant.Selected.Title,
                         IsBlank(CmbxTypeofApp.Selected.Result) || IsBlank(CmbxTypeofApp.Selected.Result) || TypeOfApplication = CmbxTypeofApp.Selected.Result,

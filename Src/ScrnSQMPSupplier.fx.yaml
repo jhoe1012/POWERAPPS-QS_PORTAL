@@ -21,6 +21,17 @@ ScrnSQMPSupplier As screen:
                     Plant = gblUserInfo.Plant       
                 ).Title
         );
+        
+        Set(
+            gblEditGrpSupplier,
+            Distinct(
+                Filter(
+                    SQMP_NOATS_SupplierGrp,
+                    !IsBlank(Title)
+                ),
+                Title
+            )
+        );
 
     CmpntHeader_16 As CmpntHeader:
         HeaderText: |-
@@ -223,19 +234,27 @@ ScrnSQMPSupplier As screen:
                 ChevronHoverBackground: =RGBA(212, 212, 212, 1)
                 ChevronHoverFill: =RGBA(33, 33, 33, 1)
                 Color: =RGBA(51, 51, 51, 1)
-                DefaultSelectedItems: =
+                DefaultSelectedItems: |-
+                    =If(
+                        FrmSupplier.Mode <> FormMode.New,
+                         LookUp(
+                        gblEditGrpSupplier,
+                        Value = ThisItem.SupplierGrp
+                         )
+                    )
                 DisabledBorderColor: =RGBA(0, 0, 0, 0)
                 DisabledColor: =RGBA(166, 166, 166, 1)
                 DisabledFill: =RGBA(244, 244, 244, 1)
                 DisplayFields: =["Value"]
-                Font: =Font.'Segoe UI'
+                Font: =Font.Arial
                 Height: =DataCardValue50.Height
                 HoverBorderColor: =ColorFade(RGBA(0, 120, 212, 1), -30%)
                 HoverColor: =RGBA(51, 51, 51, 1)
                 HoverFill: =RGBA(255, 255, 255, 1)
-                Items: |-
+                IsSearchable: =false
+                Items: |
                     =//ADD GPARAISO 2023-04-20 LIST OF SUPPLIER GROUP
-                    [
+                    /*[
                         "Food Group 1",
                         "Food Group 2",
                         "Supplies and Services Group",
@@ -248,31 +267,16 @@ ScrnSQMPSupplier As screen:
                         "DBI Group",
                         "CMI Group",
                         "RBI Group"
-                    ]
+                    ]*/
+                        gblEditGrpSupplier
                 PressedBorderColor: =ColorFade(RGBA(0, 120, 212, 1), -30%)
                 PressedColor: =RGBA(255, 255, 255, 1)
                 PressedFill: =RGBA(0, 120, 212, 1)
                 SearchFields: =["Value"]
-                SearchItems: |-
-                    =Search(//ADD GPARAISO 2023-04-20 LIST OF SUPPLIER GROUP
-                    [
-                        "Food Group 1",
-                        "Food Group 2",
-                        "Supplies and Services Group",
-                        "Packaging Group",
-                        "TCPI Group",
-                        "EGI Cebu Group",
-                        "EGI Iloilo Group",
-                        "EGI Tacloban Group",
-                        "EGI Davao Group",
-                        "DBI Group",
-                        "CMI Group",
-                        "RBI Group"
-                    ],SuppGrp.SearchText,"Value")
+                SearchItems: =[]
                 SelectionFill: =RGBA(0, 120, 212, 1)
                 SelectMultiple: =false
-                Size: =13
-                Visible: |-
+                Visible: |
                     =If(
                         gblUserInfo.SQMPRole <> "Uploader",
                         true,
@@ -295,15 +299,18 @@ ScrnSQMPSupplier As screen:
                 Color: =RGBA(51, 51, 51, 1)
                 DefaultSelectedItems: |-
                     =If(
-                        gblUserInfo.SQMPRole = "Uploader",
-                        gblGrpSupplier
+                        FrmSupplier.Mode <> FormMode.New And gblUserInfo.SQMPRole = "Uploader",
+                        LookUp(
+                        gblEditGrpSupplier,
+                        Value = ThisItem.SupplierGrp
+                        )
                     )
                 DisabledBorderColor: =RGBA(0, 0, 0, 0)
                 DisabledColor: =RGBA(166, 166, 166, 1)
                 DisabledFill: =RGBA(244, 244, 244, 1)
                 DisplayFields: =["Title"]
                 FocusedBorderThickness: =gblPInput.FocusedBorderThickness
-                Font: =Font.'Segoe UI'
+                Font: =Font.Arial
                 Height: =DataCardValue50.Height
                 HoverBorderColor: =ColorFade(RGBA(0, 120, 212, 1), -30%)
                 HoverColor: =RGBA(51, 51, 51, 1)
@@ -317,7 +324,6 @@ ScrnSQMPSupplier As screen:
                 SearchItems: =[]
                 SelectionFill: =RGBA(0, 120, 212, 1)
                 SelectMultiple: =false
-                Size: =13
                 Visible: |-
                     =If(
                         gblUserInfo.SQMPRole = "Uploader",

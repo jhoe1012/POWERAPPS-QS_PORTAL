@@ -1,4 +1,7 @@
 ScrnTNCRTrucker As screen:
+    Fill: |+
+        =RGBA(255, 255, 255, 1)
+        
     LoadingSpinnerColor: =RGBA(0, 120, 212, 1)
     OnHidden: |
         =Set(
@@ -12,6 +15,16 @@ ScrnTNCRTrucker As screen:
         );
     OnVisible: |
         =UpdateContext({lclTrucker: Blank()});
+        Set(
+            gblTNCRTrucker,
+            Distinct(
+                Filter(
+                    TNCR_Truckers,
+                    !IsBlank(Area)
+                ),
+                Area
+            )
+        );
 
     CmpntHeader_20 As CmpntHeader:
         HeaderText: ="Trucker List"
@@ -77,28 +90,26 @@ ScrnTNCRTrucker As screen:
         NumberOfColumns: =1
         OnSuccess: |
             =If(
-                IsBlank(lclSupplier),
+                IsBlank(lclTrucker),
                 Notify(
-                    Proper("supplier details added sucessfully !"),
+                    Proper("Trucker details added sucessfully !"),
                     NotificationType.Success
                 ),
                 Notify(
-                    Proper("supplier details updated sucessfully !"),
+                    Proper("Trucker details updated sucessfully !"),
                     NotificationType.Success
                 )
             );
             Set(
-                gblDdSupplier,
+                gblDdTrucker,
                 ShowColumns(
-                    PSQA_SUPPLIERS,
+                    TNCR_Truckers,
                     "Title",
-                    "SupplierGrp",
-                    "BuyerEmail",
-                    "SupplierEmail",
-                    "is_intercompany"
+                    "Area",
+                    "Trucker_email"
                 )
             );
-            UpdateContext({lclSupplier: Blank()});
+            UpdateContext({lclTrucker: Blank()});
             NewForm(FrmTrucker);
         Width: =Parent.Width
         Y: =CmpntHeader_20.Y + CmpntHeader_20.Height
@@ -251,7 +262,7 @@ ScrnTNCRTrucker As screen:
                 DisabledFill: =RGBA(244, 244, 244, 1)
                 DisplayMode: =Parent.DisplayMode
                 FocusedBorderThickness: =gblPInput.FocusedBorderThickness
-                Font: =Font.'Segoe UI'
+                Font: =Font.Arial
                 Height: =gblPInput.Height
                 HoverBorderColor: =gblPInput.HoverBorderColor
                 HoverColor: =RGBA(51, 51, 51, 1)
@@ -265,7 +276,7 @@ ScrnTNCRTrucker As screen:
                 RadiusBottomRight: =0
                 RadiusTopLeft: =0
                 RadiusTopRight: =0
-                Size: =13
+                Size: =11
                 Tooltip: =Parent.DisplayName
                 Width: =(Parent.Width - 60) * 0.6
                 X: =DataCardKey18.X + DataCardKey18.Width
@@ -367,7 +378,7 @@ ScrnTNCRTrucker As screen:
                 DisabledFill: =RGBA(244, 244, 244, 1)
                 DisplayMode: =Parent.DisplayMode
                 FocusedBorderThickness: =gblPInput.FocusedBorderThickness
-                Font: =Font.'Segoe UI'
+                Font: =Font.Arial
                 Height: =gblPInput.Height
                 HoverBorderColor: =gblPInput.HoverBorderColor
                 HoverColor: =RGBA(51, 51, 51, 1)
@@ -381,7 +392,7 @@ ScrnTNCRTrucker As screen:
                 RadiusBottomRight: =0
                 RadiusTopLeft: =0
                 RadiusTopRight: =0
-                Size: =13
+                Size: =11
                 Tooltip: =Parent.DisplayName
                 Width: =(Parent.Width - 60) * 0.6
                 X: =DataCardKey23.X + DataCardKey23.Width
@@ -525,36 +536,41 @@ ScrnTNCRTrucker As screen:
                 ChevronDisabledBackground: =RGBA(244, 244, 244, 1)
                 ChevronDisabledFill: =RGBA(166, 166, 166, 1)
                 ChevronFill: =RGBA(33, 33, 33, 1)
-                ChevronHoverBackground: =RGBA(212, 212, 212, 1)
+                ChevronHoverBackground: =RGBA(204, 204, 204, 1)
                 ChevronHoverFill: =RGBA(33, 33, 33, 1)
                 Color: =gblPInput.Color
+                DefaultSelectedItems: |-
+                    =If(
+                        FrmUser.Mode <> FormMode.New,
+                        LookUp(
+                       gblTNCRTrucker,
+                       Value = ThisItem.Area
+                        )
+                    )
                 DisabledBorderColor: =RGBA(0, 0, 0, 0)
                 DisabledColor: =RGBA(166, 166, 166, 1)
-                DisabledFill: =RGBA(244, 244, 244, 1)
+                DisabledFill: =RGBA(255, 255, 255, 1)
                 DisplayFields: =["Value"]
                 FocusedBorderThickness: =gblPInput.FocusedBorderThickness
-                Font: =Font.'Segoe UI'
+                Font: =Font.Arial
                 Height: =gblPInput.Height
                 HoverBorderColor: =gblPInput.HoverBorderColor
                 HoverColor: =RGBA(51, 51, 51, 1)
-                HoverFill: =RGBA(212, 212, 212, 1)
+                HoverFill: =RGBA(255, 255, 255, 1)
+                IsSearchable: =false
                 Items: |-
-                    =Distinct(
+                    =/*Distinct(
                         TNCR_Truckers,
                         Area
-                    )
+                    )*/
+                    gblTNCRTrucker
                 PressedBorderColor: =gblPInput.PressedBorderColor
                 PressedColor: =RGBA(255, 255, 255, 1)
                 PressedFill: =RGBA(0, 120, 212, 1)
                 SearchFields: =["Value"]
-                SearchItems: |-
-                    =Search(Distinct(
-                        TNCR_Truckers,
-                        Area
-                    ),CmbxArea.SearchText,"Value")
+                SearchItems: =[]
                 SelectionFill: =RGBA(0, 120, 212, 1)
                 SelectMultiple: =false
-                Size: =13
                 Width: =(Parent.Width - 60) * 0.6
                 X: =DataCardKey23.X + DataCardKey23.Width
                 Y: =10

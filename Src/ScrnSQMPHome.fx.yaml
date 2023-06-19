@@ -32,16 +32,17 @@ ScrnSQMPHome As screen:
 
     GalSQMPFolders As gallery.galleryVertical:
         BorderColor: =RGBA(166, 166, 166, 1)
-        Height: =382
+        Height: =Parent.Height * 0.85
         Items: =colSQMPFolder
         Layout: =Layout.Vertical
         OnSelect: =
+        ShowScrollbar: =false
         TemplateSize: =146
         Transition: =Transition.Pop
         Width: =Parent.Width * 0.4
         WrapCount: =2
         X: =Parent.Width * 0.56
-        Y: =Parent.Width * 0.1
+        Y: =Parent.Height * 0.08
         ZIndex: =4
 
         Icon3 As icon.Folder:

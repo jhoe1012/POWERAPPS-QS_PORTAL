@@ -3,7 +3,7 @@
     "ApiId": "/providers/microsoft.powerapps/apis/shared_sharepointonline",
     "CdpRevision": {
       "BaseUrl": "/",
-      "LastChangedTimeString": "2023-03-27T17:17:13.2870000Z",
+      "LastChangedTimeString": "2023-05-31T22:00:55.5250000Z",
       "RevisionNumber": 1
     },
     "ConnectedDataSourceInfoNameMapping": {
@@ -50,11 +50,14 @@
       "Site": "Site",
       "SQARole": "SQARole",
       "SQMPRole": "SQMPRole",
+      "sub_name": "sub_name",
+      "sub_name#Claims": "sub_name Claims",
       "SupplierGrp": "SupplierGrp",
       "SupplierGrp_Notifs0": "SupplierGrp_Notifs",
       "Title": "Title",
       "TNCRLogistic": "TNCRLogistic",
-      "TNCRRole": "TNCRRole"
+      "TNCRRole": "TNCRRole",
+      "user_pic": "user_pic"
     },
     "DatasetName": "https://goldilocksbakeshopinc.sharepoint.com/sites/qmspotal",
     "EncodeDataset": true,

@@ -70,17 +70,17 @@ ScrnQMSRRD As screen:
                         ReferenceNumber,
                         TxtQMSSearchRef.Text
                     ),
-                    IsBlank(DpQMSDateIssuedFrom.SelectedDate) || IsEmpty(DpQMSDateIssuedFrom.SelectedDate) || IsBlank(DpQMSDateIssuedTo.SelectedDate) || IsEmpty(DpQMSDateIssuedTo.SelectedDate) || ((DateIssued >= DpQMSDateIssuedFrom.SelectedDate) && (DateIssued <= DpQMSDateIssuedTo.SelectedDate)),
-                    IsBlank(DpQMSDateExpireFrom.SelectedDate) || IsEmpty(DpQMSDateExpireFrom.SelectedDate) || IsBlank(DpQMSDateExpireTo.SelectedDate) || IsEmpty(DpQMSDateExpireTo.SelectedDate) || ((DateExpiring >= DpQMSDateExpireFrom.SelectedDate) && (DateExpiring <= DpQMSDateExpireTo.SelectedDate)),
-                    IsBlank(CmbxQMSFolder.Selected.Title) || IsEmpty(CmbxQMSFolder.Selected.Title) || StartsWith(
+                    IsBlank(DpQMSDateIssuedFrom.SelectedDate) || false || IsBlank(DpQMSDateIssuedTo.SelectedDate) || false || ((DateIssued >= DpQMSDateIssuedFrom.SelectedDate) && (DateIssued <= DpQMSDateIssuedTo.SelectedDate)),
+                    IsBlank(DpQMSDateExpireFrom.SelectedDate) || false || IsBlank(DpQMSDateExpireTo.SelectedDate) || false || ((DateExpiring >= DpQMSDateExpireFrom.SelectedDate) && (DateExpiring <= DpQMSDateExpireTo.SelectedDate)),
+                    IsBlank(CmbxQMSFolder.Selected.Title) || false || StartsWith(
                         Path,
                         CmbxQMSFolder.Selected.Title
                     ),
-                    IsBlank(CmbxQMSSubFolder.Selected.Title) || IsEmpty(CmbxQMSSubFolder.Selected.Title) || Plant = CmbxQMSSubFolder.Selected.Title,
-                    IsBlank(CmbxQMSDocCat.Selected.Title) || IsEmpty(CmbxQMSDocCat.Selected.Title) || DocumentCategory = CmbxQMSDocCat.Selected.Title,
-                    IsBlank(CmbxQMSDocStatus.Selected.Value) || IsEmpty(CmbxQMSDocStatus.Selected.Value) || DocumentStatus = CmbxQMSDocStatus.Selected.Value,
-                    IsBlank(CmbxQMSActivityCategory.Selected.Title) || IsEmpty(CmbxQMSActivityCategory.Selected.Title) || ActivityCategory = CmbxQMSActivityCategory.Selected.Title,
-                    IsBlank(CmbxQMSProductCategory.Selected.Title) || IsEmpty(CmbxQMSProductCategory.Selected.Title) || ProductCategory2 = CmbxQMSProductCategory.Selected.Title
+                    IsBlank(CmbxQMSSubFolder.Selected.Title) || false || Plant = CmbxQMSSubFolder.Selected.Title,
+                    IsBlank(CmbxQMSDocCat.Selected.Title) || false || DocumentCategory = CmbxQMSDocCat.Selected.Title,
+                    IsBlank(CmbxQMSDocStatus.Selected.Value) || false || DocumentStatus = CmbxQMSDocStatus.Selected.Value,
+                    IsBlank(CmbxQMSActivityCategory.Selected.Title) || false || ActivityCategory = CmbxQMSActivityCategory.Selected.Title,
+                    IsBlank(CmbxQMSProductCategory.Selected.Title) || false || ProductCategory2 = CmbxQMSProductCategory.Selected.Title
                 ),
                 "DateIssued",
                 SortOrder.Descending,

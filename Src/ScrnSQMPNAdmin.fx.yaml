@@ -43,13 +43,13 @@ ScrnSQMPNAdmin As screen:
                                     ), */
                                     SQMP_NOATS_LIST
                                 /*)*/,
-                                IsBlank(DpTo.SelectedDate) || IsEmpty(DpTo.SelectedDate) || IsBlank(DpFrom.SelectedDate) || IsEmpty(DpFrom.SelectedDate) || (('Date of Delivery' >= DpFrom.SelectedDate) && ('Date of Delivery' <= DpTo.SelectedDate)),
-                                IsBlank(DpCreatedTo.SelectedDate) || IsEmpty(DpCreatedTo.SelectedDate) || IsBlank(DpCreatedFrom.SelectedDate) || IsEmpty(DpCreatedFrom.SelectedDate) || ((Created >= DpCreatedFrom.SelectedDate) && (Created <= DpCreatedTo.SelectedDate)),
+                                IsBlank(DpTo.SelectedDate) || false || IsBlank(DpFrom.SelectedDate) || false || (('Date of Delivery' >= DpFrom.SelectedDate) && ('Date of Delivery' <= DpTo.SelectedDate)),
+                                IsBlank(DpCreatedTo.SelectedDate) || false || IsBlank(DpCreatedFrom.SelectedDate) || false || ((Created >= DpCreatedFrom.SelectedDate) && (Created <= DpCreatedTo.SelectedDate)),
                                 IsBlank(CmbxTypeMat.Selected.Title) || IsBlank(CmbxTypeMat.Selected.Title) || 'Type of Material' = CmbxTypeMat.Selected.Title,
-                                IsBlank(CmbxPlant.Selected.Title) || IsEmpty(CmbxPlant.Selected.Title) || Plant = CmbxPlant.Selected.Title,
-                                IsBlank(CmbxSupplierFilter.Selected.Title) || IsEmpty(CmbxSupplierFilter.Selected.Title) || Supplier = CmbxSupplierFilter.Selected.Title,
-                                IsBlank(CmbxCARstatus.Selected.Value) || IsEmpty(CmbxCARstatus.Selected.Value) || 'CAR Status' = CmbxCARstatus.Selected.Value,
-                                IsBlank(CmbxProcurement.Selected.Title) || IsEmpty(CmbxProcurement.Selected.Title) || Procurement = Concatenate(
+                                IsBlank(CmbxPlant.Selected.Title) || false || Plant = CmbxPlant.Selected.Title,
+                                IsBlank(CmbxSupplierFilter.Selected.Title) || false || Supplier = CmbxSupplierFilter.Selected.Title,
+                                IsBlank(CmbxCARstatus.Selected.Value) || false || 'CAR Status' = CmbxCARstatus.Selected.Value,
+                                IsBlank(CmbxProcurement.Selected.Title) || false || Procurement = Concatenate(
                                     CmbxProcurement.Selected.Title,
                                     " | ",
                                     CmbxProcurement.Selected.Email
@@ -64,7 +64,7 @@ ScrnSQMPNAdmin As screen:
                                 DateTimeCARUploaded = Blank()
                             ),*/
                             //Filter the Appr_Status based on the SQMPRole  ADD GPARAISO | 2023-04-19
-                            IsBlank(TxtUserRole.Text) || IsEmpty(TxtUserRole.Text) || Appr_Status = TxtUserRole.Text 
+                            IsBlank(TxtUserRole.Text) || false || Appr_Status = TxtUserRole.Text 
                             ),
                             "Appr_Status",
                             SortOrder.Descending,
@@ -78,12 +78,12 @@ ScrnSQMPNAdmin As screen:
                         SortByColumns(
                             Filter(
                                 SQMP_NOATS_LIST,
-                                IsBlank(DpTo.SelectedDate) || IsEmpty(DpTo.SelectedDate) || IsBlank(DpFrom.SelectedDate) || IsEmpty(DpFrom.SelectedDate) || (('Date of Delivery' >= DpFrom.SelectedDate) && ('Date of Delivery' <= DpTo.SelectedDate)),
-                                IsBlank(DpCreatedTo.SelectedDate) || IsEmpty(DpCreatedTo.SelectedDate) || IsBlank(DpCreatedFrom.SelectedDate) || IsEmpty(DpCreatedFrom.SelectedDate) || ((Created >= DpCreatedFrom.SelectedDate) && (Created <= DpCreatedTo.SelectedDate)),
+                                IsBlank(DpTo.SelectedDate) || false || IsBlank(DpFrom.SelectedDate) || false || (('Date of Delivery' >= DpFrom.SelectedDate) && ('Date of Delivery' <= DpTo.SelectedDate)),
+                                IsBlank(DpCreatedTo.SelectedDate) || false || IsBlank(DpCreatedFrom.SelectedDate) || false || ((Created >= DpCreatedFrom.SelectedDate) && (Created <= DpCreatedTo.SelectedDate)),
                                 IsBlank(CmbxTypeMat.Selected.Title) || IsBlank(CmbxTypeMat.Selected.Title) || 'Type of Material' = CmbxTypeMat.Selected.Title,
-                                IsBlank(CmbxPlant.Selected.Title) || IsEmpty(CmbxPlant.Selected.Title) || Plant = CmbxPlant.Selected.Title,
-                                IsBlank(CmbxSupplierFilter.Selected.Title) || IsEmpty(CmbxSupplierFilter.Selected.Title) || Supplier = CmbxSupplierFilter.Selected.Title,
-                                IsBlank(CmbxCARstatus.Selected.Value) || IsEmpty(CmbxCARstatus.Selected.Value) || 'CAR Status' = CmbxCARstatus.Selected.Value,
+                                IsBlank(CmbxPlant.Selected.Title) || false || Plant = CmbxPlant.Selected.Title,
+                                IsBlank(CmbxSupplierFilter.Selected.Title) || false || Supplier = CmbxSupplierFilter.Selected.Title,
+                                IsBlank(CmbxCARstatus.Selected.Value) || false || 'CAR Status' = CmbxCARstatus.Selected.Value,
                                 StartsWith(
                                     'Noats Control Number',
                                     TxtSearchNoats.Text

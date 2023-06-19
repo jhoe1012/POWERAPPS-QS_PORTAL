@@ -110,9 +110,9 @@ ScrnTNCRAdmin As screen:
                             IsBlank(DpTo_1.SelectedDate) || IsBlank(DpTo_1.SelectedDate) || IsBlank(DpFrom_1.SelectedDate) || IsBlank(DpFrom_1.SelectedDate) || ((Date >= DpFrom_1.SelectedDate) && (Date <= DpTo_1.SelectedDate)),
                             IsBlank(DpTo_2.SelectedDate) || IsBlank(DpTo_2.SelectedDate) || IsBlank(DpFrom_2.SelectedDate) || IsBlank(DpFrom_2.SelectedDate) || ((Created >= DpFrom_2.SelectedDate) && (Created <= DpTo_2.SelectedDate)),
                             IsBlank(CmbxTypeMat_1.Selected.Title) || IsBlank(CmbxTypeMat_1.Selected.Title) || Trucker = CmbxTypeMat_1.Selected.Title,
-                            IsBlank(CmbxProcurement_1.Selected) || IsEmpty(CmbxProcurement_1.Selected) || Logistic = CmbxProcurement_1.Selected.Title,
-                            IsBlank(CmbxCARstatus_1.Selected.Value) || IsEmpty(CmbxCARstatus_1.Selected.Value) || CARStatus = CmbxCARstatus_1.Selected.Value,
-                            IsBlank(CmbxPlant_1.Selected.Title) || IsEmpty(CmbxPlant_1.Selected.Title) || Plant = CmbxPlant_1.Selected.Title,
+                            IsBlank(CmbxProcurement_1.Selected) || false || Logistic = CmbxProcurement_1.Selected.Title,
+                            IsBlank(CmbxCARstatus_1.Selected.Value) || false || CARStatus = CmbxCARstatus_1.Selected.Value,
+                            IsBlank(CmbxPlant_1.Selected.Title) || false || Plant = CmbxPlant_1.Selected.Title,
                             StartsWith(
                                 TNCRControlNo,
                                 TxtSearchNoats_1.Text
@@ -1549,6 +1549,6 @@ ScrnTNCRAdmin As screen:
         Tooltip: ="Menu"
         Visible: =gblUserInfo.SQMPRole = "Admin" || gblUserInfo.SQMPRole="Uploader" || gblUserInfo.SQMPRole="Approver"
         Width: =52
-        X: =1313
+        X: =Parent.Width- Self.Width
         ZIndex: =38
 
