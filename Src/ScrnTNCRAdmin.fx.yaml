@@ -90,70 +90,21 @@ ScrnTNCRAdmin As screen:
                 Items: |-
                     =SortByColumns(
                         Filter(
-                           /* If(
-                                gblUserInfo.TNCRRole = "Viewer" && Left(
-                                    gblUserInfo.Plant,
-                                    4
-                                ) = "QARM",
-                                Filter(
-                                    SQMP_TNCR_LIST,
-                                    Plant in (ShowColumns(
-                                        Filter(
-                                            'QMS_PLANT_&_AGENCY',
-                                            Group = gblUserInfo.Plant
-                                        ),
-                                        "Title"
-                                    ))
-                                ),
-                                SQMP_TNCR_LIST
-                            )*/SQMP_TNCR_LIST,
-                            IsBlank(DpTo_1.SelectedDate) || IsBlank(DpTo_1.SelectedDate) || IsBlank(DpFrom_1.SelectedDate) || IsBlank(DpFrom_1.SelectedDate) || ((Date >= DpFrom_1.SelectedDate) && (Date <= DpTo_1.SelectedDate)),
-                            IsBlank(DpTo_2.SelectedDate) || IsBlank(DpTo_2.SelectedDate) || IsBlank(DpFrom_2.SelectedDate) || IsBlank(DpFrom_2.SelectedDate) || ((Created >= DpFrom_2.SelectedDate) && (Created <= DpTo_2.SelectedDate)),
-                            IsBlank(CmbxTypeMat_1.Selected.Title) || IsBlank(CmbxTypeMat_1.Selected.Title) || Trucker = CmbxTypeMat_1.Selected.Title,
-                            IsBlank(CmbxProcurement_1.Selected) || false || Logistic = CmbxProcurement_1.Selected.Title,
-                            IsBlank(CmbxCARstatus_1.Selected.Value) || false || CARStatus = CmbxCARstatus_1.Selected.Value,
-                            IsBlank(CmbxPlant_1.Selected.Title) || false || Plant = CmbxPlant_1.Selected.Title,
+                            SQMP_TNCR_LIST,
                             StartsWith(
                                 TNCRControlNo,
                                 TxtSearchNoats_1.Text
-                            )
+                            ),
+                            IsBlank(DpTo_1.SelectedDate) || IsBlank(DpFrom_1.SelectedDate) || ((Date >= DpFrom_1.SelectedDate) && (Date <= DpTo_1.SelectedDate)),
+                            IsBlank(DpTo_2.SelectedDate) || IsBlank(DpFrom_2.SelectedDate) || ((Created >= DpFrom_2.SelectedDate) && (Created <= DpTo_2.SelectedDate)),
+                            IsBlank(CmbxTypeMat_1.Selected.Title) || Trucker = CmbxTypeMat_1.Selected.Title,
+                            IsBlank(CmbxProcurement_1.Selected) || Logistic = CmbxProcurement_1.Selected.Title,
+                            IsBlank(CmbxCARstatus_1.Selected.Value) || CARStatus = CmbxCARstatus_1.Selected.Value,
+                            IsBlank(CmbxPlant_1.Selected.Title) || Plant = CmbxPlant_1.Selected.Title
                         ),
-                        "TNCRControlNo",
+                        "Date",
                         SortOrder.Ascending
                     )
-                    /**
-                    SortByColumns(
-                        Filter(
-                            If(
-                                gblUserInfo.TNCRRole = "Logistic" && Left(gblUserInfo.Plant, 4)="QARM",
-                                Filter(
-                                    SQMP_TNCR_LIST,
-                                    Plant in (ShowColumns(
-                                        Filter(
-                                            'QMS_PLANT_&_AGENCY',
-                                            Group = gblUserInfo.Plant
-                                        ),
-                                        "Title"
-                                    ))
-                                ),
-                                SQMP_TNCR_LIST
-                            ),
-                    
-                            IsBlank(DpTo_1.SelectedDate) || IsEmpty(DpTo_1.SelectedDate) || IsBlank(DpFrom_1.SelectedDate) || IsEmpty(DpFrom_1.SelectedDate) || ((Date >= DpFrom_1.SelectedDate) && (Date <= DpTo_1.SelectedDate)),
-                             IsBlank(CmbxTypeMat_1.Selected.Title) || IsBlank(CmbxTypeMat_1.Selected.Title) || Trucker= CmbxTypeMat_1.Selected.Title,
-                            IsBlank(CmbxProcurement_1.Selected) || IsEmpty(CmbxProcurement_1.Selected) ||  Logistic = CmbxProcurement_1.Selected.Department,
-                            IsBlank(CmbxCARstatus_1.Selected.Value) || IsEmpty(CmbxCARstatus_1.Selected.Value) || CARStatus = CmbxCARstatus_1.Selected.Value,
-                            StartsWith(
-                               TNCRControlNo,
-                                TxtSearchNoats_1.Text
-                            ),
-                            gblUserInfo.TNCRRole = "Uploader" 
-                        ),
-                        "TNCRControlNo",
-                        Ascending
-                    )
-                    
-                    **/
                 Layout: =Layout.Vertical
                 OnSelect: =
                 TemplateFill: =If(ThisItem.IsSelected, RGBA(171, 255, 254, 1))

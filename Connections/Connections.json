@@ -3,7 +3,7 @@
     "connectionRef": {
       "apiTier": "Standard",
       "displayName": "Logic flows",
-      "iconUri": "https://connectoricons-prod.azureedge.net/releases/v1.0.1636/1.0.1636.3297/logicflows/icon.png",
+      "iconUri": "https://connectoricons-prod.azureedge.net/releases/v1.0.1645/1.0.1645.3345/logicflows/icon.png",
       "id": "/providers/microsoft.powerapps/apis/shared_logicflows",
       "parameterHints": {
         "1bbeb66f-459a-4ca1-8e6d-7bc7c6aff95e": {
@@ -59,7 +59,7 @@
     "connectionRef": {
       "apiTier": "Standard",
       "displayName": "SharePoint",
-      "iconUri": "https://connectoricons-prod.azureedge.net/u/shgogna/globalperconnector-train1/1.0.1639.3310/sharepointonline/icon.png",
+      "iconUri": "https://connectoricons-prod.azureedge.net/u/shgogna/globalperconnector-train1/1.0.1639.3312/sharepointonline/icon.png",
       "id": "/providers/microsoft.powerapps/apis/shared_sharepointonline",
       "parameterHints": {},
       "parameterHintsV2": {}
@@ -157,7 +157,6 @@
       "TNCR_DeviationCategory",
       "TNCR_SpecificRequestToTrucker",
       "TNCR_Stores",
-      "SQMP_TNCR_LIST",
       "Holidays",
       "TNCR_CAR",
       "TNCR_Truckers",
@@ -166,7 +165,8 @@
       "QMS_RRMS_dd_doc_req",
       "QMS_REGULATORY_RMS",
       "QMS_RRMS_Document_Requirements",
-      "SQMP_NOATS_SupplierGrp"
+      "SQMP_NOATS_SupplierGrp",
+      "SQMP_TNCR_LIST"
     ],
     "dependencies": {},
     "dependents": [
@@ -188,7 +188,7 @@
     "connectionRef": {
       "apiTier": "Standard",
       "displayName": "SharePoint",
-      "iconUri": "https://connectoricons-prod.azureedge.net/u/shgogna/globalperconnector-train1/1.0.1639.3310/sharepointonline/icon.png",
+      "iconUri": "https://connectoricons-prod.azureedge.net/u/shgogna/globalperconnector-train1/1.0.1639.3312/sharepointonline/icon.png",
       "id": "/providers/microsoft.powerapps/apis/shared_sharepointonline",
       "parameterHints": {},
       "parameterHintsV2": {}
@@ -221,7 +221,7 @@
     "connectionRef": {
       "apiTier": "Standard",
       "displayName": "Logic flows",
-      "iconUri": "https://connectoricons-prod.azureedge.net/releases/v1.0.1636/1.0.1636.3297/logicflows/icon.png",
+      "iconUri": "https://connectoricons-prod.azureedge.net/releases/v1.0.1645/1.0.1645.3345/logicflows/icon.png",
       "id": "/providers/microsoft.powerapps/apis/shared_logicflows",
       "parameterHints": {
         "1bbeb66f-459a-4ca1-8e6d-7bc7c6aff95e": {
@@ -270,7 +270,7 @@
     "connectionRef": {
       "apiTier": "Standard",
       "displayName": "Office 365 Outlook",
-      "iconUri": "https://connectoricons-prod.azureedge.net/u/laborbol/partial-builds/390724148/1.0.1641.3326/office365/icon.png",
+      "iconUri": "https://connectoricons-prod.azureedge.net/releases/v1.0.1649/1.0.1649.3368/office365/icon.png",
       "id": "/providers/microsoft.powerapps/apis/shared_office365",
       "parameterHints": {},
       "parameterHintsV2": {}
@@ -290,7 +290,7 @@
     "connectionRef": {
       "apiTier": "Standard",
       "displayName": "Logic flows",
-      "iconUri": "https://connectoricons-prod.azureedge.net/releases/v1.0.1636/1.0.1636.3297/logicflows/icon.png",
+      "iconUri": "https://connectoricons-prod.azureedge.net/releases/v1.0.1645/1.0.1645.3345/logicflows/icon.png",
       "id": "/providers/microsoft.powerapps/apis/shared_logicflows",
       "parameterHints": {
         "1bbeb66f-459a-4ca1-8e6d-7bc7c6aff95e": {
@@ -346,7 +346,7 @@
     "connectionRef": {
       "apiTier": "Standard",
       "displayName": "OneDrive for Business",
-      "iconUri": "https://connectoricons-prod.azureedge.net/u/shgogna/globalperconnector-train1/1.0.1639.3310/onedriveforbusiness/icon.png",
+      "iconUri": "https://connectoricons-prod.azureedge.net/releases/v1.0.1647/1.0.1647.3361/onedriveforbusiness/icon.png",
       "id": "/providers/microsoft.powerapps/apis/shared_onedriveforbusiness",
       "parameterHints": {},
       "parameterHintsV2": {}
@@ -364,7 +364,7 @@
     "connectionRef": {
       "apiTier": "Standard",
       "displayName": "OneDrive for Business",
-      "iconUri": "https://connectoricons-prod.azureedge.net/u/shgogna/globalperconnector-train1/1.0.1639.3310/onedriveforbusiness/icon.png",
+      "iconUri": "https://connectoricons-prod.azureedge.net/releases/v1.0.1647/1.0.1647.3361/onedriveforbusiness/icon.png",
       "id": "/providers/microsoft.powerapps/apis/shared_onedriveforbusiness",
       "parameterHints": {},
       "parameterHintsV2": {}
@@ -382,7 +382,7 @@
     "connectionRef": {
       "apiTier": "Standard",
       "displayName": "Logic flows",
-      "iconUri": "https://connectoricons-prod.azureedge.net/releases/v1.0.1636/1.0.1636.3297/logicflows/icon.png",
+      "iconUri": "https://connectoricons-prod.azureedge.net/releases/v1.0.1645/1.0.1645.3345/logicflows/icon.png",
       "id": "/providers/microsoft.powerapps/apis/shared_logicflows",
       "parameterHints": {
         "1bbeb66f-459a-4ca1-8e6d-7bc7c6aff95e": {
@@ -417,7 +417,7 @@
     "connectionRef": {
       "apiTier": "Standard",
       "displayName": "SharePoint",
-      "iconUri": "https://connectoricons-prod.azureedge.net/u/shgogna/globalperconnector-train1/1.0.1639.3310/sharepointonline/icon.png",
+      "iconUri": "https://connectoricons-prod.azureedge.net/u/shgogna/globalperconnector-train1/1.0.1639.3312/sharepointonline/icon.png",
       "id": "/providers/microsoft.powerapps/apis/shared_sharepointonline",
       "parameterHints": {},
       "parameterHintsV2": {}
@@ -442,7 +442,7 @@
     "connectionRef": {
       "apiTier": "Standard",
       "displayName": "Logic flows",
-      "iconUri": "https://connectoricons-prod.azureedge.net/releases/v1.0.1636/1.0.1636.3297/logicflows/icon.png",
+      "iconUri": "https://connectoricons-prod.azureedge.net/releases/v1.0.1645/1.0.1645.3345/logicflows/icon.png",
       "id": "/providers/microsoft.powerapps/apis/shared_logicflows",
       "parameterHints": {
         "1bbeb66f-459a-4ca1-8e6d-7bc7c6aff95e": {
@@ -477,7 +477,7 @@
     "connectionRef": {
       "apiTier": "Standard",
       "displayName": "Logic flows",
-      "iconUri": "https://connectoricons-prod.azureedge.net/releases/v1.0.1636/1.0.1636.3297/logicflows/icon.png",
+      "iconUri": "https://connectoricons-prod.azureedge.net/releases/v1.0.1645/1.0.1645.3345/logicflows/icon.png",
       "id": "/providers/microsoft.powerapps/apis/shared_logicflows",
       "parameterHints": {
         "1bbeb66f-459a-4ca1-8e6d-7bc7c6aff95e": {
@@ -508,7 +508,7 @@
     "connectionRef": {
       "apiTier": "Standard",
       "displayName": "Office 365 Users",
-      "iconUri": "https://connectoricons-prod.azureedge.net/u/laborbol/partial-builds/390724148/1.0.1641.3326/office365users/icon.png",
+      "iconUri": "https://connectoricons-prod.azureedge.net/releases/v1.0.1649/1.0.1649.3368/office365users/icon.png",
       "id": "/providers/microsoft.powerapps/apis/shared_office365users",
       "parameterHints": {},
       "parameterHintsV2": {}
@@ -525,7 +525,7 @@
     "connectionRef": {
       "apiTier": "Standard",
       "displayName": "Logic flows",
-      "iconUri": "https://connectoricons-prod.azureedge.net/releases/v1.0.1636/1.0.1636.3297/logicflows/icon.png",
+      "iconUri": "https://connectoricons-prod.azureedge.net/releases/v1.0.1645/1.0.1645.3345/logicflows/icon.png",
       "id": "/providers/microsoft.powerapps/apis/shared_logicflows",
       "parameterHints": {
         "1bbeb66f-459a-4ca1-8e6d-7bc7c6aff95e": {
@@ -560,7 +560,7 @@
     "connectionRef": {
       "apiTier": "Standard",
       "displayName": "Excel Online (Business)",
-      "iconUri": "https://connectoricons-prod.azureedge.net/releases/v1.0.1639/1.0.1639.3315/excelonlinebusiness/icon.png",
+      "iconUri": "https://connectoricons-prod.azureedge.net/releases/v1.0.1649/1.0.1649.3368/excelonlinebusiness/icon.png",
       "id": "/providers/microsoft.powerapps/apis/shared_excelonlinebusiness",
       "parameterHints": {},
       "parameterHintsV2": {}
@@ -580,7 +580,7 @@
     "connectionRef": {
       "apiTier": "Standard",
       "displayName": "Logic flows",
-      "iconUri": "https://connectoricons-prod.azureedge.net/releases/v1.0.1636/1.0.1636.3297/logicflows/icon.png",
+      "iconUri": "https://connectoricons-prod.azureedge.net/releases/v1.0.1645/1.0.1645.3345/logicflows/icon.png",
       "id": "/providers/microsoft.powerapps/apis/shared_logicflows",
       "parameterHints": {
         "1bbeb66f-459a-4ca1-8e6d-7bc7c6aff95e": {
@@ -633,7 +633,7 @@
     "connectionRef": {
       "apiTier": "Standard",
       "displayName": "Logic flows",
-      "iconUri": "https://connectoricons-prod.azureedge.net/releases/v1.0.1636/1.0.1636.3297/logicflows/icon.png",
+      "iconUri": "https://connectoricons-prod.azureedge.net/releases/v1.0.1645/1.0.1645.3345/logicflows/icon.png",
       "id": "/providers/microsoft.powerapps/apis/shared_logicflows",
       "parameterHints": {
         "1bbeb66f-459a-4ca1-8e6d-7bc7c6aff95e": {
@@ -664,7 +664,7 @@
     "connectionRef": {
       "apiTier": "Standard",
       "displayName": "Logic flows",
-      "iconUri": "https://connectoricons-prod.azureedge.net/releases/v1.0.1636/1.0.1636.3297/logicflows/icon.png",
+      "iconUri": "https://connectoricons-prod.azureedge.net/releases/v1.0.1645/1.0.1645.3345/logicflows/icon.png",
       "id": "/providers/microsoft.powerapps/apis/shared_logicflows",
       "parameterHints": {
         "1bbeb66f-459a-4ca1-8e6d-7bc7c6aff95e": {
@@ -695,7 +695,7 @@
     "connectionRef": {
       "apiTier": "Standard",
       "displayName": "Logic flows",
-      "iconUri": "https://connectoricons-prod.azureedge.net/releases/v1.0.1636/1.0.1636.3297/logicflows/icon.png",
+      "iconUri": "https://connectoricons-prod.azureedge.net/releases/v1.0.1645/1.0.1645.3345/logicflows/icon.png",
       "id": "/providers/microsoft.powerapps/apis/shared_logicflows",
       "parameterHints": {
         "1bbeb66f-459a-4ca1-8e6d-7bc7c6aff95e": {

@@ -173,7 +173,7 @@
       "LayoutName": "",
       "MetaDataIDKey": "",
       "Name": "BtnAddNewDoc_3",
-      "ParentIndex": 7,
+      "ParentIndex": 4,
       "PersistMetaDataIDKey": false,
       "Properties": [
         {
@@ -537,7 +537,7 @@
       "LayoutName": "",
       "MetaDataIDKey": "",
       "Name": "BtnCancel_1",
-      "ParentIndex": 33,
+      "ParentIndex": 36,
       "PersistMetaDataIDKey": false,
       "Properties": [
         {
@@ -900,7 +900,7 @@
       "LayoutName": "",
       "MetaDataIDKey": "",
       "Name": "BtnExportExcelSQMP_1",
-      "ParentIndex": 8,
+      "ParentIndex": 5,
       "PersistMetaDataIDKey": false,
       "Properties": [
         {
@@ -1271,7 +1271,7 @@
       "LayoutName": "",
       "MetaDataIDKey": "",
       "Name": "BtnOk_1",
-      "ParentIndex": 32,
+      "ParentIndex": 35,
       "PersistMetaDataIDKey": false,
       "Properties": [
         {
@@ -1676,7 +1676,7 @@
       "LayoutName": "",
       "MetaDataIDKey": "",
       "Name": "BtnOk_SqmpAdmin_1",
-      "ParentIndex": 36,
+      "ParentIndex": 34,
       "PersistMetaDataIDKey": false,
       "Properties": [
         {
@@ -2598,7 +2598,7 @@
       "LayoutName": "",
       "MetaDataIDKey": "",
       "Name": "CmbxPlant_1",
-      "ParentIndex": 35,
+      "ParentIndex": 33,
       "PersistMetaDataIDKey": false,
       "Properties": [
         {
@@ -3558,7 +3558,7 @@
       "LayoutName": "",
       "MetaDataIDKey": "",
       "Name": "CmbxTypeMat_1",
-      "ParentIndex": 27,
+      "ParentIndex": 25,
       "PersistMetaDataIDKey": false,
       "Properties": [
         {
@@ -3981,7 +3981,7 @@
       "LayoutName": "",
       "MetaDataIDKey": "",
       "Name": "Container5_1",
-      "ParentIndex": 1,
+      "ParentIndex": 9,
       "PersistMetaDataIDKey": false,
       "Properties": [
         {
@@ -4516,7 +4516,7 @@
       "LayoutName": "",
       "MetaDataIDKey": "",
       "Name": "DdStatus_1",
-      "ParentIndex": 15,
+      "ParentIndex": 23,
       "PersistMetaDataIDKey": false,
       "Properties": [
         {
@@ -4959,7 +4959,7 @@
       "LayoutName": "",
       "MetaDataIDKey": "",
       "Name": "DpFrom_1",
-      "ParentIndex": 21,
+      "ParentIndex": 15,
       "PersistMetaDataIDKey": false,
       "Properties": [
         {
@@ -5416,7 +5416,7 @@
       "LayoutName": "",
       "MetaDataIDKey": "",
       "Name": "DpFrom_2",
-      "ParentIndex": 24,
+      "ParentIndex": 19,
       "PersistMetaDataIDKey": false,
       "Properties": [
         {
@@ -5873,7 +5873,7 @@
       "LayoutName": "",
       "MetaDataIDKey": "",
       "Name": "DpTo_1",
-      "ParentIndex": 22,
+      "ParentIndex": 16,
       "PersistMetaDataIDKey": false,
       "Properties": [
         {
@@ -6330,7 +6330,7 @@
       "LayoutName": "",
       "MetaDataIDKey": "",
       "Name": "DpTo_2",
-      "ParentIndex": 25,
+      "ParentIndex": 20,
       "PersistMetaDataIDKey": false,
       "Properties": [
         {
@@ -7083,7 +7083,7 @@
       "LayoutName": "",
       "MetaDataIDKey": "",
       "Name": "HtmlDetails_1",
-      "ParentIndex": 9,
+      "ParentIndex": 6,
       "PersistMetaDataIDKey": false,
       "Properties": [
         {
@@ -7258,7 +7258,7 @@
       "LayoutName": "",
       "MetaDataIDKey": "",
       "Name": "HtmlEditStatusBox_1",
-      "ParentIndex": 4,
+      "ParentIndex": 17,
       "PersistMetaDataIDKey": false,
       "Properties": [
         {
@@ -7450,7 +7450,7 @@
       "LayoutName": "",
       "MetaDataIDKey": "",
       "Name": "HtmlFilter_1",
-      "ParentIndex": 5,
+      "ParentIndex": 10,
       "PersistMetaDataIDKey": false,
       "Properties": [
         {
@@ -8171,7 +8171,7 @@
       "LayoutName": "",
       "MetaDataIDKey": "",
       "Name": "IcnEditSqmp_1",
-      "ParentIndex": 13,
+      "ParentIndex": 8,
       "PersistMetaDataIDKey": false,
       "Properties": [
         {
@@ -8695,7 +8695,7 @@
       "LayoutName": "",
       "MetaDataIDKey": "",
       "Name": "IcnHideDetails_1",
-      "ParentIndex": 12,
+      "ParentIndex": 7,
       "PersistMetaDataIDKey": false,
       "Properties": [
         {
@@ -8954,7 +8954,7 @@
       "LayoutName": "",
       "MetaDataIDKey": "",
       "Name": "icnmenu_1",
-      "ParentIndex": 6,
+      "ParentIndex": 3,
       "PersistMetaDataIDKey": false,
       "Properties": [
         {
@@ -9874,7 +9874,7 @@
       "LayoutName": "",
       "MetaDataIDKey": "",
       "Name": "LblFrom_1",
-      "ParentIndex": 20,
+      "ParentIndex": 14,
       "PersistMetaDataIDKey": false,
       "Properties": [
         {
@@ -10176,7 +10176,7 @@
       "LayoutName": "",
       "MetaDataIDKey": "",
       "Name": "LblInfo_1",
-      "ParentIndex": 10,
+      "ParentIndex": 18,
       "PersistMetaDataIDKey": false,
       "Properties": [
         {
@@ -10506,7 +10506,7 @@
       "LayoutName": "",
       "MetaDataIDKey": "",
       "Name": "LblPlant_1",
-      "ParentIndex": 34,
+      "ParentIndex": 32,
       "PersistMetaDataIDKey": false,
       "Properties": [
         {
@@ -11138,7 +11138,7 @@
       "LayoutName": "",
       "MetaDataIDKey": "",
       "Name": "LblReport_1",
-      "ParentIndex": 18,
+      "ParentIndex": 26,
       "PersistMetaDataIDKey": false,
       "Properties": [
         {
@@ -11468,7 +11468,7 @@
       "LayoutName": "",
       "MetaDataIDKey": "",
       "Name": "LblSearch_1",
-      "ParentIndex": 16,
+      "ParentIndex": 12,
       "PersistMetaDataIDKey": false,
       "Properties": [
         {
@@ -11777,7 +11777,7 @@
       "LayoutName": "",
       "MetaDataIDKey": "",
       "Name": "LblStatus_1",
-      "ParentIndex": 14,
+      "ParentIndex": 22,
       "PersistMetaDataIDKey": false,
       "Properties": [
         {
@@ -13008,7 +13008,7 @@
       "LayoutName": "",
       "MetaDataIDKey": "",
       "Name": "LblTo_1",
-      "ParentIndex": 23,
+      "ParentIndex": 21,
       "PersistMetaDataIDKey": false,
       "Properties": [
         {
@@ -13338,7 +13338,7 @@
       "LayoutName": "",
       "MetaDataIDKey": "",
       "Name": "LblTypeofMaterial_1",
-      "ParentIndex": 26,
+      "ParentIndex": 24,
       "PersistMetaDataIDKey": false,
       "Properties": [
         {
@@ -13644,7 +13644,7 @@
       "LayoutName": "",
       "MetaDataIDKey": "",
       "Name": "Rectangle4_2",
-      "ParentIndex": 3,
+      "ParentIndex": 1,
       "PersistMetaDataIDKey": false,
       "Properties": [
         {
@@ -13978,7 +13978,7 @@
       "LayoutName": "",
       "MetaDataIDKey": "",
       "Name": "TxtReport_1",
-      "ParentIndex": 19,
+      "ParentIndex": 27,
       "PersistMetaDataIDKey": false,
       "Properties": [
         {
@@ -14365,7 +14365,7 @@
       "LayoutName": "",
       "MetaDataIDKey": "",
       "Name": "TxtSearchNoats_1",
-      "ParentIndex": 17,
+      "ParentIndex": 13,
       "PersistMetaDataIDKey": false,
       "Properties": [
         {

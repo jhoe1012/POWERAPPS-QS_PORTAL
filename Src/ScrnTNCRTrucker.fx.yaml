@@ -541,7 +541,7 @@ ScrnTNCRTrucker As screen:
                 Color: =gblPInput.Color
                 DefaultSelectedItems: |-
                     =If(
-                        FrmUser.Mode <> FormMode.New,
+                        FrmTrucker.Mode <> FormMode.New,
                         LookUp(
                        gblTNCRTrucker,
                        Value = ThisItem.Area
